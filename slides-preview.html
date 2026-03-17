@@ -1,0 +1,1697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Fluency: Foundations and Applications — DMMMSU-SLUC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1B2464;
+    --navy-dark: #111840;
+    --navy-mid: #243080;
+    --crimson: #C0392B;
+    --crimson-light: #E74C3C;
+    --gold: #F0A500;
+    --gold-light: #FFD166;
+    --gold-pale: #FFF8E1;
+    --green: #2D7D32;
+    --green-light: #4CAF50;
+    --white: #FFFFFF;
+    --off-white: #F8F9FA;
+    --grey-light: #E9ECEF;
+    --grey-mid: #ADB5BD;
+    --grey-dark: #495057;
+    --transition: 420ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%; height: 100%; overflow: hidden;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: #0d1133;
+    cursor: default;
+  }
+
+  /* ── PROGRESS BAR ── */
+  #progress-bar {
+    position: fixed; top: 0; left: 0; height: 3px;
+    background: var(--gold);
+    transition: width 0.4s ease;
+    z-index: 9999;
+    box-shadow: 0 0 8px var(--gold);
+  }
+
+  /* ── SLIDE COUNTER ── */
+  #slide-counter {
+    position: fixed; bottom: 24px; right: 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; color: rgba(255,255,255,0.45);
+    letter-spacing: 0.1em; z-index: 9999;
+    transition: color 0.3s;
+  }
+
+  /* ── NAV ARROWS ── */
+  .nav-arrow {
+    position: fixed; top: 50%; transform: translateY(-50%);
+    width: 44px; height: 44px; border: none;
+    background: rgba(255,255,255,0.08); border-radius: 50%;
+    color: rgba(255,255,255,0.4); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999; transition: all 0.2s;
+    backdrop-filter: blur(4px);
+  }
+  .nav-arrow:hover { background: rgba(240,165,0,0.25); color: var(--gold); }
+  #nav-prev { left: 16px; }
+  #nav-next { right: 16px; }
+
+  /* ── SLIDES CONTAINER ── */
+  #deck {
+    position: fixed; inset: 0;
+    perspective: 1200px;
+  }
+
+  .slide {
+    position: absolute; inset: 0;
+    opacity: 0; pointer-events: none;
+    transform: translateX(60px);
+    transition: opacity var(--transition), transform var(--transition);
+    overflow: hidden;
+  }
+  .slide.active {
+    opacity: 1; pointer-events: all;
+    transform: translateX(0);
+  }
+  .slide.exit-left {
+    opacity: 0; pointer-events: none;
+    transform: translateX(-60px);
+  }
+
+  /* Staggered entrance for children */
+  .slide.active .anim {
+    animation: slideUp 0.5s ease both;
+  }
+  .slide.active .anim:nth-child(1) { animation-delay: 0.08s; }
+  .slide.active .anim:nth-child(2) { animation-delay: 0.16s; }
+  .slide.active .anim:nth-child(3) { animation-delay: 0.24s; }
+  .slide.active .anim:nth-child(4) { animation-delay: 0.32s; }
+  .slide.active .anim:nth-child(5) { animation-delay: 0.40s; }
+  .slide.active .anim:nth-child(6) { animation-delay: 0.48s; }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ────────────────────────────────────────
+     SLIDE 1 — COVER
+  ──────────────────────────────────────── */
+  #slide-1 {
+    background: var(--navy-dark);
+    display: flex; flex-direction: column;
+  }
+
+  .s1-particles {
+    position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+  }
+  .particle {
+    position: absolute; border-radius: 50%;
+    background: rgba(240,165,0,0.12);
+    animation: float linear infinite;
+  }
+  @keyframes float {
+    0%   { transform: translateY(0) scale(1); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 0.6; }
+    100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+  }
+
+  /* Diamond decorative */
+  .s1-diamond {
+    position: absolute; right: -80px; top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    width: 540px; height: 540px;
+    background: linear-gradient(135deg, rgba(240,165,0,0.12) 0%, rgba(27,36,100,0.05) 100%);
+    border: 1px solid rgba(240,165,0,0.18);
+  }
+  .s1-diamond-inner {
+    position: absolute; inset: 40px;
+    border: 1px solid rgba(240,165,0,0.10);
+  }
+
+  /* Red left bar */
+  .s1-redbar {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 5px;
+    background: linear-gradient(180deg, var(--crimson) 0%, transparent 100%);
+  }
+
+  .s1-header {
+    position: relative; z-index: 2;
+    padding: 28px 48px;
+    display: flex; align-items: center; gap: 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .s1-header img {
+    height: 56px; width: auto;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+  }
+  .s1-header-divider {
+    width: 1px; height: 40px;
+    background: rgba(255,255,255,0.2);
+    margin: 0 4px;
+  }
+  .s1-header-text {
+    font-size: 11px; font-weight: 600;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.15em; text-transform: uppercase;
+  }
+
+  .s1-main {
+    flex: 1; position: relative; z-index: 2;
+    display: flex; align-items: center;
+    padding: 0 80px 0 80px;
+  }
+  .s1-content { max-width: 640px; }
+
+  .s1-eyebrow {
+    font-size: 11px; font-weight: 700;
+    color: var(--gold); letter-spacing: 0.2em;
+    text-transform: uppercase; margin-bottom: 20px;
+  }
+  .s1-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(52px, 6vw, 82px);
+    font-weight: 900; color: var(--white);
+    line-height: 1.0; letter-spacing: -0.02em;
+  }
+  .s1-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 3.8vw, 52px);
+    font-weight: 700; font-style: italic;
+    color: var(--gold);
+    line-height: 1.1; margin-bottom: 28px;
+  }
+  .s1-divider {
+    width: 80px; height: 2px;
+    background: linear-gradient(90deg, var(--crimson), transparent);
+    margin-bottom: 24px;
+  }
+  .s1-description {
+    font-size: 15px; color: rgba(255,255,255,0.65);
+    line-height: 1.7; margin-bottom: 8px;
+    font-weight: 400;
+  }
+  .s1-meta {
+    font-size: 13px; color: rgba(255,255,255,0.45);
+    font-weight: 500; letter-spacing: 0.04em;
+  }
+  .s1-meta span { color: var(--gold-light); }
+
+  /* Speaker card */
+  .s1-speaker {
+    position: absolute; bottom: 36px; right: 80px;
+    display: flex; align-items: center; gap: 14px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 14px 20px; border-radius: 12px;
+    backdrop-filter: blur(8px);
+  }
+  .s1-avatar {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: rgba(255,255,255,0.12);
+    border: 2px solid rgba(240,165,0,0.4);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.4); flex-shrink: 0;
+  }
+  .s1-speaker-name {
+    font-size: 14px; font-weight: 700; color: var(--white);
+  }
+  .s1-speaker-role {
+    font-size: 11px; color: var(--gold);
+    opacity: 0.8; letter-spacing: 0.05em;
+  }
+
+  /* ────────────────────────────────────────
+     SLIDE 2 — OVERVIEW
+  ──────────────────────────────────────── */
+  #slide-2 {
+    background: var(--white);
+    display: grid;
+    grid-template-columns: 6px 1fr;
+  }
+  .s2-sidebar {
+    background: linear-gradient(180deg, var(--navy) 0%, var(--crimson) 100%);
+  }
+  .s2-body {
+    display: flex; flex-direction: column;
+    padding: 48px 64px;
+    overflow: hidden;
+  }
+  .s2-eyebrow {
+    font-size: 10px; font-weight: 700;
+    color: var(--gold); letter-spacing: 0.25em;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .s2-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 900; color: var(--navy);
+    margin-bottom: 36px; letter-spacing: -0.02em;
+  }
+
+  .s2-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 18px; flex: 1;
+  }
+  .s2-card {
+    border-radius: 12px; padding: 24px;
+    background: var(--off-white);
+    border-left: 4px solid transparent;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: default;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .s2-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(27,36,100,0.12);
+  }
+  .s2-card:nth-child(1) { border-left-color: var(--navy); }
+  .s2-card:nth-child(2) { border-left-color: var(--crimson); }
+  .s2-card:nth-child(3) { border-left-color: var(--gold); }
+  .s2-card:nth-child(4) { border-left-color: var(--green); }
+
+  .s2-card-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+  }
+  .s2-card:nth-child(1) .s2-card-icon { background: rgba(27,36,100,0.1); }
+  .s2-card:nth-child(2) .s2-card-icon { background: rgba(192,57,43,0.1); }
+  .s2-card:nth-child(3) .s2-card-icon { background: rgba(240,165,0,0.15); }
+  .s2-card:nth-child(4) .s2-card-icon { background: rgba(45,125,50,0.1); }
+
+  .s2-card-num {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--grey-mid);
+  }
+  .s2-card-title {
+    font-size: 16px; font-weight: 800; color: var(--navy);
+    line-height: 1.2;
+  }
+  .s2-card-desc {
+    font-size: 13px; color: var(--grey-dark); line-height: 1.5;
+  }
+
+  .s2-footer {
+    margin-top: 24px; padding: 14px 20px;
+    background: var(--grey-light); border-radius: 8px;
+    font-size: 13px; color: var(--grey-dark);
+    display: flex; gap: 24px; align-items: center;
+  }
+  .s2-footer-item {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .s2-footer-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--gold);
+  }
+
+  /* ────────────────────────────────────────
+     SLIDE 3 — SCHEDULE
+  ──────────────────────────────────────── */
+  #slide-3 {
+    background: var(--off-white);
+    display: flex; flex-direction: column;
+    padding: 48px 80px;
+  }
+  .s3-header { margin-bottom: 8px; }
+  .s3-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(30px, 3.5vw, 48px);
+    font-weight: 900; color: var(--navy);
+    letter-spacing: -0.02em;
+  }
+  .s3-subtitle {
+    font-size: 14px; color: var(--gold);
+    font-weight: 600; letter-spacing: 0.08em; margin-top: 4px;
+  }
+
+  .s3-timeline {
+    flex: 1; display: flex; flex-direction: column;
+    justify-content: center;
+    position: relative; padding: 16px 0;
+    margin-top: 16px;
+  }
+  .s3-line {
+    position: absolute; left: 50%; top: 0; bottom: 0;
+    width: 2px; transform: translateX(-50%);
+    background: repeating-linear-gradient(
+      180deg,
+      var(--gold) 0px, var(--gold) 8px,
+      transparent 8px, transparent 16px
+    );
+  }
+
+  .s3-item {
+    display: grid; grid-template-columns: 1fr 40px 1fr;
+    align-items: center; margin-bottom: 14px;
+    gap: 0;
+  }
+  .s3-item-left, .s3-item-right {
+    padding: 12px 16px; border-radius: 10px;
+  }
+  .s3-item-left { text-align: right; }
+  .s3-item-right { text-align: left; }
+
+  .s3-dot-wrap {
+    display: flex; justify-content: center; align-items: center;
+    z-index: 2;
+  }
+  .s3-dot {
+    width: 14px; height: 14px; border-radius: 50%;
+    border: 3px solid var(--white);
+    box-shadow: 0 0 0 2px currentColor;
+  }
+  .s3-dot.navy   { color: var(--navy);   background: var(--navy); }
+  .s3-dot.grey   { color: var(--grey-mid); background: var(--grey-mid); }
+  .s3-dot.crimson { color: var(--crimson); background: var(--crimson); }
+
+  .s3-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--gold);
+    font-weight: 600; letter-spacing: 0.05em;
+  }
+  .s3-label {
+    font-size: 13px; font-weight: 700; color: var(--navy);
+    margin-top: 2px;
+  }
+  .s3-break .s3-label { color: var(--grey-mid); font-weight: 500; }
+  .s3-card-bg {
+    background: var(--white);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+
+  /* ────────────────────────────────────────
+     SLIDE 4 — MODULE BREAK
+  ──────────────────────────────────────── */
+  #slide-4 {
+    background: var(--navy-dark);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .s4-ghost {
+    position: absolute;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(200px, 28vw, 360px);
+    font-weight: 900; color: rgba(255,255,255,0.04);
+    right: -40px; top: 50%; transform: translateY(-50%);
+    letter-spacing: -0.05em; pointer-events: none;
+    user-select: none;
+  }
+  /* Circuit pattern */
+  .s4-circuit {
+    position: absolute; right: 0; top: 0; bottom: 0;
+    width: 45%; opacity: 0.07; pointer-events: none;
+  }
+  .s4-circuit svg { width: 100%; height: 100%; }
+
+  .s4-content {
+    position: relative; z-index: 2;
+    max-width: 620px; padding: 0 80px;
+  }
+  .s4-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(240,165,0,0.15);
+    border: 1px solid rgba(240,165,0,0.3);
+    padding: 6px 16px; border-radius: 100px;
+    font-size: 11px; font-weight: 700;
+    color: var(--gold); letter-spacing: 0.2em;
+    text-transform: uppercase; margin-bottom: 24px;
+  }
+  .s4-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(40px, 5.5vw, 72px);
+    font-weight: 900; color: var(--white);
+    letter-spacing: -0.02em; line-height: 1.05;
+    margin-bottom: 12px;
+  }
+  .s4-sub {
+    font-size: 18px; color: rgba(173,200,255,0.7);
+    font-weight: 400; margin-bottom: 28px;
+  }
+  .s4-desc {
+    font-size: 15px; color: rgba(255,255,255,0.5);
+    line-height: 1.8; font-style: italic;
+  }
+  .s4-bottom-bar {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+
+  /* ────────────────────────────────────────
+     SLIDE 5 — WHAT IS A MACHINE?
+  ──────────────────────────────────────── */
+  #slide-5 {
+    background: var(--white);
+    display: flex; flex-direction: column;
+  }
+  .s5-topbar {
+    height: 5px;
+    background: linear-gradient(90deg, var(--navy) 0%, var(--crimson) 50%, var(--gold) 100%);
+  }
+  .s5-breadcrumb {
+    padding: 14px 56px;
+    font-size: 11px; color: var(--grey-mid);
+    font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--grey-light);
+  }
+  .s5-breadcrumb span { color: var(--navy); }
+
+  .s5-body {
+    flex: 1; display: grid;
+    grid-template-rows: auto 1fr auto;
+    padding: 32px 56px 28px;
+    gap: 24px;
+  }
+  .s5-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 3.5vw, 44px);
+    font-weight: 900; color: var(--navy);
+    letter-spacing: -0.02em;
+  }
+
+  .s5-cards {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 24px; align-content: start;
+  }
+  .s5-def-card {
+    border-radius: 14px; padding: 28px;
+    background: var(--off-white);
+    border-top: 4px solid transparent;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .s5-def-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.1);
+  }
+  .s5-def-card:nth-child(1) { border-top-color: var(--navy); }
+  .s5-def-card:nth-child(2) { border-top-color: var(--crimson); }
+
+  .s5-card-icon {
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .s5-quote-mark {
+    font-family: 'Playfair Display', serif;
+    font-size: 56px; color: var(--gold);
+    line-height: 0.6; margin-bottom: 4px;
+    display: block;
+  }
+  .s5-quote {
+    font-size: 15px; color: var(--navy);
+    font-style: italic; line-height: 1.65;
+    font-weight: 500; flex: 1;
+  }
+  .s5-attrib {
+    font-size: 12px; color: var(--grey-mid);
+    font-weight: 600; letter-spacing: 0.04em;
+    margin-top: 8px;
+  }
+
+  .s5-insight {
+    background: var(--gold-pale);
+    border-radius: 10px; padding: 16px 22px;
+    font-size: 14px; color: var(--navy);
+    border-left: 4px solid var(--gold);
+    line-height: 1.6; font-weight: 500;
+  }
+
+  /* ────────────────────────────────────────
+     SLIDE 6 — COMPUTER / IPO
+  ──────────────────────────────────────── */
+  #slide-6 {
+    background: var(--white);
+    display: flex; flex-direction: column;
+    padding: 44px 72px 32px;
+  }
+  .s6-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 3.5vw, 46px);
+    font-weight: 900; color: var(--navy);
+    letter-spacing: -0.02em;
+  }
+  .s6-sub {
+    font-size: 15px; color: var(--grey-dark);
+    margin-top: 8px; margin-bottom: 40px;
+    font-weight: 400; line-height: 1.5;
+    max-width: 600px;
+  }
+
+  .s6-ipo {
+    flex: 1; display: flex;
+    align-items: center; justify-content: center;
+    gap: 0;
+  }
+  .s6-box {
+    border-radius: 16px; padding: 32px 28px;
+    text-align: center; width: 220px;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 12px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .s6-box:hover { transform: translateY(-6px); }
+  .s6-box.input-box {
+    background: var(--navy);
+    box-shadow: 0 8px 32px rgba(27,36,100,0.3);
+  }
+  .s6-box.process-box {
+    background: var(--gold);
+    box-shadow: 0 8px 32px rgba(240,165,0,0.35);
+    transform: scale(1.06);
+    z-index: 2;
+  }
+  .s6-box.process-box:hover { transform: scale(1.06) translateY(-6px); }
+  .s6-box.output-box {
+    background: var(--crimson);
+    box-shadow: 0 8px 32px rgba(192,57,43,0.3);
+  }
+
+  .s6-box-label {
+    font-size: 10px; font-weight: 800;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .s6-box.input-box .s6-box-label,
+  .s6-box.output-box .s6-box-label { color: rgba(255,255,255,0.7); }
+  .s6-box.process-box .s6-box-label { color: rgba(27,36,100,0.7); }
+
+  .s6-box-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px; font-weight: 900;
+    letter-spacing: -0.01em;
+  }
+  .s6-box.input-box .s6-box-title,
+  .s6-box.output-box .s6-box-title { color: var(--white); }
+  .s6-box.process-box .s6-box-title { color: var(--navy); }
+
+  .s6-box-desc {
+    font-size: 12px; line-height: 1.5; text-align: center;
+  }
+  .s6-box.input-box .s6-box-desc,
+  .s6-box.output-box .s6-box-desc { color: rgba(255,255,255,0.65); }
+  .s6-box.process-box .s6-box-desc { color: rgba(27,36,100,0.7); }
+
+  .s6-arrow-wrap {
+    display: flex; align-items: center;
+    padding: 0 12px; z-index: 1;
+  }
+  .s6-arrow {
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+  }
+  .s6-arrow-line {
+    width: 48px; height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--gold));
+    position: relative; border-radius: 2px;
+    animation: arrowPulse 1.5s ease-in-out infinite;
+  }
+  @keyframes arrowPulse {
+    0%, 100% { opacity: 0.4; transform: scaleX(0.85); }
+    50%       { opacity: 1;   transform: scaleX(1); }
+  }
+  .s6-arrow-head {
+    width: 0; height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 12px solid var(--gold);
+    animation: arrowPulse 1.5s ease-in-out infinite;
+  }
+
+  .s6-teaser {
+    margin-top: 32px; text-align: center;
+    font-size: 15px; color: var(--navy);
+    font-style: italic; opacity: 0.7;
+    letter-spacing: 0.01em;
+  }
+
+  /* ────────────────────────────────────────
+     SLIDE 7 — THE BIG QUESTION
+  ──────────────────────────────────────── */
+  #slide-7 {
+    background: var(--navy-dark);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 56px 80px;
+    overflow: hidden;
+  }
+  .s7-bg-q {
+    position: absolute;
+    font-family: 'Playfair Display', serif;
+    font-size: 480px; font-weight: 900;
+    color: rgba(240,165,0,0.05);
+    line-height: 1; user-select: none;
+    pointer-events: none;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+  }
+
+  .s7-quote-wrap {
+    text-align: center; position: relative; z-index: 2;
+    margin-bottom: 48px;
+  }
+  .s7-open-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: 100px; color: var(--gold);
+    line-height: 0.5; display: block;
+    margin-bottom: 12px; opacity: 0.6;
+  }
+  .s7-main-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 700; font-style: italic;
+    color: var(--white); line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+  .s7-attribution {
+    font-size: 16px; color: var(--gold);
+    font-weight: 600; margin-top: 20px;
+    letter-spacing: 0.08em;
+  }
+
+  .s7-comparison {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 2px; width: 100%; max-width: 720px;
+    border-radius: 14px; overflow: hidden;
+    position: relative; z-index: 2;
+  }
+  .s7-col {
+    padding: 24px 28px;
+    background: rgba(255,255,255,0.05);
+  }
+  .s7-col:hover { background: rgba(255,255,255,0.08); }
+  .s7-col-label {
+    font-size: 11px; font-weight: 800;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .s7-col:nth-child(1) .s7-col-label { color: var(--crimson-light); }
+  .s7-col:nth-child(2) .s7-col-label { color: var(--gold); }
+  .s7-col-text {
+    font-size: 14px; color: rgba(255,255,255,0.7);
+    line-height: 1.65;
+  }
+
+  .s7-combine {
+    margin-top: 28px; text-align: center;
+    position: relative; z-index: 2;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .s7-combine-arrow {
+    color: var(--gold); font-size: 24px;
+    animation: bounce 1.5s ease-in-out infinite;
+  }
+  @keyframes bounce {
+    0%,100% { transform: translateX(0); }
+    50%     { transform: translateX(5px); }
+  }
+  .s7-combine-text {
+    font-size: 15px; color: rgba(255,255,255,0.6);
+    font-style: italic;
+  }
+  .s7-combine-result {
+    font-size: 18px; font-weight: 800; color: var(--gold);
+    font-family: 'Playfair Display', serif;
+  }
+
+  /* ────────────────────────────────────────
+     SLIDE 8 — ALAN TURING
+  ──────────────────────────────────────── */
+  #slide-8 {
+    background: var(--white);
+    display: grid; grid-template-columns: 45% 55%;
+  }
+  .s8-left {
+    background: var(--navy);
+    padding: 56px 44px;
+    display: flex; flex-direction: column;
+    align-items: flex-start; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .s8-left::after {
+    content: '';
+    position: absolute; bottom: 0; right: -30px;
+    width: 60px; height: 60px;
+    background: var(--crimson);
+    transform: rotate(45deg);
+  }
+  .s8-pill {
+    display: inline-flex;
+    background: rgba(240,165,0,0.15);
+    border: 1px solid rgba(240,165,0,0.3);
+    padding: 5px 14px; border-radius: 100px;
+    font-size: 11px; font-weight: 700;
+    color: var(--gold); letter-spacing: 0.15em;
+    text-transform: uppercase; margin-bottom: 20px;
+  }
+  .s8-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 4.5vw, 56px);
+    font-weight: 900; color: var(--white);
+    letter-spacing: -0.02em; line-height: 1.0;
+    margin-bottom: 6px;
+  }
+  .s8-years {
+    font-size: 18px; color: var(--gold);
+    font-weight: 400; margin-bottom: 32px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .s8-avatar-wrap {
+    width: 120px; height: 120px; border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    border: 3px solid rgba(240,165,0,0.4);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 6px; margin-bottom: 0;
+    overflow: hidden;
+  }
+  .s8-avatar-wrap svg { opacity: 0.4; }
+  .s8-avatar-label {
+    font-size: 9px; color: rgba(255,255,255,0.3);
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+
+  .s8-right {
+    padding: 56px 48px;
+    display: flex; flex-direction: column;
+    justify-content: center; gap: 20px;
+  }
+  .s8-right-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px; font-weight: 900;
+    color: var(--navy); margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .s8-achievement {
+    background: var(--off-white);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 10px 10px 0;
+    padding: 18px 20px;
+    display: flex; align-items: flex-start; gap: 14px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .s8-achievement:hover {
+    transform: translateX(6px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  }
+  .s8-ach-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+  .s8-ach-title {
+    font-size: 14px; font-weight: 800; color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .s8-ach-desc {
+    font-size: 13px; color: var(--grey-dark); line-height: 1.5;
+  }
+
+  /* ────────────────────────────────────────
+     SLIDE 9 — TURING TEST
+  ──────────────────────────────────────── */
+  #slide-9 {
+    background: var(--white);
+    display: flex; flex-direction: column;
+    padding: 40px 64px 32px;
+  }
+  .s9-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 3.5vw, 42px);
+    font-weight: 900; color: var(--navy);
+    letter-spacing: -0.02em;
+  }
+  .s9-sub {
+    font-size: 14px; color: var(--gold);
+    font-weight: 600; margin-top: 4px; margin-bottom: 28px;
+  }
+
+  .s9-diagram {
+    display: flex; align-items: center;
+    justify-content: center; gap: 0;
+    margin-bottom: 28px;
+  }
+  .s9-participant {
+    border-radius: 14px; padding: 20px 24px;
+    text-align: center; width: 180px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .s9-participant:hover { transform: translateY(-5px); }
+  .s9-participant.judge-box { background: var(--gold); }
+  .s9-participant.machine-box { background: var(--crimson); }
+  .s9-participant.human-box { background: var(--navy); }
+
+  .s9-icon { font-size: 28px; }
+  .s9-p-label {
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.7;
+  }
+  .s9-participant.judge-box .s9-p-label { color: rgba(27,36,100,0.7); }
+  .s9-participant.machine-box .s9-p-label,
+  .s9-participant.human-box .s9-p-label { color: rgba(255,255,255,0.7); }
+
+  .s9-p-name {
+    font-size: 15px; font-weight: 800; line-height: 1.2;
+  }
+  .s9-participant.judge-box .s9-p-name { color: var(--navy); }
+  .s9-participant.machine-box .s9-p-name,
+  .s9-participant.human-box .s9-p-name { color: var(--white); }
+
+  .s9-connector {
+    display: flex; align-items: center;
+    padding: 0 8px; flex-direction: column; gap: 4px;
+  }
+  .s9-conn-line {
+    width: 40px; height: 2px;
+    background: var(--grey-light);
+    position: relative;
+  }
+  .s9-conn-label {
+    font-size: 9px; color: var(--grey-mid);
+    letter-spacing: 0.08em; white-space: nowrap;
+  }
+
+  .s9-details {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .s9-detail-box { }
+  .s9-detail-title {
+    font-size: 12px; font-weight: 800;
+    color: var(--navy); letter-spacing: 0.12em;
+    text-transform: uppercase; margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--grey-light);
+  }
+  .s9-chip {
+    display: inline-flex; margin: 3px;
+    padding: 5px 12px; border-radius: 100px;
+    background: var(--off-white);
+    border: 1px solid var(--grey-light);
+    font-size: 12px; color: var(--navy); font-weight: 600;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .s9-chip:hover {
+    border-color: var(--gold);
+    background: var(--gold-pale);
+  }
+  .s9-limit-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    margin-bottom: 8px;
+  }
+  .s9-limit-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--crimson); flex-shrink: 0; margin-top: 6px;
+  }
+  .s9-limit-text {
+    font-size: 13px; color: var(--grey-dark); line-height: 1.5;
+  }
+
+  /* ────────────────────────────────────────
+     SLIDE 10 — AI HISTORY TIMELINE
+  ──────────────────────────────────────── */
+  #slide-10 {
+    background: var(--off-white);
+    display: flex; flex-direction: column;
+    padding: 40px 56px 28px;
+  }
+  .s10-header { margin-bottom: 32px; }
+  .s10-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 3.5vw, 46px);
+    font-weight: 900; color: var(--navy);
+    letter-spacing: -0.02em;
+  }
+  .s10-sub {
+    font-size: 14px; color: var(--gold);
+    font-weight: 600; margin-top: 4px;
+  }
+
+  .s10-timeline {
+    display: flex; align-items: stretch;
+    gap: 0; flex: 1; position: relative;
+    margin-bottom: 24px;
+  }
+  .s10-timeline::before {
+    content: '';
+    position: absolute; top: 28px; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg,
+      var(--navy) 0%, var(--gold) 25%, var(--green) 50%,
+      var(--crimson) 75%, #7B68EE 100%
+    );
+  }
+
+  .s10-era {
+    flex: 1; padding-top: 52px;
+    padding-left: 12px; padding-right: 12px;
+    position: relative;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .s10-era::before {
+    content: '';
+    position: absolute; top: 18px; left: 50%;
+    transform: translateX(-50%);
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 3px solid var(--white);
+    box-shadow: 0 0 0 2px currentColor;
+  }
+  .s10-era.e1::before { color: var(--navy); background: var(--navy); }
+  .s10-era.e2::before { color: var(--gold); background: var(--gold); }
+  .s10-era.e3::before { color: var(--green); background: var(--green); }
+  .s10-era.e4::before { color: var(--crimson); background: var(--crimson); }
+  .s10-era.e5::before { color: #7B68EE; background: #7B68EE; }
+
+  .s10-era-card {
+    background: var(--white);
+    border-radius: 12px; padding: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    flex: 1;
+    border-top: 3px solid transparent;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: default;
+  }
+  .s10-era-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+  }
+  .s10-era.e1 .s10-era-card { border-top-color: var(--navy); }
+  .s10-era.e2 .s10-era-card { border-top-color: var(--gold); }
+  .s10-era.e3 .s10-era-card { border-top-color: var(--green); }
+  .s10-era.e4 .s10-era-card { border-top-color: var(--crimson); }
+  .s10-era.e5 .s10-era-card { border-top-color: #7B68EE; }
+
+  .s10-era-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+  .s10-era-year {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+  .s10-era.e1 .s10-era-year { color: var(--navy); }
+  .s10-era.e2 .s10-era-year { color: #b07a00; }
+  .s10-era.e3 .s10-era-year { color: var(--green); }
+  .s10-era.e4 .s10-era-year { color: var(--crimson); }
+  .s10-era.e5 .s10-era-year { color: #7B68EE; }
+
+  .s10-era-title {
+    font-size: 13px; font-weight: 800; color: var(--navy);
+    line-height: 1.2; margin-bottom: 6px;
+  }
+  .s10-era-desc {
+    font-size: 11px; color: var(--grey-dark); line-height: 1.5;
+  }
+
+  .s10-pills {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--grey-light);
+  }
+  .s10-pill {
+    padding: 5px 14px; border-radius: 100px;
+    background: var(--navy);
+    font-size: 11px; font-weight: 700;
+    color: var(--white); letter-spacing: 0.05em;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .s10-pill:hover { background: var(--gold); color: var(--navy); transform: translateY(-2px); }
+
+  /* ── KEYBOARD HINT ── */
+  #keyboard-hint {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(0,0,0,0.4); backdrop-filter: blur(8px);
+    padding: 8px 18px; border-radius: 100px;
+    font-size: 11px; color: rgba(255,255,255,0.5);
+    letter-spacing: 0.06em;
+    transition: opacity 0.5s;
+    pointer-events: none;
+  }
+  #keyboard-hint.hidden { opacity: 0; }
+  .kbd {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 2px 7px; border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: rgba(255,255,255,0.7);
+  }
+</style>
+</head>
+<body>
+
+<!-- Progress bar -->
+<div id="progress-bar"></div>
+
+<!-- Slide counter -->
+<div id="slide-counter">1 / 10</div>
+
+<!-- Nav arrows -->
+<button class="nav-arrow" id="nav-prev" onclick="navigate(-1)" title="Previous">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+    <polyline points="15 18 9 12 15 6"/>
+  </svg>
+</button>
+<button class="nav-arrow" id="nav-next" onclick="navigate(1)" title="Next">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+    <polyline points="9 18 15 12 9 6"/>
+  </svg>
+</button>
+
+<!-- Keyboard hint -->
+<div id="keyboard-hint">
+  <span class="kbd">←</span><span class="kbd">→</span> navigate &nbsp;|&nbsp; <span class="kbd">Space</span> advance &nbsp;|&nbsp; <span class="kbd">Click</span> next
+</div>
+
+<div id="deck">
+
+  <!-- ══════════════════════════════════════
+       SLIDE 1 — COVER
+  ═══════════════════════════════════════ -->
+  <div class="slide active" id="slide-1">
+    <!-- Particles -->
+    <div class="s1-particles" id="particles"></div>
+    <!-- Red left bar -->
+    <div class="s1-redbar"></div>
+    <!-- Diamond deco -->
+    <div class="s1-diamond"><div class="s1-diamond-inner"></div></div>
+
+    <!-- Header with logos -->
+    <div class="s1-header anim">
+      <img src="resources/logo ce.png" alt="CE Logo" onerror="this.style.display='none'">
+      <img src="resources/logo.png" alt="DMMMSU Logo" onerror="this.style.display='none'">
+      <div class="s1-header-divider"></div>
+      <div class="s1-header-text">Don Mariano Marcos Memorial State University</div>
+    </div>
+
+    <!-- Main content -->
+    <div class="s1-main">
+      <div class="s1-content">
+        <div class="s1-eyebrow anim">DMMMSU-SLUC &nbsp;•&nbsp; College of Education</div>
+        <div class="s1-title anim">AI Fluency:</div>
+        <div class="s1-subtitle anim">Foundations and Applications</div>
+        <div class="s1-divider anim"></div>
+        <div class="s1-description anim">A Seminar-Workshop for Pre-Service Social Studies Teachers</div>
+        <div class="s1-meta anim">
+          <span>March 18, 2026</span> &nbsp;|&nbsp; 8:00 AM – 12:00 PM &nbsp;|&nbsp; [VENUE PLACEHOLDER]
+        </div>
+      </div>
+    </div>
+
+    <!-- Speaker card -->
+    <div class="s1-speaker anim">
+      <div class="s1-avatar">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="s1-speaker-name">[SPEAKER NAME]</div>
+        <div class="s1-speaker-role">[DESIGNATION / POSITION]</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SLIDE 2 — OVERVIEW
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="slide-2">
+    <div class="s2-sidebar"></div>
+    <div class="s2-body">
+      <div class="s2-eyebrow anim">Overview</div>
+      <div class="s2-title anim">What We'll Cover Today</div>
+
+      <div class="s2-grid">
+        <div class="s2-card anim">
+          <div class="s2-card-icon">🤖</div>
+          <div class="s2-card-num">Modules 1 & 2</div>
+          <div class="s2-card-title">Foundations of AI</div>
+          <div class="s2-card-desc">From machines to artificial intelligence — history, concepts, and how AI actually works.</div>
+        </div>
+        <div class="s2-card anim">
+          <div class="s2-card-icon">🌐</div>
+          <div class="s2-card-num">Module 3</div>
+          <div class="s2-card-title">AI in the Real World</div>
+          <div class="s2-card-desc">Industry applications across healthcare, finance, retail, and everyday life.</div>
+        </div>
+        <div class="s2-card anim">
+          <div class="s2-card-icon">🎓</div>
+          <div class="s2-card-num">Modules 4 & 5</div>
+          <div class="s2-card-title">AI in Education</div>
+          <div class="s2-card-desc">Philippine context, classroom implications, advantages, and ethical considerations.</div>
+        </div>
+        <div class="s2-card anim">
+          <div class="s2-card-icon">✍️</div>
+          <div class="s2-card-num">Module 6</div>
+          <div class="s2-card-title">Prompting & Fluency</div>
+          <div class="s2-card-desc">The TCREI framework, responsible use, and becoming AI-fluent educators.</div>
+        </div>
+      </div>
+
+      <div class="s2-footer anim">
+        <div class="s2-footer-item"><div class="s2-footer-dot"></div> Duration: 5 Hours</div>
+        <div class="s2-footer-item"><div class="s2-footer-dot"></div> March 18, 2026</div>
+        <div class="s2-footer-item"><div class="s2-footer-dot"></div> 8:00 AM – 12:00 PM</div>
+        <div class="s2-footer-item"><div class="s2-footer-dot"></div> Pre-Service Social Studies Teachers</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SLIDE 3 — SCHEDULE
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="slide-3">
+    <div style="padding: 44px 80px; display:flex; flex-direction:column; height:100%;">
+      <div class="s3-header anim">
+        <div class="s3-title">Program Flow</div>
+        <div class="s3-subtitle">March 18, 2026 — 8:00 AM to 12:00 PM</div>
+      </div>
+
+      <div class="s3-timeline">
+        <div class="s3-line"></div>
+
+        <div class="s3-item anim">
+          <div class="s3-item-left s3-card-bg">
+            <div class="s3-time">8:00 – 8:30 AM</div>
+            <div class="s3-label">Opening & Introduction</div>
+          </div>
+          <div class="s3-dot-wrap"><div class="s3-dot navy"></div></div>
+          <div></div>
+        </div>
+
+        <div class="s3-item anim">
+          <div></div>
+          <div class="s3-dot-wrap"><div class="s3-dot navy"></div></div>
+          <div class="s3-item-right s3-card-bg">
+            <div class="s3-time">8:30 – 9:30 AM</div>
+            <div class="s3-label">Modules 1 & 2: Foundations & Real-World AI</div>
+          </div>
+        </div>
+
+        <div class="s3-item s3-break anim">
+          <div class="s3-item-left">
+            <div class="s3-time" style="color:var(--grey-mid)">9:30 – 9:45 AM</div>
+            <div class="s3-label">☕ Short Break</div>
+          </div>
+          <div class="s3-dot-wrap"><div class="s3-dot grey"></div></div>
+          <div></div>
+        </div>
+
+        <div class="s3-item anim">
+          <div></div>
+          <div class="s3-dot-wrap"><div class="s3-dot navy"></div></div>
+          <div class="s3-item-right s3-card-bg">
+            <div class="s3-time">9:45 – 10:45 AM</div>
+            <div class="s3-label">Modules 3 & 4: AI in Education & Fluency</div>
+          </div>
+        </div>
+
+        <div class="s3-item anim">
+          <div class="s3-item-left s3-card-bg">
+            <div class="s3-time">10:45 – 11:45 AM</div>
+            <div class="s3-label">Modules 5 & 6: Generative AI & Prompting</div>
+          </div>
+          <div class="s3-dot-wrap"><div class="s3-dot navy"></div></div>
+          <div></div>
+        </div>
+
+        <div class="s3-item anim">
+          <div></div>
+          <div class="s3-dot-wrap"><div class="s3-dot crimson"></div></div>
+          <div class="s3-item-right s3-card-bg">
+            <div class="s3-time">11:45 AM – 12:00 PM</div>
+            <div class="s3-label" style="color:var(--crimson)">Closing Remarks & Q&A</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SLIDE 4 — MODULE 1 BREAK
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="slide-4">
+    <div class="s4-ghost">01</div>
+    <!-- Circuit pattern SVG -->
+    <div class="s4-circuit">
+      <svg viewBox="0 0 400 600" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="white" stroke-width="1" fill="none">
+          <line x1="50" y1="0" x2="50" y2="600"/>
+          <line x1="150" y1="0" x2="150" y2="600"/>
+          <line x1="250" y1="0" x2="250" y2="600"/>
+          <line x1="350" y1="0" x2="350" y2="600"/>
+          <line x1="0" y1="100" x2="400" y2="100"/>
+          <line x1="0" y1="200" x2="400" y2="200"/>
+          <line x1="0" y1="300" x2="400" y2="300"/>
+          <line x1="0" y1="400" x2="400" y2="400"/>
+          <line x1="0" y1="500" x2="400" y2="500"/>
+          <circle cx="50" cy="100" r="5" fill="white"/>
+          <circle cx="150" cy="200" r="5" fill="white"/>
+          <circle cx="250" cy="300" r="5" fill="white"/>
+          <circle cx="350" cy="400" r="5" fill="white"/>
+          <circle cx="50" cy="500" r="5" fill="white"/>
+          <circle cx="150" cy="100" r="3"/>
+          <circle cx="250" cy="200" r="3"/>
+          <circle cx="350" cy="300" r="3"/>
+          <rect x="40" y="190" width="20" height="20" rx="2"/>
+          <rect x="240" y="90" width="20" height="20" rx="2"/>
+          <rect x="140" y="390" width="20" height="20" rx="2"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="s4-content">
+      <div class="s4-badge anim">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--gold)"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+        Module 1
+      </div>
+      <div class="s4-title anim">What is a Machine?</div>
+      <div class="s4-sub anim">AI History &amp; Foundations</div>
+      <div class="s4-desc anim">
+        We begin where all technology begins — understanding what machines are, what computers do, and how the question <em>"Can machines think?"</em> changed everything.
+      </div>
+    </div>
+    <div class="s4-bottom-bar"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SLIDE 5 — WHAT IS A MACHINE?
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="slide-5">
+    <div class="s5-topbar"></div>
+    <div class="s5-breadcrumb anim">
+      Module 1 <span>›</span> What is a Machine?
+    </div>
+    <div class="s5-body">
+      <div class="s5-title anim">Defining the Machine</div>
+      <div class="s5-cards">
+        <div class="s5-def-card anim">
+          <div class="s5-card-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.5">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+            </svg>
+          </div>
+          <span class="s5-quote-mark">"</span>
+          <p class="s5-quote">A machine is anything that reduces human effort.</p>
+          <div class="s5-attrib">— Rancho, <em>3 Idiots</em> (2009)</div>
+        </div>
+        <div class="s5-def-card anim">
+          <div class="s5-card-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--crimson)" stroke-width="1.5">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+            </svg>
+          </div>
+          <span class="s5-quote-mark">"</span>
+          <p class="s5-quote">A machine is a device, having a unique purpose, that augments or replaces human or animal effort for the accomplishment of physical tasks.</p>
+          <div class="s5-attrib">— Britannica</div>
+        </div>
+      </div>
+      <div class="s5-insight anim">
+        💡 From the plow to the smartphone — machines have always extended what humans can do. Every new tool answers the same question: <em>How can we do more with less effort?</em>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SLIDE 6 — WHAT IS A COMPUTER? IPO
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="slide-6">
+    <div style="height:100%; display:flex; flex-direction:column; padding: 44px 72px 32px;">
+      <div class="s6-title anim">What is a Computer?</div>
+      <div class="s6-sub anim">An electronic device that can receive, store, process, and present data under the control of a program.</div>
+
+      <div class="s6-ipo anim">
+        <div class="s6-box input-box">
+          <div class="s6-box-label">Step 1</div>
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.5">
+            <polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/>
+            <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+          </svg>
+          <div class="s6-box-title">INPUT</div>
+          <div class="s6-box-desc">Raw data, concepts, ideas, materials</div>
+        </div>
+
+        <div class="s6-arrow-wrap">
+          <div class="s6-arrow">
+            <div class="s6-arrow-line"></div>
+            <div class="s6-arrow-head"></div>
+          </div>
+        </div>
+
+        <div class="s6-box process-box">
+          <div class="s6-box-label">Step 2</div>
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(27,36,100,0.8)" stroke-width="1.5">
+            <circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+          </svg>
+          <div class="s6-box-title">PROCESS</div>
+          <div class="s6-box-desc">Thinking, computing, transforming</div>
+        </div>
+
+        <div class="s6-arrow-wrap">
+          <div class="s6-arrow">
+            <div class="s6-arrow-line"></div>
+            <div class="s6-arrow-head"></div>
+          </div>
+        </div>
+
+        <div class="s6-box output-box">
+          <div class="s6-box-label">Step 3</div>
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.5">
+            <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+          </svg>
+          <div class="s6-box-title">OUTPUT</div>
+          <div class="s6-box-desc">Products and end results</div>
+        </div>
+      </div>
+
+      <div class="s6-teaser anim">
+        As technology advanced, one inevitable question emerged: <strong>Can machines think?</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SLIDE 7 — THE BIG QUESTION
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="slide-7">
+    <div class="s7-bg-q">?</div>
+
+    <div class="s7-quote-wrap anim">
+      <span class="s7-open-quote">"</span>
+      <div class="s7-main-quote">Can machines think?</div>
+      <div class="s7-attribution">— Alan Turing, 1950</div>
+    </div>
+
+    <div class="s7-comparison anim">
+      <div class="s7-col">
+        <div class="s7-col-label">Artificial</div>
+        <div class="s7-col-text">Something made, produced, or done by humans — especially to seem like something natural.</div>
+      </div>
+      <div class="s7-col">
+        <div class="s7-col-label">Intelligence</div>
+        <div class="s7-col-text">The human ability to perform cognitive tasks — to <em>think, understand, learn,</em> and <em>remember.</em></div>
+      </div>
+    </div>
+
+    <div class="s7-combine anim">
+      <span class="s7-combine-text">Combine both concepts</span>
+      <span class="s7-combine-arrow">→</span>
+      <span class="s7-combine-result">Artificial Intelligence</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SLIDE 8 — ALAN TURING
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="slide-8">
+    <div class="s8-left">
+      <div class="s8-pill anim">The Father of Modern Computing</div>
+      <div class="s8-name anim">Alan<br>Turing</div>
+      <div class="s8-years anim">1912 – 1954</div>
+      <div class="s8-avatar-wrap anim">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="rgba(255,255,255,0.5)">
+          <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+        </svg>
+        <div class="s8-avatar-label">[Photo]</div>
+      </div>
+    </div>
+
+    <div class="s8-right">
+      <div class="s8-right-title anim">His Contributions</div>
+
+      <div class="s8-achievement anim">
+        <div class="s8-ach-icon">🔐</div>
+        <div>
+          <div class="s8-ach-title">WWII Code-Breaking</div>
+          <div class="s8-ach-desc">Decrypted the Nazi Enigma machine, enabling the Allies to read encrypted military communications and helping bring the war to an earlier end.</div>
+        </div>
+      </div>
+
+      <div class="s8-achievement anim">
+        <div class="s8-ach-icon">💻</div>
+        <div>
+          <div class="s8-ach-title">Computing Theory</div>
+          <div class="s8-ach-desc">Laid the mathematical foundation for modern computers with the concept of the "Turing Machine" — a theoretical model of computation.</div>
+        </div>
+      </div>
+
+      <div class="s8-achievement anim">
+        <div class="s8-ach-icon">🧠</div>
+        <div>
+          <div class="s8-ach-title">AI Pioneer</div>
+          <div class="s8-ach-desc">Asked "Can machines think?" in 1950 and proposed a practical test to evaluate machine intelligence — now known as the Turing Test.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SLIDE 9 — THE TURING TEST
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="slide-9">
+    <div style="height:100%; display:flex; flex-direction:column; padding: 40px 64px 32px;">
+      <div class="s9-title anim">The Turing Test</div>
+      <div class="s9-sub anim">Can a machine's responses be indistinguishable from a human's?</div>
+
+      <div class="s9-diagram anim">
+        <div class="s9-participant judge-box">
+          <div class="s9-icon">👁️</div>
+          <div class="s9-p-label">Interrogator</div>
+          <div class="s9-p-name">Human Judge</div>
+        </div>
+        <div class="s9-connector">
+          <div style="display:flex; align-items:center; gap:4px;">
+            <div style="width:14px; height:2px; background:var(--grey-light);"></div>
+            <div style="font-size:9px; color:var(--grey-mid); white-space:nowrap;">Questions &amp; Answers</div>
+            <div style="width:14px; height:2px; background:var(--grey-light);"></div>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div class="s9-participant machine-box">
+            <div class="s9-icon">🤖</div>
+            <div class="s9-p-label">Interlocutor (AI)</div>
+            <div class="s9-p-name">Machine</div>
+          </div>
+          <div class="s9-participant human-box">
+            <div class="s9-icon">🙋</div>
+            <div class="s9-p-label">Interlocutor (Human)</div>
+            <div class="s9-p-name">Human</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="s9-details anim">
+        <div class="s9-detail-box">
+          <div class="s9-detail-title">Types of Questions</div>
+          <div>
+            <span class="s9-chip">Open-ended questions</span>
+            <span class="s9-chip">Opinion questions</span>
+            <span class="s9-chip">Emotional questions</span>
+            <span class="s9-chip">Hypothetical scenarios</span>
+            <span class="s9-chip">Self-assessment</span>
+          </div>
+        </div>
+        <div class="s9-detail-box">
+          <div class="s9-detail-title">Limitations of the Test</div>
+          <div class="s9-limit-item">
+            <div class="s9-limit-dot"></div>
+            <div class="s9-limit-text">Evaluation is subjective — depends on the judge's own understanding</div>
+          </div>
+          <div class="s9-limit-item">
+            <div class="s9-limit-dot"></div>
+            <div class="s9-limit-text">The "confederate effect" — humans sometimes misidentified as machines</div>
+          </div>
+          <div class="s9-limit-item">
+            <div class="s9-limit-dot"></div>
+            <div class="s9-limit-text">Cannot measure true understanding — only output similarity</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SLIDE 10 — AI HISTORY TIMELINE
+  ═══════════════════════════════════════ -->
+  <div class="slide" id="slide-10">
+    <div style="height:100%; display:flex; flex-direction:column; padding: 40px 56px 28px;">
+      <div class="s10-header anim">
+        <div class="s10-title">The Story of AI</div>
+        <div class="s10-sub">From a bold question in 1950 to everyday reality</div>
+      </div>
+
+      <div class="s10-timeline anim">
+        <div class="s10-era e1">
+          <div class="s10-era-card">
+            <span class="s10-era-icon">🌱</span>
+            <div class="s10-era-year">1940s – 50s</div>
+            <div class="s10-era-title">Birth of AI</div>
+            <div class="s10-era-desc">Turing Test proposed, Dartmouth Conference held, "Artificial Intelligence" coined by John McCarthy (1956).</div>
+          </div>
+        </div>
+        <div class="s10-era e2">
+          <div class="s10-era-card">
+            <span class="s10-era-icon">❄️</span>
+            <div class="s10-era-year">1960s – 90s</div>
+            <div class="s10-era-title">Early Programs & AI Winters</div>
+            <div class="s10-era-desc">ELIZA (1966), Deep Blue defeats Kasparov (1997), but two "AI winters" of funding cuts slowed progress.</div>
+          </div>
+        </div>
+        <div class="s10-era e3">
+          <div class="s10-era-card">
+            <span class="s10-era-icon">⚡</span>
+            <div class="s10-era-year">2000s – 10s</div>
+            <div class="s10-era-title">Modern Breakthrough</div>
+            <div class="s10-era-desc">IBM Watson wins Jeopardy! Siri & Alexa arrive. Deep learning transforms image recognition. AlphaGo (2016).</div>
+          </div>
+        </div>
+        <div class="s10-era e4">
+          <div class="s10-era-card">
+            <span class="s10-era-icon">🚀</span>
+            <div class="s10-era-year">2020 – Now</div>
+            <div class="s10-era-title">Generative AI Era</div>
+            <div class="s10-era-desc">ChatGPT, DALL-E, Gemini. LLMs like GPT-4 with 175B+ parameters generate human-like text, images & code.</div>
+          </div>
+        </div>
+        <div class="s10-era e5">
+          <div class="s10-era-card">
+            <span class="s10-era-icon">🔮</span>
+            <div class="s10-era-year">Future</div>
+            <div class="s10-era-title">What's Next?</div>
+            <div class="s10-era-desc">AGI, Theory of Mind AI, autonomous agents. AI that doesn't just predict — but understands.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="s10-pills anim">
+        <div class="s10-pill">Machine Learning</div>
+        <div class="s10-pill">Neural Networks</div>
+        <div class="s10-pill">Deep Learning</div>
+        <div class="s10-pill">Large Language Models</div>
+        <div class="s10-pill">Prompt Engineering</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /deck -->
+
+<script>
+  // ── STATE ──
+  let current = 0;
+  const total = 10;
+  const slides = document.querySelectorAll('.slide');
+  const progressBar = document.getElementById('progress-bar');
+  const counter = document.getElementById('slide-counter');
+  const hint = document.getElementById('keyboard-hint');
+
+  // ── PARTICLES (Slide 1) ──
+  (function buildParticles() {
+    const container = document.getElementById('particles');
+    if (!container) return;
+    for (let i = 0; i < 28; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const size = Math.random() * 4 + 2;
+      p.style.cssText = `
+        width:${size}px; height:${size}px;
+        left:${Math.random()*100}%;
+        top:${Math.random()*100}%;
+        animation-duration:${Math.random()*12+8}s;
+        animation-delay:${Math.random()*-12}s;
+        opacity:${Math.random()*0.6+0.1};
+      `;
+      container.appendChild(p);
+    }
+  })();
+
+  // ── NAVIGATE ──
+  function navigate(dir) {
+    const next = Math.max(0, Math.min(total - 1, current + dir));
+    if (next === current) return;
+    goTo(next);
+  }
+
+  function goTo(idx) {
+    slides[current].classList.remove('active');
+    slides[current].classList.add('exit-left');
+    setTimeout(() => {
+      slides[current].classList.remove('exit-left');
+      current = idx;
+      slides[current].classList.add('active');
+      updateUI();
+    }, 420);
+    current = idx;
+    updateUI();
+  }
+
+  function updateUI() {
+    counter.textContent = `${current + 1} / ${total}`;
+    progressBar.style.width = `${((current + 1) / total) * 100}%`;
+    // Counter color based on slide bg
+    const darkSlides = [0, 3, 6]; // 0-indexed: slides 1,4,7
+    counter.style.color = darkSlides.includes(current)
+      ? 'rgba(255,255,255,0.35)'
+      : 'rgba(27,36,100,0.35)';
+  }
+
+  // ── EVENTS ──
+  document.addEventListener('keydown', e => {
+    hideHint();
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+      e.preventDefault(); navigate(1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault(); navigate(-1);
+    }
+  });
+
+  document.getElementById('deck').addEventListener('click', e => {
+    hideHint();
+    if (e.shiftKey) navigate(-1);
+    else navigate(1);
+  });
+
+  // Touch swipe
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => {
+    touchStartX = e.touches[0].clientX;
+  }, { passive: true });
+  document.addEventListener('touchend', e => {
+    const dx = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(dx) > 50) navigate(dx > 0 ? 1 : -1);
+  });
+
+  // Nav button clicks (don't bubble to deck)
+  document.getElementById('nav-prev').addEventListener('click', e => {
+    e.stopPropagation(); navigate(-1);
+  });
+  document.getElementById('nav-next').addEventListener('click', e => {
+    e.stopPropagation(); navigate(1);
+  });
+
+  // ── HINT ──
+  let hintTimer = setTimeout(hideHint, 4000);
+  function hideHint() {
+    clearTimeout(hintTimer);
+    hint.classList.add('hidden');
+  }
+
+  // ── INIT ──
+  updateUI();
+</script>
+</body>
+</html>

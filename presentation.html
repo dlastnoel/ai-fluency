@@ -1,0 +1,1797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Fluency: Foundations and Applications — DMMMSU-SLUC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1B2464;
+  --navy-dark: #111840;
+  --navy-mid: #243080;
+  --crimson: #C0392B;
+  --gold: #F0A500;
+  --gold-light: #FFD166;
+  --gold-pale: #FFF8E1;
+  --green: #2D7D32;
+  --white: #FFFFFF;
+  --off-white: #F5F6FA;
+  --grey-light: #E4E7EF;
+  --grey-mid: #9AA0B4;
+  --grey-dark: #4A5068;
+  --tr: 400ms cubic-bezier(.4,0,.2,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #0a0e24; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+/* ── ENGINE ── */
+#progress { position: fixed; top: 0; left: 0; height: 4px; background: var(--gold); transition: width .4s ease; z-index: 9999; box-shadow: 0 0 10px rgba(240,165,0,.6); }
+#counter { position: fixed; bottom: 22px; right: 28px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: rgba(255,255,255,.35); letter-spacing: .1em; z-index: 9999; }
+#counter.dark-bg { color: rgba(255,255,255,.35); }
+#counter.light-bg { color: rgba(27,36,100,.35); }
+
+.nav-btn { position: fixed; top: 50%; transform: translateY(-50%); width: 48px; height: 48px; border-radius: 50%; border: none; background: rgba(255,255,255,.08); color: rgba(255,255,255,.4); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 9999; transition: all .2s; backdrop-filter: blur(6px); }
+.nav-btn:hover { background: rgba(240,165,0,.25); color: var(--gold); }
+#btn-prev { left: 14px; }
+#btn-next { right: 14px; }
+
+/* ── DECK ── */
+#deck { position: fixed; inset: 0; }
+.slide { position: absolute; inset: 0; opacity: 0; pointer-events: none; transform: translateX(50px); transition: opacity var(--tr), transform var(--tr); overflow: hidden; }
+.slide.active { opacity: 1; pointer-events: all; transform: translateX(0); }
+.slide.prev { opacity: 0; transform: translateX(-50px); }
+
+/* Staggered entrance */
+.slide.active .a1 { animation: up .5s .05s both; }
+.slide.active .a2 { animation: up .5s .12s both; }
+.slide.active .a3 { animation: up .5s .19s both; }
+.slide.active .a4 { animation: up .5s .26s both; }
+.slide.active .a5 { animation: up .5s .33s both; }
+.slide.active .a6 { animation: up .5s .40s both; }
+.slide.active .a7 { animation: up .5s .47s both; }
+.slide.active .a8 { animation: up .5s .54s both; }
+@keyframes up { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+
+/* ── SHARED COMPONENTS ── */
+.badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 18px; border-radius: 100px; font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
+.badge-gold { background: rgba(240,165,0,.15); border: 1px solid rgba(240,165,0,.35); color: var(--gold); }
+.badge-navy { background: rgba(27,36,100,.12); border: 1px solid rgba(27,36,100,.2); color: var(--navy); }
+
+.cite { position: absolute; bottom: 18px; right: 32px; font-size: 11px; color: rgba(255,255,255,.3); font-style: italic; letter-spacing: .03em; }
+.cite.light { color: rgba(27,36,100,.3); }
+
+/* module breadcrumb */
+.crumb { padding: 12px 52px; font-size: 12px; font-weight: 600; color: var(--grey-mid); letter-spacing: .12em; text-transform: uppercase; border-bottom: 1px solid var(--grey-light); background: var(--white); }
+.crumb span { color: var(--navy); }
+
+/* top color bar */
+.topbar { height: 5px; background: linear-gradient(90deg, var(--navy) 0%, var(--crimson) 50%, var(--gold) 100%); flex-shrink: 0; }
+
+/* section-break template */
+.sec-break { background: var(--navy-dark); display: flex; align-items: center; height: 100%; overflow: hidden; }
+.sec-break .ghost { position: absolute; font-family: 'Playfair Display', serif; font-size: clamp(180px,25vw,340px); font-weight: 900; color: rgba(255,255,255,.04); right: -20px; top: 50%; transform: translateY(-50%); user-select: none; pointer-events: none; line-height: 1; }
+.sec-break .grid-deco { position: absolute; right: 0; top: 0; bottom: 0; width: 42%; opacity: .06; pointer-events: none; }
+.sec-break .content { position: relative; z-index: 2; padding: 0 80px; max-width: 700px; }
+.sec-break .mod-num { font-size: 11px; font-weight: 700; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); margin-bottom: 22px; }
+.sec-break .mod-title { font-family: 'Playfair Display', serif; font-size: clamp(44px,6vw,80px); font-weight: 900; color: var(--white); letter-spacing: -.02em; line-height: 1.0; margin-bottom: 14px; }
+.sec-break .mod-sub { font-size: 22px; color: rgba(173,200,255,.65); margin-bottom: 28px; }
+.sec-break .mod-desc { font-size: 18px; color: rgba(255,255,255,.45); line-height: 1.8; font-style: italic; }
+.sec-break .bot-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--gold), transparent); }
+
+/* full-image with overlay template */
+.img-full { position: absolute; inset: 0; object-fit: cover; width: 100%; height: 100%; }
+.img-overlay { position: absolute; inset: 0; }
+.img-content { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; }
+
+/* split template */
+.split { display: grid; height: 100%; }
+.split-60-40 { grid-template-columns: 60% 40%; }
+.split-40-60 { grid-template-columns: 40% 60%; }
+.split-50-50 { grid-template-columns: 50% 50%; }
+.split-img { overflow: hidden; }
+.split-img img { width: 100%; height: 100%; object-fit: cover; }
+.split-body { display: flex; flex-direction: column; justify-content: center; padding: 56px 52px; }
+
+/* content template */
+.content-slide { background: var(--white); display: flex; flex-direction: column; height: 100%; }
+.content-main { flex: 1; padding: 44px 60px; display: flex; flex-direction: column; gap: 28px; }
+
+/* Big text */
+.slide-title { font-family: 'Playfair Display', serif; font-size: clamp(36px,5vw,68px); font-weight: 900; color: var(--navy); letter-spacing: -.02em; line-height: 1.05; }
+.slide-title.white { color: var(--white); }
+.slide-sub { font-size: clamp(18px,2vw,26px); color: var(--grey-dark); line-height: 1.55; font-weight: 400; }
+.slide-sub.gold { color: var(--gold); font-weight: 600; }
+.slide-sub.white { color: rgba(255,255,255,.7); }
+.body-text { font-size: clamp(20px,2.2vw,28px); color: var(--grey-dark); line-height: 1.7; }
+.body-text.white { color: rgba(255,255,255,.75); }
+.quote-text { font-family: 'Playfair Display', serif; font-size: clamp(24px,3vw,42px); font-style: italic; line-height: 1.5; color: var(--navy); }
+.quote-text.white { color: var(--white); }
+.attrib { font-size: 18px; color: var(--grey-mid); font-weight: 600; margin-top: 10px; }
+.attrib.gold { color: var(--gold); }
+
+/* discussion slide */
+.disc-slide { background: var(--navy); display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; padding: 60px 100px; }
+.disc-icon { font-size: 72px; margin-bottom: 24px; }
+.disc-label { font-size: 12px; font-weight: 700; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+.disc-q { font-family: 'Playfair Display', serif; font-size: clamp(30px,4vw,56px); font-weight: 700; color: var(--white); line-height: 1.35; }
+.disc-hint { font-size: 18px; color: rgba(255,255,255,.4); margin-top: 28px; font-style: italic; }
+
+/* card */
+.card { background: var(--off-white); border-radius: 14px; padding: 28px 32px; border-left: 5px solid transparent; transition: transform .2s, box-shadow .2s; cursor: default; }
+.card:hover { transform: translateY(-4px); box-shadow: 0 14px 36px rgba(0,0,0,.1); }
+.card.navy { border-left-color: var(--navy); }
+.card.crimson { border-left-color: var(--crimson); }
+.card.gold { border-left-color: var(--gold); }
+.card.green { border-left-color: var(--green); }
+.card-title { font-size: 20px; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
+.card-body { font-size: 18px; color: var(--grey-dark); line-height: 1.65; }
+
+/* big quote mark */
+.qmark { font-family: 'Playfair Display', serif; font-size: 96px; color: var(--gold); line-height: .5; display: block; opacity: .6; }
+
+/* horizontal rule */
+.rule { height: 2px; background: linear-gradient(90deg, var(--gold), transparent); border: none; margin: 4px 0; }
+
+/* pill tag */
+.pill { display: inline-flex; padding: 6px 18px; border-radius: 100px; font-size: 15px; font-weight: 700; white-space: nowrap; }
+.pill.navy { background: var(--navy); color: var(--white); }
+.pill.gold { background: var(--gold); color: var(--navy); }
+.pill.crimson { background: var(--crimson); color: var(--white); }
+.pill.green { background: var(--green); color: var(--white); }
+.pill.outline { background: transparent; border: 2px solid var(--navy); color: var(--navy); }
+
+/* IPO boxes */
+.ipo-wrap { display: flex; align-items: stretch; gap: 0; flex: 1; }
+.ipo-box { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 40px 28px; text-align: center; }
+.ipo-box.inp { background: var(--navy); }
+.ipo-box.proc { background: var(--gold); }
+.ipo-box.out { background: var(--crimson); }
+.ipo-label { font-size: 11px; font-weight: 800; letter-spacing: .25em; text-transform: uppercase; opacity: .7; }
+.ipo-box.inp .ipo-label, .ipo-box.out .ipo-label { color: rgba(255,255,255,.7); }
+.ipo-box.proc .ipo-label { color: rgba(27,36,100,.7); }
+.ipo-title { font-family: 'Playfair Display', serif; font-size: 44px; font-weight: 900; }
+.ipo-box.inp .ipo-title, .ipo-box.out .ipo-title { color: var(--white); }
+.ipo-box.proc .ipo-title { color: var(--navy); }
+.ipo-items { list-style: none; }
+.ipo-items li { font-size: 17px; padding: 4px 0; opacity: .8; }
+.ipo-box.inp .ipo-items li, .ipo-box.out .ipo-items li { color: rgba(255,255,255,.8); }
+.ipo-box.proc .ipo-items li { color: rgba(27,36,100,.8); }
+.ipo-arrow { display: flex; align-items: center; padding: 0 4px; }
+.ipo-arrow svg { opacity: .5; }
+
+/* timeline (history) */
+.hist-card { background: var(--white); border-radius: 14px; padding: 32px 36px; border-top: 5px solid transparent; box-shadow: 0 4px 20px rgba(0,0,0,.07); }
+.hist-card:hover { transform: translateY(-4px); box-shadow: 0 14px 36px rgba(0,0,0,.12); transition: all .2s; }
+.hist-year { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; letter-spacing: .06em; margin-bottom: 10px; }
+.hist-title { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; color: var(--navy); margin-bottom: 14px; }
+.hist-body { font-size: 17px; color: var(--grey-dark); line-height: 1.75; }
+.hist-body li { margin-bottom: 8px; margin-left: 20px; }
+
+/* ─── SLIDE-SPECIFIC ─── */
+
+/* S1 Cover */
+#s1 { background: var(--navy-dark); }
+.s1-particle { position: absolute; border-radius: 50%; background: rgba(240,165,0,.1); animation: pfloat linear infinite; }
+@keyframes pfloat { 0%{transform:translateY(0);opacity:0} 10%{opacity:1} 90%{opacity:.5} 100%{transform:translateY(-105vh);opacity:0} }
+.s1-diamond { position: absolute; right: -60px; top: 50%; transform: translateY(-50%) rotate(45deg); width: 600px; height: 600px; border: 1px solid rgba(240,165,0,.12); pointer-events: none; }
+.s1-diamond-in { position: absolute; inset: 48px; border: 1px solid rgba(240,165,0,.07); }
+.s1-redbar { position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: linear-gradient(180deg, var(--crimson), transparent); }
+.s1-header { display: flex; align-items: center; gap: 16px; padding: 26px 52px; border-bottom: 1px solid rgba(255,255,255,.06); position: relative; z-index: 2; }
+.s1-header img { height: 58px; width: auto; filter: drop-shadow(0 2px 8px rgba(0,0,0,.5)); }
+.s1-hdiv { width: 1px; height: 44px; background: rgba(255,255,255,.15); margin: 0 6px; }
+.s1-htxt { font-size: 11px; font-weight: 600; color: rgba(255,255,255,.45); letter-spacing: .15em; text-transform: uppercase; line-height: 1.6; }
+.s1-main { flex: 1; display: flex; align-items: center; padding: 0 80px; position: relative; z-index: 2; }
+.s1-eyebrow { font-size: 12px; font-weight: 700; color: var(--gold); letter-spacing: .22em; text-transform: uppercase; margin-bottom: 22px; }
+.s1-title { font-family: 'Playfair Display', serif; font-size: clamp(56px,7vw,96px); font-weight: 900; color: var(--white); line-height: .95; letter-spacing: -.03em; }
+.s1-subtitle { font-family: 'Playfair Display', serif; font-size: clamp(32px,4vw,54px); font-weight: 700; font-style: italic; color: var(--gold); line-height: 1.1; margin-bottom: 32px; }
+.s1-rule { width: 90px; height: 2px; background: linear-gradient(90deg, var(--crimson), transparent); margin-bottom: 28px; }
+.s1-desc { font-size: clamp(16px,1.8vw,22px); color: rgba(255,255,255,.6); line-height: 1.7; margin-bottom: 10px; }
+.s1-meta { font-size: clamp(14px,1.4vw,18px); color: rgba(255,255,255,.4); }
+.s1-meta span { color: var(--gold-light); }
+.s1-speaker { position: absolute; bottom: 36px; right: 80px; z-index: 2; display: flex; align-items: center; gap: 16px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); padding: 16px 24px; border-radius: 14px; backdrop-filter: blur(8px); }
+.s1-avatar { width: 58px; height: 58px; border-radius: 50%; background: rgba(255,255,255,.1); border: 2px solid rgba(240,165,0,.4); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.s1-sname { font-size: 16px; font-weight: 700; color: var(--white); }
+.s1-srole { font-size: 13px; color: var(--gold); opacity: .8; }
+
+/* S3 Schedule */
+#s3 { background: var(--off-white); display: flex; flex-direction: column; padding: 44px 72px; }
+.sched-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; transform: translateX(-50%); background: repeating-linear-gradient(180deg,var(--gold) 0,var(--gold) 8px,transparent 8px,transparent 18px); }
+.sched-wrap { flex: 1; position: relative; display: flex; flex-direction: column; justify-content: center; gap: 10px; margin-top: 14px; }
+.sched-row { display: grid; grid-template-columns: 1fr 44px 1fr; align-items: center; }
+.sched-cell { padding: 12px 18px; border-radius: 10px; }
+.sched-cell.filled { background: var(--white); box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+.sched-cell.right { text-align: left; }
+.sched-cell.left { text-align: right; }
+.sched-time { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--gold); font-weight: 600; letter-spacing: .05em; }
+.sched-label { font-size: 17px; font-weight: 700; color: var(--navy); margin-top: 2px; }
+.sched-label.muted { color: var(--grey-mid); font-weight: 500; }
+.sched-label.red { color: var(--crimson); }
+.sched-dot-wrap { display: flex; justify-content: center; }
+.sched-dot { width: 16px; height: 16px; border-radius: 50%; border: 3px solid var(--off-white); box-shadow: 0 0 0 2px currentColor; }
+.sched-dot.navy { color: var(--navy); background: var(--navy); }
+.sched-dot.grey { color: var(--grey-mid); background: var(--grey-mid); }
+.sched-dot.red { color: var(--crimson); background: var(--crimson); }
+
+/* S4 Objectives */
+#s4 { background: var(--white); display: flex; flex-direction: column; }
+.obj-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1; }
+.obj-item { display: flex; gap: 20px; align-items: flex-start; padding: 26px 28px; background: var(--off-white); border-radius: 14px; transition: transform .2s, box-shadow .2s; }
+.obj-item:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,.08); }
+.obj-num { font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 900; color: rgba(27,36,100,.12); line-height: 1; flex-shrink: 0; min-width: 50px; }
+.obj-text { font-size: 20px; color: var(--navy); line-height: 1.55; font-weight: 500; padding-top: 8px; }
+
+/* Enigma slides */
+.enigma-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; flex: 1; }
+.enigma-img-wrap { border-radius: 12px; overflow: hidden; position: relative; }
+.enigma-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+.enigma-caption { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,.7)); padding: 20px 16px 12px; font-size: 13px; color: rgba(255,255,255,.8); font-style: italic; }
+
+/* Turing participants */
+.turing-diag { display: flex; align-items: center; justify-content: center; gap: 0; }
+.turing-participant { border-radius: 16px; padding: 28px 24px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; min-width: 180px; transition: transform .2s; }
+.turing-participant:hover { transform: translateY(-6px); }
+.turing-participant.judge { background: var(--gold); }
+.turing-participant.machine { background: var(--crimson); }
+.turing-participant.human { background: var(--navy); }
+.turing-p-role { font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; opacity: .7; }
+.turing-participant.judge .turing-p-role { color: rgba(27,36,100,.7); }
+.turing-participant.machine .turing-p-role, .turing-participant.human .turing-p-role { color: rgba(255,255,255,.7); }
+.turing-p-name { font-size: 20px; font-weight: 800; line-height: 1.2; }
+.turing-participant.judge .turing-p-name { color: var(--navy); }
+.turing-participant.machine .turing-p-name, .turing-participant.human .turing-p-name { color: var(--white); }
+.turing-conn { display: flex; flex-direction: column; align-items: center; padding: 0 10px; gap: 6px; }
+.turing-conn-line { width: 50px; height: 2px; background: var(--grey-light); }
+.turing-conn-label { font-size: 10px; color: var(--grey-mid); letter-spacing: .05em; white-space: nowrap; }
+
+/* Concept pills row */
+.concepts-row { display: flex; flex-wrap: wrap; gap: 12px; }
+
+/* Key concept cards */
+.kc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; flex: 1; }
+.kc-card { background: var(--off-white); border-radius: 14px; padding: 28px 30px; border-top: 4px solid transparent; transition: transform .2s, box-shadow .2s; }
+.kc-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,.09); }
+.kc-card:nth-child(1) { border-top-color: var(--navy); }
+.kc-card:nth-child(2) { border-top-color: var(--crimson); }
+.kc-card:nth-child(3) { border-top-color: var(--gold); }
+.kc-card:nth-child(4) { border-top-color: var(--green); }
+.kc-card:nth-child(5) { border-top-color: #7B68EE; grid-column: span 2; }
+.kc-term { font-size: 20px; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
+.kc-def { font-size: 17px; color: var(--grey-dark); line-height: 1.65; }
+
+/* limit items */
+.limit-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+.limit-list li { display: flex; gap: 16px; align-items: flex-start; }
+.limit-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--crimson); flex-shrink: 0; margin-top: 8px; }
+.limit-text { font-size: clamp(18px,2vw,24px); color: var(--grey-dark); line-height: 1.6; }
+
+/* S2 overview cards */
+.ov-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1; }
+.ov-card { border-radius: 14px; padding: 28px 30px; background: var(--off-white); border-left: 5px solid transparent; transition: transform .2s, box-shadow .2s; display: flex; flex-direction: column; gap: 12px; }
+.ov-card:hover { transform: translateY(-4px); box-shadow: 0 14px 36px rgba(27,36,100,.12); }
+.ov-card:nth-child(1) { border-left-color: var(--navy); }
+.ov-card:nth-child(2) { border-left-color: var(--crimson); }
+.ov-card:nth-child(3) { border-left-color: var(--gold); }
+.ov-card:nth-child(4) { border-left-color: var(--green); }
+.ov-icon { font-size: 32px; }
+.ov-num { font-size: 11px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--grey-mid); }
+.ov-title { font-size: 22px; font-weight: 800; color: var(--navy); }
+.ov-desc { font-size: 17px; color: var(--grey-dark); line-height: 1.55; }
+.ov-footer { background: var(--grey-light); border-radius: 10px; padding: 14px 22px; display: flex; gap: 28px; flex-wrap: wrap; }
+.ov-footer-item { font-size: 15px; color: var(--grey-dark); display: flex; align-items: center; gap: 8px; }
+.ov-fdot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div id="counter">1 / 30</div>
+
+<button class="nav-btn" id="btn-prev" onclick="nav(-1)">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+</button>
+<button class="nav-btn" id="btn-next" onclick="nav(1)">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+</button>
+
+<div id="deck">
+
+<!-- ═══════════════════════════════════════════════
+     S1 — COVER
+═══════════════════════════════════════════════ -->
+<div class="slide active" id="s1" data-bg="dark">
+  <div id="particles"></div>
+  <div class="s1-redbar"></div>
+  <div class="s1-diamond"><div class="s1-diamond-in"></div></div>
+  <div style="display:flex;flex-direction:column;height:100%;position:relative;z-index:2;">
+    <div class="s1-header a1">
+      <img src="resources/logo ce.png" alt="CE Logo" onerror="this.style.display='none'">
+      <img src="resources/logo.png" alt="DMMMSU Logo" onerror="this.style.display='none'">
+      <div class="s1-hdiv"></div>
+      <div class="s1-htxt">Don Mariano Marcos Memorial State University<br>South La Union Campus — College of Education</div>
+    </div>
+    <div class="s1-main">
+      <div>
+        <div class="s1-eyebrow a2">DMMMSU-SLUC &nbsp;•&nbsp; College of Education</div>
+        <div class="s1-title a3">AI Fluency:</div>
+        <div class="s1-subtitle a4">Foundations and Applications</div>
+        <div class="s1-rule a5"></div>
+        <div class="s1-desc a5">A Seminar-Workshop for Pre-Service Social Studies Teachers</div>
+        <div class="s1-meta a6"><span>March 18, 2026</span> &nbsp;|&nbsp; 8:00 AM – 12:00 PM &nbsp;|&nbsp; [VENUE PLACEHOLDER]</div>
+      </div>
+    </div>
+    <div class="s1-speaker a7">
+      <div class="s1-avatar">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="rgba(255,255,255,.4)"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+      </div>
+      <div>
+        <div class="s1-sname">[SPEAKER NAME]</div>
+        <div class="s1-srole">[DESIGNATION / POSITION]</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S2 — ABOUT THE SEMINAR
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s2" data-bg="light">
+  <div style="display:grid;grid-template-columns:6px 1fr;height:100%;">
+    <div style="background:linear-gradient(180deg,var(--navy),var(--crimson));"></div>
+    <div style="display:flex;flex-direction:column;padding:48px 60px;">
+      <div class="a1" style="font-size:11px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;">Overview</div>
+      <div class="slide-title a2" style="margin-bottom:32px;">What We'll Cover Today</div>
+      <div class="ov-grid">
+        <div class="ov-card a3">
+          <div class="ov-icon">🤖</div>
+          <div class="ov-num">Modules 1 &amp; 2</div>
+          <div class="ov-title">Foundations of AI</div>
+          <div class="ov-desc">From machines to artificial intelligence — history, the Turing Test, and how AI actually works.</div>
+        </div>
+        <div class="ov-card a4">
+          <div class="ov-icon">🌐</div>
+          <div class="ov-num">Module 3</div>
+          <div class="ov-title">AI in the Real World</div>
+          <div class="ov-desc">Industry applications across healthcare, finance, education, transport, and everyday life.</div>
+        </div>
+        <div class="ov-card a5">
+          <div class="ov-icon">🎓</div>
+          <div class="ov-num">Modules 4 &amp; 5</div>
+          <div class="ov-title">AI in Education</div>
+          <div class="ov-desc">Philippine context, AI fluency framework, advantages, disadvantages, and ethical considerations.</div>
+        </div>
+        <div class="ov-card a6">
+          <div class="ov-icon">✍️</div>
+          <div class="ov-num">Module 6</div>
+          <div class="ov-title">Prompting &amp; Practice</div>
+          <div class="ov-desc">The TCREI framework, responsible prompting, and becoming AI-fluent educators.</div>
+        </div>
+      </div>
+      <div class="ov-footer a7" style="margin-top:20px;">
+        <div class="ov-footer-item"><div class="ov-fdot"></div>5 Hours | 8:00 AM – 12:00 PM</div>
+        <div class="ov-footer-item"><div class="ov-fdot"></div>March 18, 2026</div>
+        <div class="ov-footer-item"><div class="ov-fdot"></div>Pre-Service Social Studies Teachers</div>
+        <div class="ov-footer-item"><div class="ov-fdot"></div>DMMMSU-SLUC College of Education</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S3 — PROGRAM FLOW
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s3" data-bg="light">
+  <div class="slide-title a1">Program Flow</div>
+  <div class="slide-sub gold a2">March 18, 2026 — 8:00 AM to 12:00 PM</div>
+  <div class="sched-wrap a3">
+    <div class="sched-line"></div>
+    <div class="sched-row">
+      <div class="sched-cell left filled"><div class="sched-time">8:00 – 8:30 AM</div><div class="sched-label">Opening &amp; Introduction</div></div>
+      <div class="sched-dot-wrap"><div class="sched-dot navy"></div></div>
+      <div></div>
+    </div>
+    <div class="sched-row">
+      <div></div>
+      <div class="sched-dot-wrap"><div class="sched-dot navy"></div></div>
+      <div class="sched-cell right filled"><div class="sched-time">8:30 – 9:30 AM</div><div class="sched-label">Modules 1 &amp; 2: Foundations &amp; Real-World AI</div></div>
+    </div>
+    <div class="sched-row">
+      <div class="sched-cell left"><div class="sched-time" style="color:var(--grey-mid)">9:30 – 9:45 AM</div><div class="sched-label muted">☕ Short Break</div></div>
+      <div class="sched-dot-wrap"><div class="sched-dot grey"></div></div>
+      <div></div>
+    </div>
+    <div class="sched-row">
+      <div></div>
+      <div class="sched-dot-wrap"><div class="sched-dot navy"></div></div>
+      <div class="sched-cell right filled"><div class="sched-time">9:45 – 10:45 AM</div><div class="sched-label">Modules 3 &amp; 4: AI in Education &amp; Fluency</div></div>
+    </div>
+    <div class="sched-row">
+      <div class="sched-cell left filled"><div class="sched-time">10:45 – 11:45 AM</div><div class="sched-label">Modules 5 &amp; 6: Generative AI &amp; Prompting</div></div>
+      <div class="sched-dot-wrap"><div class="sched-dot navy"></div></div>
+      <div></div>
+    </div>
+    <div class="sched-row">
+      <div></div>
+      <div class="sched-dot-wrap"><div class="sched-dot red"></div></div>
+      <div class="sched-cell right filled"><div class="sched-time">11:45 AM – 12:00 PM</div><div class="sched-label red">Closing Remarks &amp; Q&A</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S4 — OBJECTIVES
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s4" data-bg="light">
+  <div class="topbar"></div>
+  <div class="content-main">
+    <div>
+      <div class="a1" style="font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">Learning Objectives</div>
+      <div class="slide-title a2">By the end of this seminar, you will be able to…</div>
+    </div>
+    <div class="obj-grid">
+      <div class="obj-item a3">
+        <div class="obj-num">1</div>
+        <div class="obj-text">Explain what AI is, how it developed historically, and the key concepts behind how it works.</div>
+      </div>
+      <div class="obj-item a4">
+        <div class="obj-num">2</div>
+        <div class="obj-text">Identify how AI affects everyday life, industries, and specifically the field of education.</div>
+      </div>
+      <div class="obj-item a5">
+        <div class="obj-num">3</div>
+        <div class="obj-text">Analyze the current status of AI in Philippine education — its opportunities and challenges.</div>
+      </div>
+      <div class="obj-item a6">
+        <div class="obj-num">4</div>
+        <div class="obj-text">Apply the TCREI prompting framework to craft effective and responsible AI prompts.</div>
+      </div>
+      <div class="obj-item a7" style="grid-column:span 2;">
+        <div class="obj-num">5</div>
+        <div class="obj-text">Develop AI fluency as future social studies educators — using AI as a thinking partner, not a replacement.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S5 — OPENING DISCUSSION
+═══════════════════════════════════════════════ -->
+<div class="slide disc-slide" id="s5" data-bg="dark">
+  <div class="disc-icon a1">💬</div>
+  <div class="disc-label a2">Opening Discussion</div>
+  <div class="disc-q a3">Think about the last 24 hours.<br>What <em>machines</em> did you interact with?</div>
+  <div class="disc-hint a4">Take a moment — then share with the group.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S6 — MODULE 1 SECTION BREAK
+═══════════════════════════════════════════════ -->
+<div class="slide sec-break" id="s6" data-bg="dark">
+  <div class="ghost">01</div>
+  <div class="grid-deco">
+    <svg viewBox="0 0 400 700" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="white" stroke-width="1">
+      <line x1="50" y1="0" x2="50" y2="700"/><line x1="150" y1="0" x2="150" y2="700"/>
+      <line x1="250" y1="0" x2="250" y2="700"/><line x1="350" y1="0" x2="350" y2="700"/>
+      <line x1="0" y1="100" x2="400" y2="100"/><line x1="0" y1="200" x2="400" y2="200"/>
+      <line x1="0" y1="300" x2="400" y2="300"/><line x1="0" y1="400" x2="400" y2="400"/>
+      <line x1="0" y1="500" x2="400" y2="500"/><line x1="0" y1="600" x2="400" y2="600"/>
+      <circle cx="50" cy="100" r="6" fill="white"/><circle cx="150" cy="200" r="6" fill="white"/>
+      <circle cx="250" cy="300" r="6" fill="white"/><circle cx="350" cy="400" r="6" fill="white"/>
+      <circle cx="50" cy="500" r="6" fill="white"/><circle cx="150" cy="600" r="6" fill="white"/>
+      <rect x="40" y="190" width="20" height="20" rx="3"/><rect x="240" y="90" width="20" height="20" rx="3"/>
+      <rect x="140" y="390" width="20" height="20" rx="3"/><rect x="340" y="290" width="20" height="20" rx="3"/>
+    </svg>
+  </div>
+  <div class="content">
+    <div class="mod-num a1">● Module 1</div>
+    <div class="mod-title a2">What is a Machine?</div>
+    <div class="mod-sub a3">AI History &amp; Foundations</div>
+    <div class="mod-desc a4">"We begin where all technology begins — understanding what machines are, what computers do, and how one question changed everything: <em>Can machines think?</em>"</div>
+  </div>
+  <div class="bot-bar"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S7 — WHAT IS A MACHINE? (Rancho)
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s7" data-bg="dark">
+  <img class="img-full" src="01-what-is-a-machine/image.png" alt="Rancho - 3 Idiots">
+  <div class="img-overlay" style="background:linear-gradient(90deg,rgba(17,24,64,.92) 45%,rgba(17,24,64,.3) 100%);"></div>
+  <div class="img-content" style="padding:56px 64px;justify-content:center;">
+    <div class="crumb a1" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1);color:rgba(255,255,255,.4);border-radius:6px;padding:8px 16px;border-bottom:none;display:inline-block;width:fit-content;margin-bottom:24px;">Module 1 › What is a Machine?</div>
+    <div class="a2" style="font-size:13px;font-weight:700;color:var(--gold);letter-spacing:.22em;text-transform:uppercase;margin-bottom:18px;">Definition 1</div>
+    <div class="a3" style="max-width:560px;">
+      <span class="qmark">"</span>
+      <div class="quote-text white" style="font-size:clamp(28px,3.8vw,52px);">A machine is anything that reduces human effort.</div>
+      <div class="attrib gold" style="margin-top:18px;font-size:20px;">— Rancho, <em>3 Idiots</em> (2009)</div>
+    </div>
+    <div class="a4" style="margin-top:32px;font-size:18px;color:rgba(255,255,255,.45);font-style:italic;">Simple — but powerful. This definition captures the <em>purpose</em> of every machine ever made.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S8 — WHAT IS A MACHINE? (Britannica)
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s8" data-bg="dark">
+  <div class="split split-50-50" style="height:100%;">
+    <div class="split-img a1">
+      <img src="01-what-is-a-machine/image-1.png" alt="Mechanical gears" style="width:100%;height:100%;object-fit:cover;">
+    </div>
+    <div class="split-body" style="background:var(--navy-dark);">
+      <div class="a2" style="font-size:12px;font-weight:700;color:var(--gold);letter-spacing:.22em;text-transform:uppercase;margin-bottom:18px;">Definition 2</div>
+      <span class="qmark a3">"</span>
+      <div class="quote-text white a4" style="font-size:clamp(22px,2.8vw,34px);margin-top:8px;">A machine is a device, having a unique purpose, that augments or replaces human or animal effort for the accomplishment of physical tasks.</div>
+      <div class="attrib gold a5" style="margin-top:22px;font-size:19px;">— Britannica</div>
+      <div class="a6" style="margin-top:28px;padding:18px 22px;background:rgba(240,165,0,.1);border-left:4px solid var(--gold);border-radius:0 10px 10px 0;">
+        <div style="font-size:17px;color:rgba(255,255,255,.6);line-height:1.7;">Key ideas: <strong style="color:var(--white);">unique purpose</strong>, <strong style="color:var(--white);">augments</strong> or <strong style="color:var(--white);">replaces</strong> effort, accomplishes <strong style="color:var(--white);">physical tasks.</strong></div>
+      </div>
+    </div>
+  </div>
+  <div class="cite">Source: Britannica Encyclopedia</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S9 — WHAT IS A COMPUTER?
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s9" data-bg="dark">
+  <div class="split split-50-50" style="height:100%;">
+    <div class="split-img a1">
+      <img src="01-what-is-a-machine/image-2.png" alt="Early computer" style="width:100%;height:100%;object-fit:cover;">
+      <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.7));padding:24px 20px 16px;">
+        <div style="font-size:13px;color:rgba(255,255,255,.65);font-style:italic;">Early computing machines filled entire rooms and required teams of operators.</div>
+      </div>
+    </div>
+    <div class="split-body" style="background:var(--white);">
+      <div class="a2" style="font-size:12px;font-weight:700;color:var(--gold);letter-spacing:.22em;text-transform:uppercase;margin-bottom:18px;">Module 1 › What is a Computer?</div>
+      <div class="slide-title a3" style="margin-bottom:20px;">What is a Computer?</div>
+      <span class="qmark a4" style="color:var(--navy);opacity:.4;">"</span>
+      <div class="quote-text a5" style="font-size:clamp(20px,2.4vw,30px);margin-top:4px;">An electronic device that can receive, store, process, and present data under the control of a program.</div>
+      <div class="a6" style="margin-top:28px;padding:18px 22px;background:var(--off-white);border-left:4px solid var(--navy);border-radius:0 10px 10px 0;">
+        <div style="font-size:17px;color:var(--grey-dark);line-height:1.7;">A computer is essentially a <strong style="color:var(--navy);">programmable machine</strong> — it can be told <em>what</em> to do, making it far more flexible than any single-purpose tool.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S10 — IPO: OVERVIEW
+═══════════════════════════════════════════════ -->
+<div class="slide content-slide" id="s10" data-bg="light">
+  <div class="topbar"></div>
+  <div class="crumb a1">Module 1 › <span>The Computer: Input–Process–Output</span></div>
+  <div style="padding:36px 60px 28px;display:flex;flex-direction:column;flex:1;gap:24px;">
+    <div>
+      <div class="slide-title a2">In Layman's Terms: IPO</div>
+      <div class="slide-sub a3">How a computer handles any task — no matter how complex.</div>
+    </div>
+    <div style="text-align:center;flex:1;display:flex;align-items:center;justify-content:center;" class="a4">
+      <img src="01-what-is-a-machine/image-6.png" alt="IPO diagram" style="max-height:340px;max-width:100%;object-fit:contain;">
+    </div>
+    <div class="a5" style="display:flex;justify-content:space-around;text-align:center;gap:20px;">
+      <div><div style="font-size:20px;font-weight:800;color:var(--navy);">INPUT</div><div style="font-size:16px;color:var(--grey-dark);">Raw data, ideas, materials</div></div>
+      <div><div style="font-size:20px;font-weight:800;color:var(--gold);">PROCESS</div><div style="font-size:16px;color:var(--grey-dark);">Computing &amp; transforming</div></div>
+      <div><div style="font-size:20px;font-weight:800;color:var(--crimson);">OUTPUT</div><div style="font-size:16px;color:var(--grey-dark);">Product or end result</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S11 — IPO: INPUT
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s11" data-bg="dark">
+  <div style="height:100%;display:flex;flex-direction:column;background:var(--navy);">
+    <div style="padding:40px 64px 0;flex-shrink:0;">
+      <div class="a1" style="font-size:12px;font-weight:700;color:var(--gold);letter-spacing:.22em;text-transform:uppercase;margin-bottom:14px;">IPO — Step 1</div>
+      <div class="slide-title white a2">Input</div>
+      <div class="slide-sub white a3" style="margin-top:10px;">Everything starts with <em>what you put in.</em></div>
+    </div>
+    <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:32px 64px 44px;align-content:start;">
+      <div class="a4" style="padding:28px;background:rgba(255,255,255,.07);border-radius:14px;border-top:4px solid var(--gold);">
+        <div style="font-size:13px;font-weight:700;color:var(--gold);letter-spacing:.15em;text-transform:uppercase;margin-bottom:12px;">In Computing</div>
+        <div style="font-size:21px;color:rgba(255,255,255,.85);line-height:1.7;">Text typed on a keyboard, a photo taken, a voice command spoken, a file uploaded — these are all <strong style="color:var(--white);">inputs.</strong></div>
+      </div>
+      <div class="a5" style="padding:28px;background:rgba(255,255,255,.07);border-radius:14px;border-top:4px solid var(--crimson);">
+        <div style="font-size:13px;font-weight:700;color:var(--gold);letter-spacing:.15em;text-transform:uppercase;margin-bottom:12px;">In Daily Life</div>
+        <div style="font-size:21px;color:rgba(255,255,255,.85);line-height:1.7;">Raw materials, student answers, survey responses, sensor data — all of these are forms of <strong style="color:var(--white);">input</strong> to a process.</div>
+      </div>
+      <div class="a6" style="grid-column:span 2;padding:22px 28px;background:rgba(240,165,0,.12);border-left:4px solid var(--gold);border-radius:0 12px 12px 0;">
+        <div style="font-size:20px;color:rgba(255,255,255,.75);line-height:1.6;">💡 The quality of any output depends heavily on the quality of the input — <em>"Garbage in, garbage out."</em> This matters especially in AI.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S12 — IPO: PROCESS
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s12" data-bg="light">
+  <div style="height:100%;display:flex;flex-direction:column;background:var(--off-white);">
+    <div style="padding:40px 64px 0;flex-shrink:0;">
+      <div class="a1" style="font-size:12px;font-weight:700;color:var(--gold);letter-spacing:.22em;text-transform:uppercase;margin-bottom:14px;">IPO — Step 2</div>
+      <div class="slide-title a2">Process</div>
+      <div class="slide-sub a3" style="margin-top:10px;">The transformation that happens in the middle — <em>thinking, computing, deciding.</em></div>
+    </div>
+    <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:32px 64px 44px;align-content:start;">
+      <div class="a4" style="padding:28px;background:var(--white);border-radius:14px;border-top:4px solid var(--gold);box-shadow:0 4px 16px rgba(0,0,0,.06);">
+        <div style="font-size:20px;font-weight:800;color:var(--navy);margin-bottom:12px;">For Humans</div>
+        <div style="font-size:20px;color:var(--grey-dark);line-height:1.7;">Reading, analyzing, reasoning, deciding — the <strong>cognitive work</strong> that turns raw input into something meaningful.</div>
+      </div>
+      <div class="a5" style="padding:28px;background:var(--white);border-radius:14px;border-top:4px solid var(--navy);box-shadow:0 4px 16px rgba(0,0,0,.06);">
+        <div style="font-size:20px;font-weight:800;color:var(--navy);margin-bottom:12px;">For Computers</div>
+        <div style="font-size:20px;color:var(--grey-dark);line-height:1.7;">Executing instructions, running algorithms, pattern matching — billions of calculations per second.</div>
+      </div>
+      <div class="a6" style="grid-column:span 2;">
+        <img src="01-what-is-a-machine/image-3.png" alt="IPO Process diagram" style="width:100%;max-height:200px;object-fit:contain;border-radius:12px;">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S13 — IPO: OUTPUT
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s13" data-bg="dark">
+  <div style="height:100%;display:flex;flex-direction:column;background:var(--crimson);">
+    <div style="padding:40px 64px 0;flex-shrink:0;">
+      <div class="a1" style="font-size:12px;font-weight:700;color:rgba(255,255,255,.6);letter-spacing:.22em;text-transform:uppercase;margin-bottom:14px;">IPO — Step 3</div>
+      <div class="slide-title white a2">Output</div>
+      <div class="a3" style="font-size:24px;color:rgba(255,255,255,.7);margin-top:10px;">The product, the result, the end of the process — what gets delivered.</div>
+    </div>
+    <div style="flex:1;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;padding:32px 64px 44px;align-content:start;">
+      <div class="a4" style="padding:28px;background:rgba(255,255,255,.12);border-radius:14px;text-align:center;">
+        <div style="font-size:42px;margin-bottom:12px;">📄</div>
+        <div style="font-size:19px;font-weight:700;color:var(--white);margin-bottom:8px;">Document</div>
+        <div style="font-size:16px;color:rgba(255,255,255,.7);">A report, essay, or lesson plan generated from input</div>
+      </div>
+      <div class="a5" style="padding:28px;background:rgba(255,255,255,.12);border-radius:14px;text-align:center;">
+        <div style="font-size:42px;margin-bottom:12px;">📊</div>
+        <div style="font-size:19px;font-weight:700;color:var(--white);margin-bottom:8px;">Data &amp; Insights</div>
+        <div style="font-size:16px;color:rgba(255,255,255,.7);">Processed results, charts, or predictions</div>
+      </div>
+      <div class="a6" style="padding:28px;background:rgba(255,255,255,.12);border-radius:14px;text-align:center;">
+        <div style="font-size:42px;margin-bottom:12px;">🗣️</div>
+        <div style="font-size:19px;font-weight:700;color:var(--white);margin-bottom:8px;">Responses &amp; Actions</div>
+        <div style="font-size:16px;color:rgba(255,255,255,.7);">AI answers, robot movements, automated tasks</div>
+      </div>
+      <div class="a7" style="grid-column:span 3;padding:22px 28px;background:rgba(255,255,255,.1);border-radius:12px;">
+        <div style="font-size:20px;color:rgba(255,255,255,.85);line-height:1.65;">The IPO model applies to <strong style="color:var(--white);">every computing system</strong> — from a simple calculator to the most powerful AI. Understanding this helps us see AI not as magic, but as a very sophisticated <em>process.</em></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S14 — THE BRIDGE
+═══════════════════════════════════════════════ -->
+<div class="slide disc-slide" id="s14" data-bg="dark" style="background:var(--navy-dark);">
+  <div class="a1" style="font-size:12px;font-weight:700;color:var(--gold);letter-spacing:.25em;text-transform:uppercase;margin-bottom:24px;">A Turning Point in History</div>
+  <div class="quote-text white a2" style="font-size:clamp(24px,3.2vw,44px);line-height:1.5;max-width:820px;text-align:center;">
+    "As time went on, technology kept advancing — until one question emerged that would change everything:"
+  </div>
+  <div class="a3" style="margin-top:36px;font-family:'Playfair Display',serif;font-size:clamp(40px,6vw,80px);font-weight:900;color:var(--gold);font-style:italic;text-align:center;">Can machines think?</div>
+  <div class="a4" style="margin-top:28px;font-size:19px;color:rgba(255,255,255,.45);text-align:center;font-style:italic;">This question gave birth to the field of Artificial Intelligence.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S15 — WHAT IS ARTIFICIAL?
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s15" data-bg="dark">
+  <img class="img-full" src="01-what-is-a-machine/image-4.png" alt="Human and robot hands touching">
+  <div class="img-overlay" style="background:linear-gradient(135deg,rgba(17,24,64,.94) 40%,rgba(192,57,43,.4) 100%);"></div>
+  <div class="img-content" style="padding:64px 80px;justify-content:center;">
+    <div class="a1" style="font-size:12px;font-weight:700;color:var(--gold);letter-spacing:.25em;text-transform:uppercase;margin-bottom:20px;">Defining the Term</div>
+    <div class="slide-title white a2" style="font-size:clamp(44px,7vw,96px);margin-bottom:24px;">Artificial</div>
+    <div class="rule a3" style="width:80px;margin-bottom:28px;"></div>
+    <div class="quote-text white a4" style="font-size:clamp(22px,2.8vw,38px);max-width:620px;line-height:1.55;">Something that is <em>made, produced, or done by humans</em> — especially to seem like something natural.</div>
+    <div class="a5" style="margin-top:32px;max-width:560px;font-size:20px;color:rgba(255,255,255,.55);line-height:1.7;">Examples: artificial flowers, artificial flavoring, artificial light — and soon, artificial <em>intelligence.</em></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S16 — WHAT IS INTELLIGENCE?
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s16" data-bg="dark">
+  <img class="img-full" src="01-what-is-a-machine/image-7.png" alt="Brain with gears">
+  <div class="img-overlay" style="background:linear-gradient(90deg,rgba(17,24,64,.95) 45%,rgba(17,24,64,.3) 100%);"></div>
+  <div class="img-content" style="padding:64px 80px;justify-content:center;">
+    <div class="a1" style="font-size:12px;font-weight:700;color:var(--gold);letter-spacing:.25em;text-transform:uppercase;margin-bottom:20px;">Defining the Term</div>
+    <div class="slide-title white a2" style="font-size:clamp(44px,7vw,96px);margin-bottom:24px;">Intelligence</div>
+    <div class="rule a3" style="width:80px;margin-bottom:28px;"></div>
+    <div class="quote-text white a4" style="font-size:clamp(22px,2.8vw,38px);max-width:620px;line-height:1.55;">The human ability to perform <em>cognitive tasks</em> — to think, understand, learn, and remember.</div>
+    <div class="a5" style="margin-top:32px;display:flex;gap:16px;flex-wrap:wrap;">
+      <span class="pill navy">Think</span>
+      <span class="pill navy">Understand</span>
+      <span class="pill navy">Learn</span>
+      <span class="pill navy">Remember</span>
+      <span class="pill navy">Solve Problems</span>
+      <span class="pill navy">Create</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S17 — WHAT IS AI?
+═══════════════════════════════════════════════ -->
+<div class="slide content-slide" id="s17" data-bg="light">
+  <div class="topbar"></div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:44px 72px;gap:28px;">
+    <div class="a1" style="font-size:12px;font-weight:700;color:var(--gold);letter-spacing:.22em;text-transform:uppercase;">Putting It Together</div>
+    <div class="slide-title a2" style="font-size:clamp(40px,6vw,80px);">What is AI?</div>
+    <div class="a3" style="display:flex;gap:20px;align-items:center;">
+      <div style="flex:1;padding:28px 32px;background:var(--off-white);border-radius:14px;border-top:4px solid var(--navy);">
+        <div style="font-size:13px;font-weight:700;color:var(--navy);letter-spacing:.15em;text-transform:uppercase;margin-bottom:10px;">Artificial</div>
+        <div style="font-size:20px;color:var(--grey-dark);">Made or done by humans to seem natural</div>
+      </div>
+      <div style="font-size:52px;color:var(--gold);font-weight:900;">+</div>
+      <div style="flex:1;padding:28px 32px;background:var(--off-white);border-radius:14px;border-top:4px solid var(--crimson);">
+        <div style="font-size:13px;font-weight:700;color:var(--crimson);letter-spacing:.15em;text-transform:uppercase;margin-bottom:10px;">Intelligence</div>
+        <div style="font-size:20px;color:var(--grey-dark);">Ability to think, learn, understand, remember</div>
+      </div>
+      <div style="font-size:52px;color:var(--gold);font-weight:900;">=</div>
+      <div style="flex:1.2;padding:28px 32px;background:var(--navy);border-radius:14px;">
+        <div style="font-size:13px;font-weight:700;color:var(--gold);letter-spacing:.15em;text-transform:uppercase;margin-bottom:10px;">Artificial Intelligence</div>
+        <div style="font-size:20px;color:rgba(255,255,255,.8);">Machines designed to simulate human cognitive abilities</div>
+      </div>
+    </div>
+    <div class="a4" style="padding:22px 28px;background:var(--gold-pale);border-left:4px solid var(--gold);border-radius:0 12px 12px 0;font-size:20px;color:var(--navy);line-height:1.65;">
+      💡 <strong>In simpler terms:</strong> AI is a program that learns patterns from data and uses them to make predictions, recommendations, or generate content — mimicking how humans think.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S18 — WHAT IF WE APPLY COGNITIVE ABILITIES?
+═══════════════════════════════════════════════ -->
+<div class="slide disc-slide" id="s18" data-bg="dark" style="background:linear-gradient(135deg,var(--navy-dark),#0d1f3c);">
+  <div class="disc-label a1">The Central Question of AI</div>
+  <div class="disc-q a2" style="font-size:clamp(28px,4.5vw,64px);">What if we could apply<br>cognitive abilities<br>to machines and computers?</div>
+  <div class="a3" style="margin-top:36px;font-size:20px;color:rgba(255,255,255,.5);max-width:600px;text-align:center;line-height:1.7;">This question drove scientists, mathematicians, and engineers for decades. One person asked it more boldly than anyone else.</div>
+  <div class="a4" style="margin-top:36px;">
+    <div style="font-size:13px;font-weight:700;color:var(--gold);letter-spacing:.22em;text-transform:uppercase;text-align:center;">Meet the man who dared to answer it</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S19 — ALAN TURING
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s19" data-bg="dark">
+  <div style="display:grid;grid-template-columns:42% 58%;height:100%;">
+    <div style="background:var(--navy);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:52px 40px;position:relative;overflow:hidden;">
+      <div style="position:absolute;bottom:-30px;right:-30px;width:120px;height:120px;background:var(--crimson);transform:rotate(45deg);"></div>
+      <div class="badge badge-gold a1" style="margin-bottom:22px;">The Father of Modern Computing</div>
+      <div style="width:180px;height:180px;border-radius:50%;overflow:hidden;border:4px solid rgba(240,165,0,.5);box-shadow:0 0 40px rgba(240,165,0,.2);margin-bottom:24px;" class="a2">
+        <img src="01-what-is-a-machine/image-8.png" alt="Alan Turing" style="width:100%;height:100%;object-fit:cover;">
+      </div>
+      <div class="a3" style="font-family:'Playfair Display',serif;font-size:clamp(36px,4vw,52px);font-weight:900;color:var(--white);text-align:center;letter-spacing:-.02em;">Alan Turing</div>
+      <div class="a4" style="font-family:'JetBrains Mono',monospace;font-size:18px;color:var(--gold);margin-top:6px;">1912 – 1954</div>
+      <div class="a5" style="margin-top:20px;font-size:15px;color:rgba(255,255,255,.4);text-align:center;font-style:italic;">British mathematician, logician,<br>cryptanalyst, and computer scientist</div>
+    </div>
+    <div style="background:var(--white);padding:52px 48px;display:flex;flex-direction:column;justify-content:center;gap:18px;">
+      <div class="slide-title a1" style="margin-bottom:4px;">His Contributions</div>
+      <div class="card navy a3" style="display:flex;gap:16px;align-items:flex-start;">
+        <div style="font-size:28px;flex-shrink:0;">🔐</div>
+        <div><div class="card-title">WWII Code-Breaking</div><div class="card-body">Decrypted the Nazi Enigma machine, enabling the Allies to intercept secret communications and helping shorten the war.</div></div>
+      </div>
+      <div class="card crimson a4" style="display:flex;gap:16px;align-items:flex-start;">
+        <div style="font-size:28px;flex-shrink:0;">💻</div>
+        <div><div class="card-title">Computing Theory</div><div class="card-body">Created the concept of the "Turing Machine" — a theoretical model that laid the mathematical foundation for all modern computers.</div></div>
+      </div>
+      <div class="card gold a5" style="display:flex;gap:16px;align-items:flex-start;">
+        <div style="font-size:28px;flex-shrink:0;">🧠</div>
+        <div><div class="card-title">Pioneer of AI</div><div class="card-body">Asked "Can machines think?" in his 1950 paper and proposed the Turing Test — a benchmark for machine intelligence still debated today.</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="cite">Source: Turing, A.M. (1950). Computing Machinery and Intelligence. Mind, 59(236), 433–460.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S20 — ENIGMA: WWII CODE-BREAKING
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s20" data-bg="dark" style="background:var(--navy-dark);">
+  <div style="display:flex;flex-direction:column;height:100%;padding:44px 60px;">
+    <div class="a1" style="font-size:12px;font-weight:700;color:var(--gold);letter-spacing:.22em;text-transform:uppercase;margin-bottom:8px;">Alan Turing's Greatest Challenge</div>
+    <div class="slide-title white a2" style="margin-bottom:24px;">Cracking the Enigma Code</div>
+    <div class="enigma-grid a3" style="flex:1;">
+      <div class="enigma-img-wrap">
+        <img src="01-what-is-a-machine/image-9.png" alt="Enigma encrypted message">
+        <div class="enigma-caption">Encrypted Enigma message — each line an impenetrable string of letters to anyone without the key.</div>
+      </div>
+      <div class="enigma-img-wrap">
+        <img src="01-what-is-a-machine/image-10.png" alt="Luftwaffe Enigma code sheet">
+        <div class="enigma-caption">Geheime Kommandosache (Top Secret) — a Luftwaffe Enigma settings sheet captured by Allied forces.</div>
+      </div>
+    </div>
+    <div class="a4" style="margin-top:20px;padding:20px 24px;background:rgba(240,165,0,.1);border-left:4px solid var(--gold);border-radius:0 10px 10px 0;">
+      <div style="font-size:19px;color:rgba(255,255,255,.75);line-height:1.7;">The German military used the Enigma machine to send encrypted messages. Each day the code changed — with <strong style="color:var(--white);">158 quintillion possible settings.</strong> Turing's mathematical genius cracked it, giving the Allies a decisive intelligence advantage.</div>
+    </div>
+  </div>
+  <div class="cite">Source: Singh, S. (1999). The Code Book. Fourth Estate.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S21 — THE ENIGMA MACHINE
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s21" data-bg="dark" style="background:var(--navy-dark);">
+  <div style="display:flex;flex-direction:column;height:100%;padding:44px 60px;">
+    <div class="a1" style="font-size:12px;font-weight:700;color:var(--gold);letter-spacing:.22em;text-transform:uppercase;margin-bottom:8px;">The Device That Started It All</div>
+    <div class="slide-title white a2" style="margin-bottom:24px;">The Enigma Machine</div>
+    <div class="enigma-grid a3" style="flex:1;">
+      <div class="enigma-img-wrap">
+        <img src="01-what-is-a-machine/image-12.png" alt="Enigma Machine">
+        <div class="enigma-caption">The Enigma machine — used by the German armed forces to send encrypted communications.</div>
+      </div>
+      <div class="enigma-img-wrap">
+        <img src="01-what-is-a-machine/image-11.png" alt="Enigma Machine close-up">
+        <div class="enigma-caption">Each keystroke rotated mechanical rotors, producing a different cipher letter — making it seemingly unbreakable.</div>
+      </div>
+    </div>
+    <div class="a4" style="margin-top:20px;font-size:19px;color:rgba(255,255,255,.6);line-height:1.65;">Turing built the <strong style="color:var(--white);">Bombe</strong> — an electromechanical device that could test Enigma settings at superhuman speed, ultimately decoding thousands of messages per day. <em>This was one of the first examples of a machine outperforming human cognitive ability at scale.</em></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S22 — THE TURING TEST: CONCEPT
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s22" data-bg="dark" style="background:var(--navy-dark);overflow:hidden;">
+  <div style="position:absolute;font-family:'Playfair Display',serif;font-size:480px;font-weight:900;color:rgba(240,165,0,.04);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;user-select:none;white-space:nowrap;">?</div>
+  <div style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:56px 80px;text-align:center;position:relative;z-index:2;">
+    <div class="a1" style="font-size:12px;font-weight:700;color:var(--gold);letter-spacing:.25em;text-transform:uppercase;margin-bottom:22px;">Pushing the Limits — 1950</div>
+    <div class="a2" style="font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,68px);font-weight:900;color:var(--white);line-height:1.15;max-width:820px;">The Turing Test</div>
+    <div class="a3" style="margin-top:24px;font-size:clamp(18px,2vw,26px);color:rgba(255,255,255,.6);max-width:700px;line-height:1.7;font-style:italic;">"Can machines actually think — or can they only do what humans have programmed them to do? Can a machine mimic human-level intelligence so convincingly that its responses are <strong style="color:var(--white);">indistinguishable from a human's?</strong>"</div>
+    <div class="a4" style="margin-top:36px;padding:20px 32px;background:rgba(240,165,0,.12);border:1px solid rgba(240,165,0,.25);border-radius:12px;font-size:20px;color:var(--gold);font-weight:600;">The Turing Test was a tool for determining a machine's capability to exhibit intelligent behavior.</div>
+  </div>
+  <div class="cite">Source: Turing, A.M. (1950). Computing Machinery and Intelligence. Mind.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S23 — TURING TEST: PARTICIPANTS
+═══════════════════════════════════════════════ -->
+<div class="slide content-slide" id="s23" data-bg="light">
+  <div class="topbar"></div>
+  <div class="crumb a1">Module 1 › <span>The Turing Test: Participants</span></div>
+  <div style="flex:1;display:flex;flex-direction:column;padding:32px 60px;gap:24px;">
+    <div class="slide-title a2">Three Participants, One Question</div>
+    <div class="a3" style="flex:1;display:flex;align-items:center;">
+      <div style="width:100%;">
+        <div style="display:flex;align-items:flex-start;justify-content:center;gap:0;margin-bottom:28px;">
+          <div class="turing-participant judge a4">
+            <div style="font-size:48px;">👁️</div>
+            <div class="turing-p-role">Interrogator</div>
+            <div class="turing-p-name">Human Judge</div>
+          </div>
+          <div class="turing-conn a5" style="flex-direction:row;align-items:center;gap:0;padding:0 8px;margin-top:40px;">
+            <div class="turing-conn-line"></div>
+            <div style="display:flex;flex-direction:column;align-items:center;padding:0 10px;gap:8px;">
+              <div class="turing-conn-label">Questions &amp;</div>
+              <div class="turing-conn-label">Responses</div>
+            </div>
+            <div class="turing-conn-line"></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px;" class="a6">
+            <div class="turing-participant machine">
+              <div style="font-size:36px;">🤖</div>
+              <div class="turing-p-role">Interlocutor A</div>
+              <div class="turing-p-name">Machine (AI)</div>
+            </div>
+            <div class="turing-participant human">
+              <div style="font-size:36px;">🙋</div>
+              <div class="turing-p-role">Interlocutor B</div>
+              <div class="turing-p-name">Human</div>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center;" class="a7">
+          <img src="01-what-is-a-machine/image-13.png" alt="Turing Test diagram" style="max-height:160px;object-fit:contain;opacity:.7;border-radius:8px;">
+        </div>
+      </div>
+    </div>
+    <div class="a8" style="padding:16px 22px;background:var(--gold-pale);border-left:4px solid var(--gold);border-radius:0 10px 10px 0;font-size:18px;color:var(--navy);line-height:1.6;">
+      The judge must determine which respondent is the machine. If the machine consistently fools the judge, it is said to have passed the Turing Test.
+    </div>
+  </div>
+  <div class="cite light">Source: Turing, A.M. (1950). Computing Machinery and Intelligence. Mind, 59(236).</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S24 — TURING TEST: QUESTION TYPES
+═══════════════════════════════════════════════ -->
+<div class="slide content-slide" id="s24" data-bg="light">
+  <div class="topbar"></div>
+  <div class="crumb a1">Module 1 › <span>The Turing Test: Question Types</span></div>
+  <div style="flex:1;padding:32px 60px;display:flex;flex-direction:column;gap:22px;">
+    <div class="slide-title a2">What Gets Asked</div>
+    <div class="slide-sub a3">Questions designed to reveal whether responses are human or machine — each requires <em>thoughtful, contextual, socially aware</em> answers.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;flex:1;" class="a4">
+      <div style="padding:24px;background:var(--off-white);border-radius:14px;border-top:4px solid var(--navy);">
+        <div style="font-size:28px;margin-bottom:10px;">💭</div>
+        <div style="font-size:17px;font-weight:800;color:var(--navy);margin-bottom:10px;">Open-Ended</div>
+        <div style="font-size:16px;color:var(--grey-dark);line-height:1.65;font-style:italic;">"What's a skill or talent you'd like to develop and why?"</div>
+      </div>
+      <div style="padding:24px;background:var(--off-white);border-radius:14px;border-top:4px solid var(--crimson);">
+        <div style="font-size:28px;margin-bottom:10px;">❤️</div>
+        <div style="font-size:17px;font-weight:800;color:var(--navy);margin-bottom:10px;">Emotional</div>
+        <div style="font-size:16px;color:var(--grey-dark);line-height:1.65;font-style:italic;">"What's something from the past that you long for?"</div>
+      </div>
+      <div style="padding:24px;background:var(--off-white);border-radius:14px;border-top:4px solid var(--gold);">
+        <div style="font-size:28px;margin-bottom:10px;">🌐</div>
+        <div style="font-size:17px;font-weight:800;color:var(--navy);margin-bottom:10px;">Opinion-Based</div>
+        <div style="font-size:16px;color:var(--grey-dark);line-height:1.65;font-style:italic;">"What is your perspective on technology and its impact on mental health?"</div>
+      </div>
+      <div style="padding:24px;background:var(--off-white);border-radius:14px;border-top:4px solid var(--green);">
+        <div style="font-size:28px;margin-bottom:10px;">🧩</div>
+        <div style="font-size:17px;font-weight:800;color:var(--navy);margin-bottom:10px;">Hypothetical</div>
+        <div style="font-size:16px;color:var(--grey-dark);line-height:1.65;font-style:italic;">"Imagine you are a museum curator in the future. What artifacts of today would you display?"</div>
+      </div>
+      <div style="padding:24px;background:var(--off-white);border-radius:14px;border-top:4px solid #7B68EE;">
+        <div style="font-size:28px;margin-bottom:10px;">🙋</div>
+        <div style="font-size:17px;font-weight:800;color:var(--navy);margin-bottom:10px;">Personal</div>
+        <div style="font-size:16px;color:var(--grey-dark);line-height:1.65;font-style:italic;">"What was it like to fall in love for the first time?"</div>
+      </div>
+      <div style="padding:24px;background:var(--off-white);border-radius:14px;border-top:4px solid var(--grey-mid);">
+        <div style="font-size:28px;margin-bottom:10px;">🪞</div>
+        <div style="font-size:17px;font-weight:800;color:var(--navy);margin-bottom:10px;">Self-Assessment</div>
+        <div style="font-size:16px;color:var(--grey-dark);line-height:1.65;font-style:italic;">"How do you think you performed on this test? How human-like are your answers?"</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S25 — TURING TEST: LIMITATIONS
+═══════════════════════════════════════════════ -->
+<div class="slide content-slide" id="s25" data-bg="light">
+  <div class="topbar"></div>
+  <div class="crumb a1">Module 1 › <span>The Turing Test: Limitations</span></div>
+  <div style="flex:1;padding:36px 60px;display:flex;flex-direction:column;gap:26px;">
+    <div class="slide-title a2">What the Turing Test Cannot Tell Us</div>
+    <div class="slide-sub a3">Despite being a landmark idea, the test has significant limitations that are still debated today.</div>
+    <ul class="limit-list a4">
+      <li>
+        <div class="limit-dot"></div>
+        <div class="limit-text"><strong style="color:var(--navy);">No measure of true understanding.</strong> The test only measures whether output <em>resembles</em> human conversation — not whether the machine actually comprehends what it is saying.</div>
+      </li>
+      <li>
+        <div class="limit-dot"></div>
+        <div class="limit-text"><strong style="color:var(--navy);">Subjective evaluation.</strong> The judgment depends entirely on the human judge's own understanding of how humans communicate — making results inconsistent.</div>
+      </li>
+      <li>
+        <div class="limit-dot"></div>
+        <div class="limit-text"><strong style="color:var(--navy);">The Confederate Effect.</strong> Sometimes a human interlocutor is mistakenly identified as a machine — exposing the test's reliance on expectation rather than truth.</div>
+      </li>
+      <li>
+        <div class="limit-dot"></div>
+        <div class="limit-text"><strong style="color:var(--navy);">Question selection matters.</strong> If questions favor uniquely human abilities (creativity, empathy), the machine is more likely to be exposed — making the test highly sensitive to design choices.</div>
+      </li>
+    </ul>
+    <div class="a5" style="padding:18px 22px;background:var(--gold-pale);border-left:4px solid var(--gold);border-radius:0 10px 10px 0;font-size:18px;color:var(--navy);line-height:1.65;">
+      💡 The Turing Test remains one of AI's most famous ideas — but today, we recognize that <strong>passing the test does not equal true intelligence.</strong>
+    </div>
+  </div>
+  <div class="cite light">Source: Turing, A.M. (1950). Computing Machinery and Intelligence. Mind.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S26 — HISTORY: BIRTH OF AI
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s26" data-bg="dark" style="background:var(--navy);">
+  <div style="height:100%;display:flex;flex-direction:column;padding:44px 60px;">
+    <div class="a1" style="display:flex;align-items:center;gap:14px;margin-bottom:28px;">
+      <div style="padding:6px 18px;background:rgba(240,165,0,.15);border:1px solid rgba(240,165,0,.3);border-radius:100px;font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.2em;text-transform:uppercase;">The Story of AI — Part 1</div>
+    </div>
+    <div class="slide-title white a2" style="margin-bottom:6px;">Birth of AI</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:16px;color:var(--gold);margin-bottom:28px;" class="a3">1940s – 1950s</div>
+    <div class="hist-card a4" style="border-top-color:var(--gold);flex:1;display:flex;flex-direction:column;gap:16px;background:rgba(255,255,255,.06);">
+      <div class="hist-body" style="color:rgba(255,255,255,.75);">
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:14px;">
+          <li style="display:flex;gap:14px;align-items:flex-start;">
+            <span style="color:var(--gold);font-weight:700;flex-shrink:0;font-size:18px;">1943</span>
+            <span style="font-size:19px;">McCulloch &amp; Pitts propose that the brain could be modeled as a computing system — introducing <strong style="color:var(--white);">artificial neurons</strong>, the foundation of today's neural networks.</span>
+          </li>
+          <li style="display:flex;gap:14px;align-items:flex-start;">
+            <span style="color:var(--gold);font-weight:700;flex-shrink:0;font-size:18px;">1950</span>
+            <span style="font-size:19px;">Alan Turing publishes <em>"Computing Machinery and Intelligence"</em> — asking "Can machines think?" and proposing the <strong style="color:var(--white);">Turing Test.</strong></span>
+          </li>
+          <li style="display:flex;gap:14px;align-items:flex-start;">
+            <span style="color:var(--gold);font-weight:700;flex-shrink:0;font-size:18px;">1956</span>
+            <span style="font-size:19px;">John McCarthy organizes a workshop at <strong style="color:var(--white);">Dartmouth College</strong> and coins the term <strong style="color:var(--white);">"Artificial Intelligence."</strong> This event is considered the official <em>birthday</em> of the field.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="cite">Source: Coursera Staff (2025). How Does AI Work? Basics to Know.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S27 — HISTORY: AI WINTERS
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s27" data-bg="light" style="background:var(--off-white);">
+  <div style="height:100%;display:flex;flex-direction:column;padding:44px 60px;">
+    <div class="a1" style="display:flex;align-items:center;gap:14px;margin-bottom:28px;">
+      <div style="padding:6px 18px;background:rgba(27,36,100,.08);border:1px solid rgba(27,36,100,.15);border-radius:100px;font-size:11px;font-weight:700;color:var(--navy);letter-spacing:.2em;text-transform:uppercase;">The Story of AI — Part 2</div>
+    </div>
+    <div class="slide-title a2" style="margin-bottom:6px;">Early Programs &amp; AI Winters</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:16px;color:var(--gold);margin-bottom:24px;" class="a3">1960s – 1990s</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;flex:1;" class="a4">
+      <div style="padding:26px;background:var(--white);border-radius:14px;border-top:4px solid var(--navy);box-shadow:0 4px 14px rgba(0,0,0,.06);">
+        <div style="font-size:22px;font-weight:800;color:var(--navy);margin-bottom:12px;">Early Promises ✅</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;">
+          <li style="font-size:18px;color:var(--grey-dark);line-height:1.6;"><span style="color:var(--navy);font-weight:700;">ELIZA (1966)</span> — The first chatbot. Fooled users into thinking it was a real therapist by mirroring their responses.</li>
+          <li style="font-size:18px;color:var(--grey-dark);line-height:1.6;"><span style="color:var(--navy);font-weight:700;">MYCIN</span> — Expert system that helped diagnose blood infections using "if-then" rules.</li>
+          <li style="font-size:18px;color:var(--grey-dark);line-height:1.6;"><span style="color:var(--navy);font-weight:700;">Deep Blue (1997)</span> — IBM's chess AI defeats world champion Garry Kasparov — the first machine to beat a reigning human champion.</li>
+        </ul>
+      </div>
+      <div style="padding:26px;background:var(--white);border-radius:14px;border-top:4px solid var(--crimson);box-shadow:0 4px 14px rgba(0,0,0,.06);">
+        <div style="font-size:22px;font-weight:800;color:var(--crimson);margin-bottom:12px;">The AI Winters ❄️</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;">
+          <li style="font-size:18px;color:var(--grey-dark);line-height:1.6;">Progress could not keep up with the <strong style="color:var(--navy);">hype.</strong> Researchers over-promised and under-delivered.</li>
+          <li style="font-size:18px;color:var(--grey-dark);line-height:1.6;">A critical <strong style="color:var(--navy);">1973 report (Lighthill Report)</strong> argued AI had failed its promises — leading to massive funding cuts. <em>First AI Winter.</em></li>
+          <li style="font-size:18px;color:var(--grey-dark);line-height:1.6;">A <strong style="color:var(--navy);">second winter</strong> followed in the late 1980s as expert systems proved costly and fragile.</li>
+          <li style="font-size:18px;color:var(--gold);line-height:1.6;font-weight:600;">But the groundwork was still being laid: <strong>backpropagation (1986)</strong> gave neural networks a way to learn from mistakes.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="cite light">Source: Coursera Staff (2025). How Does AI Work?</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S28 — HISTORY: MODERN BREAKTHROUGH
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s28" data-bg="dark" style="background:var(--green);">
+  <div style="height:100%;display:flex;flex-direction:column;padding:44px 60px;">
+    <div class="a1" style="display:flex;align-items:center;gap:14px;margin-bottom:28px;">
+      <div style="padding:6px 18px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:100px;font-size:11px;font-weight:700;color:rgba(255,255,255,.8);letter-spacing:.2em;text-transform:uppercase;">The Story of AI — Part 3</div>
+    </div>
+    <div class="slide-title white a2" style="margin-bottom:6px;">The Modern Breakthrough</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:16px;color:rgba(255,255,255,.6);margin-bottom:24px;" class="a3">2000s – 2010s</div>
+    <div class="a4" style="margin-bottom:20px;font-size:20px;color:rgba(255,255,255,.8);line-height:1.65;">Three key ingredients finally came together: <strong style="color:var(--white);">massive data</strong> from the internet, <strong style="color:var(--white);">powerful hardware</strong> (especially GPUs), and <strong style="color:var(--white);">better algorithms</strong> like deep learning.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;flex:1;" class="a5">
+      <div style="padding:22px;background:rgba(255,255,255,.12);border-radius:14px;text-align:center;">
+        <div style="font-size:34px;margin-bottom:10px;">🎮</div>
+        <div style="font-size:16px;font-weight:800;color:var(--white);margin-bottom:6px;">IBM Watson</div>
+        <div style="font-size:14px;color:rgba(255,255,255,.65);">2011 — Won Jeopardy! against human champions</div>
+      </div>
+      <div style="padding:22px;background:rgba(255,255,255,.12);border-radius:14px;text-align:center;">
+        <div style="font-size:34px;margin-bottom:10px;">🎙️</div>
+        <div style="font-size:16px;font-weight:800;color:var(--white);margin-bottom:6px;">Siri &amp; Alexa</div>
+        <div style="font-size:14px;color:rgba(255,255,255,.65);">AI voice assistants bring AI to everyday life</div>
+      </div>
+      <div style="padding:22px;background:rgba(255,255,255,.12);border-radius:14px;text-align:center;">
+        <div style="font-size:34px;margin-bottom:10px;">🖼️</div>
+        <div style="font-size:16px;font-weight:800;color:var(--white);margin-bottom:6px;">Deep Learning</div>
+        <div style="font-size:14px;color:rgba(255,255,255,.65);">2012 — Hinton's breakthrough transforms image recognition</div>
+      </div>
+      <div style="padding:22px;background:rgba(255,255,255,.12);border-radius:14px;text-align:center;">
+        <div style="font-size:34px;margin-bottom:10px;">♟️</div>
+        <div style="font-size:16px;font-weight:800;color:var(--white);margin-bottom:6px;">AlphaGo</div>
+        <div style="font-size:14px;color:rgba(255,255,255,.65);">2016 — Defeated world Go champion; a game more complex than chess</div>
+      </div>
+    </div>
+  </div>
+  <div class="cite">Source: Coursera Staff (2025). How Does AI Work?</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S29 — HISTORY: GENERATIVE AI ERA
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s29" data-bg="dark" style="background:var(--crimson);">
+  <div style="height:100%;display:flex;flex-direction:column;padding:44px 60px;">
+    <div class="a1" style="display:flex;align-items:center;gap:14px;margin-bottom:28px;">
+      <div style="padding:6px 18px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:100px;font-size:11px;font-weight:700;color:rgba(255,255,255,.8);letter-spacing:.2em;text-transform:uppercase;">The Story of AI — Part 4</div>
+    </div>
+    <div class="slide-title white a2" style="margin-bottom:6px;">The Generative AI Era</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:16px;color:rgba(255,255,255,.6);margin-bottom:20px;" class="a3">2020 – Present</div>
+    <div class="a4" style="margin-bottom:22px;font-size:20px;color:rgba(255,255,255,.85);line-height:1.65;max-width:800px;">Generative AI refers to systems that <strong style="color:var(--white);">create new content</strong> — text, images, audio, video, and code — by learning patterns from massive datasets. This is the era of ChatGPT, DALL-E, and Gemini.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;flex:1;" class="a5">
+      <div style="padding:26px;background:rgba(255,255,255,.12);border-radius:14px;">
+        <div style="font-size:20px;font-weight:800;color:var(--white);margin-bottom:14px;">What Makes This Era Different</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;">
+          <li style="font-size:18px;color:rgba(255,255,255,.8);line-height:1.6;"><strong style="color:var(--white);">GPT-3 (2020)</strong> — 175 billion parameters. AI could generate human-like text with minimal training.</li>
+          <li style="font-size:18px;color:rgba(255,255,255,.8);line-height:1.6;"><strong style="color:var(--white);">ChatGPT (2022)</strong> — Made generative AI accessible to everyone. Reached 100 million users in 2 months.</li>
+          <li style="font-size:18px;color:rgba(255,255,255,.8);line-height:1.6;"><strong style="color:var(--white);">800 million</strong> weekly active users as of October 2025.</li>
+        </ul>
+      </div>
+      <div style="padding:26px;background:rgba(255,255,255,.12);border-radius:14px;">
+        <div style="font-size:20px;font-weight:800;color:var(--white);margin-bottom:14px;">Key Technology: LLMs</div>
+        <div style="font-size:18px;color:rgba(255,255,255,.8);line-height:1.75;"><strong style="color:var(--white);">Large Language Models (LLMs)</strong> are AI systems trained on enormous amounts of text to learn language patterns. They don't truly "understand" — they <em>predict</em> the most likely next word, sentence, or idea.<br><br>This is what powers ChatGPT, Gemini, and Copilot — <strong style="color:rgba(255,255,255,.9);">the tools you'll be using in this seminar.</strong></div>
+      </div>
+    </div>
+  </div>
+  <div class="cite">Source: Coursera Staff (2026). What Is ChatGPT?</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S30 — KEY CONCEPTS AT A GLANCE
+═══════════════════════════════════════════════ -->
+<div class="slide content-slide" id="s30" data-bg="light">
+  <div class="topbar"></div>
+  <div class="crumb a1">Module 1 › <span>Key Concepts at a Glance</span></div>
+  <div style="flex:1;padding:32px 60px;display:flex;flex-direction:column;gap:20px;">
+    <div class="slide-title a2">Before We Move On</div>
+    <div class="slide-sub a3">Five foundational concepts that will appear throughout this seminar.</div>
+    <div class="kc-grid a4">
+      <div class="kc-card">
+        <div class="kc-term">Machine Learning</div>
+        <div class="kc-def">AI learns from <em>examples</em> rather than following hard-coded rules. Three types: supervised (labeled data), unsupervised (finding patterns), and reinforcement (trial-and-error with rewards).</div>
+      </div>
+      <div class="kc-card">
+        <div class="kc-term">Neural Networks &amp; Deep Learning</div>
+        <div class="kc-def">Layers of artificial "neurons" inspired by the brain that can learn increasingly complex patterns. Deep learning stacks many layers to recognize faces, translate language, or generate images.</div>
+      </div>
+      <div class="kc-card">
+        <div class="kc-term">Large Language Models (LLMs)</div>
+        <div class="kc-def">Systems like GPT that learn statistical patterns in language to produce coherent text. They don't truly "understand" — they predict the most probable continuation based on training data.</div>
+      </div>
+      <div class="kc-card">
+        <div class="kc-term">Training Data</div>
+        <div class="kc-def">AI reflects whatever data it was trained on — including any biases in that data. The quality, diversity, and fairness of training data directly shapes AI behavior and outputs.</div>
+      </div>
+      <div class="kc-card" style="border-top-color:#7B68EE;grid-column:span 2;">
+        <div class="kc-term">Prompt Engineering</div>
+        <div class="kc-def">Designing effective inputs (prompts) to guide AI outputs — a practical skill you'll develop in Module 6 of this seminar. The better your prompt, the better the AI's response.</div>
+      </div>
+    </div>
+  </div>
+  <div class="cite light">Source: Coursera Staff (2025). How Does AI Work? Basics to Know.</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     S31 — MODULE 2 SECTION BREAK
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s31" data-bg="dark">
+  <div class="sec-break">
+    <div class="ghost">02</div>
+    <svg class="grid-deco" viewBox="0 0 420 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="30" y="30" width="360" height="540" stroke="white" stroke-width="1"/>
+      <rect x="80" y="80" width="260" height="440" stroke="white" stroke-width="1"/>
+      <line x1="30" y1="300" x2="390" y2="300" stroke="white" stroke-width="1"/>
+      <line x1="210" y1="30" x2="210" y2="570" stroke="white" stroke-width="1"/>
+      <circle cx="210" cy="300" r="70" stroke="white" stroke-width="1"/>
+      <circle cx="210" cy="300" r="35" stroke="white" stroke-width="1"/>
+      <circle cx="210" cy="300" r="8" fill="white" opacity="0.3"/>
+      <line x1="30" y1="160" x2="390" y2="160" stroke="white" stroke-width="0.5" stroke-dasharray="4 6"/>
+      <line x1="30" y1="440" x2="390" y2="440" stroke="white" stroke-width="0.5" stroke-dasharray="4 6"/>
+    </svg>
+    <div class="content">
+      <div class="mod-num a1">● Module 2</div>
+      <div class="mod-title a2">AI in the<br>Real World</div>
+      <div class="mod-sub a3">Industry Use Cases &amp; Daily Life</div>
+      <div class="mod-desc a4">AI is no longer science fiction — it's already reshaping healthcare, finance, education, retail, and how you spend your everyday life. In this module, we explore where AI is already at work.</div>
+    </div>
+    <div class="bot-bar"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S32 — AI IS EVERYWHERE (INTRO)
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s32" data-bg="dark" style="background:var(--navy-dark);display:flex;align-items:center;justify-content:center;gap:64px;padding:60px 80px;">
+  <div style="flex:0 0 auto;" class="a2">
+    <img src="resources/ai-is-everywhere.png" alt="AI is everywhere" style="max-height:320px;border-radius:18px;box-shadow:0 28px 64px rgba(0,0,0,.6);">
+  </div>
+  <div style="flex:1;max-width:600px;">
+    <div style="font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;" class="a3">Module 2 — Overview</div>
+    <div style="font-family:'Playfair Display',serif;font-size:clamp(36px,4.5vw,62px);font-weight:900;color:var(--white);line-height:1.05;margin-bottom:18px;" class="a4">AI is already<br>everywhere.</div>
+    <div style="height:3px;width:72px;background:var(--crimson);margin-bottom:24px;" class="a5"></div>
+    <div style="font-size:clamp(18px,2vw,24px);color:rgba(255,255,255,.7);line-height:1.75;margin-bottom:28px;" class="a6">From hospitals to your smartphone — AI is embedded in industries and daily life in ways most people don't even notice.</div>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;" class="a7">
+      <span class="pill navy">Healthcare</span>
+      <span class="pill gold">Finance</span>
+      <span class="pill crimson">Retail</span>
+      <span class="pill green">Education</span>
+      <span style="background:rgba(255,255,255,.15);color:var(--white);" class="pill">+ more</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S33 — AI IN HEALTHCARE
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s33" data-bg="light">
+  <div class="split split-60-40" style="height:100%;">
+    <div style="display:flex;flex-direction:column;background:var(--white);height:100%;">
+      <div class="topbar"></div>
+      <div class="crumb a1">Module 2 › <span>AI in Healthcare</span></div>
+      <div style="flex:1;padding:36px 52px;display:flex;flex-direction:column;gap:16px;overflow:hidden;">
+        <div class="slide-title a2">AI in Healthcare</div>
+        <div class="slide-sub a3">Improving patient outcomes and saving lives across the globe.</div>
+        <div style="display:flex;flex-direction:column;gap:13px;flex:1;" class="a4">
+          <div class="card navy">
+            <div class="card-title">🦠 Disease Mapping</div>
+            <div class="card-body">AI analyzes social media, news, and government data to predict and track infectious disease outbreaks — identifying them before they become widespread.</div>
+          </div>
+          <div class="card crimson">
+            <div class="card-title">💬 Virtual Health Assistants</div>
+            <div class="card-body">AI-powered assistants provide patients 24/7 medical advice, medication reminders, and appointment scheduling.</div>
+          </div>
+          <div class="card gold">
+            <div class="card-title">🩻 Automated Image Diagnosis</div>
+            <div class="card-body">AI analyzes X-rays and CT scans to detect signs of disease, helping radiologists diagnose conditions earlier and more accurately.</div>
+          </div>
+          <div class="card green">
+            <div class="card-title">🧬 Precision Medicine</div>
+            <div class="card-body">AI uses an individual's genetic profile to guide personalized prevention, diagnosis, and treatment decisions.</div>
+          </div>
+        </div>
+      </div>
+      <div class="cite light">Source: Tableau Data Insights. Artificial Intelligence: Industry Examples and Everyday Impacts.</div>
+    </div>
+    <div class="split-img">
+      <img src="resources/ai-in-healthcare.png" alt="AI Applications in Healthcare">
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S34 — AI IN FINANCE
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s34" data-bg="light">
+  <div class="split split-40-60" style="height:100%;">
+    <div class="split-img">
+      <img src="resources/ai-in-finance.png" alt="AI in Finance">
+    </div>
+    <div style="display:flex;flex-direction:column;background:var(--white);height:100%;">
+      <div class="topbar"></div>
+      <div class="crumb a1">Module 2 › <span>AI in Finance</span></div>
+      <div style="flex:1;padding:36px 52px;display:flex;flex-direction:column;gap:16px;overflow:hidden;">
+        <div class="slide-title a2">AI in Finance</div>
+        <div class="slide-sub a3">One of the earliest sectors to adopt AI — automating and protecting our money.</div>
+        <div style="display:flex;flex-direction:column;gap:13px;flex:1;" class="a4">
+          <div class="card navy">
+            <div class="card-title">🚨 Fraud Detection &amp; Prevention</div>
+            <div class="card-body">AI analyzes vast transaction data to spot anomalies and fraudulent activity in real time, protecting customers from financial loss.</div>
+          </div>
+          <div class="card gold">
+            <div class="card-title">📈 Algorithmic Trading</div>
+            <div class="card-body">AI executes trades at speeds impossible for humans — analyzing market data and identifying trends in fractions of a second.</div>
+          </div>
+          <div class="card crimson">
+            <div class="card-title">🏦 Personalized Banking</div>
+            <div class="card-body">AI analyzes customer data to recommend tailored financial products — credit cards and loans matched to individual profiles.</div>
+          </div>
+          <div class="card green">
+            <div class="card-title">📊 Credit Scoring</div>
+            <div class="card-body">AI models assess creditworthiness using alternative data like utility payments and rental history, going beyond traditional scores.</div>
+          </div>
+        </div>
+      </div>
+      <div class="cite light">Source: Tableau Data Insights. Artificial Intelligence: Industry Examples and Everyday Impacts.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S35 — AI IN RETAIL (full bleed)
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s35" data-bg="dark">
+  <img class="img-full" src="resources/ai-in-retail.png" alt="AI in Retail">
+  <div class="img-overlay" style="background:linear-gradient(135deg,rgba(27,36,100,.93) 0%,rgba(27,36,100,.65) 55%,rgba(0,0,0,.25) 100%);"></div>
+  <div class="img-content" style="padding:0 72px;justify-content:center;">
+    <div class="a1" style="margin-bottom:8px;"><span style="font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5);">Module 2 › <span style="color:rgba(255,255,255,.75);">AI in Retail</span></span></div>
+    <div style="max-width:640px;">
+      <div class="slide-title white a2" style="margin-bottom:16px;">AI in Retail</div>
+      <div class="slide-sub white a3" style="margin-bottom:28px;">Understanding customers better — and predicting what they want before they know it.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="a4">
+        <div style="background:rgba(255,255,255,.12);border-radius:14px;padding:22px;border-left:4px solid var(--gold);backdrop-filter:blur(8px);">
+          <div style="font-size:19px;font-weight:800;color:var(--white);margin-bottom:8px;">📦 Inventory Management</div>
+          <div style="font-size:16px;color:rgba(255,255,255,.8);line-height:1.65;">AI predicts product demand, ensuring the right stock is available at the right time — reducing overstock and shortages.</div>
+        </div>
+        <div style="background:rgba(255,255,255,.12);border-radius:14px;padding:22px;border-left:4px solid var(--gold-light);backdrop-filter:blur(8px);">
+          <div style="font-size:19px;font-weight:800;color:var(--white);margin-bottom:8px;">🎯 Customer Recommendations</div>
+          <div style="font-size:16px;color:rgba(255,255,255,.8);line-height:1.65;">AI analyzes browsing and purchase history to serve personalized product suggestions that increase sales and loyalty.</div>
+        </div>
+        <div style="background:rgba(255,255,255,.12);border-radius:14px;padding:22px;border-left:4px solid var(--crimson);backdrop-filter:blur(8px);">
+          <div style="font-size:19px;font-weight:800;color:var(--white);margin-bottom:8px;">🔍 Visual Search</div>
+          <div style="font-size:16px;color:rgba(255,255,255,.8);line-height:1.65;">Customers upload a photo; AI searches the retailer's inventory to find matching or similar items instantly.</div>
+        </div>
+        <div style="background:rgba(255,255,255,.12);border-radius:14px;padding:22px;border-left:4px solid var(--green);backdrop-filter:blur(8px);">
+          <div style="font-size:19px;font-weight:800;color:var(--white);margin-bottom:8px;">💲 Dynamic Pricing</div>
+          <div style="font-size:16px;color:rgba(255,255,255,.8);line-height:1.65;">AI adjusts prices in real-time based on demand, competitor pricing, and market conditions to maximize profit while staying competitive.</div>
+        </div>
+      </div>
+    </div>
+    <div class="cite">Source: Tableau Data Insights. Artificial Intelligence: Industry Examples and Everyday Impacts.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S36 — AI IN MANUFACTURING
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s36" data-bg="light">
+  <div class="split split-60-40" style="height:100%;">
+    <div style="display:flex;flex-direction:column;background:var(--white);height:100%;">
+      <div class="topbar"></div>
+      <div class="crumb a1">Module 2 › <span>AI in Manufacturing</span></div>
+      <div style="flex:1;padding:36px 52px;display:flex;flex-direction:column;gap:16px;overflow:hidden;">
+        <div class="slide-title a2">AI in Manufacturing</div>
+        <div class="slide-sub a3">Making factories more efficient, productive, and safe.</div>
+        <div style="display:flex;flex-direction:column;gap:13px;flex:1;" class="a4">
+          <div class="card navy">
+            <div class="card-title">🔧 Predictive Maintenance</div>
+            <div class="card-body">AI sensors monitor machinery in real time — detecting vibration and temperature changes to predict failures before they happen, scheduling maintenance proactively.</div>
+          </div>
+          <div class="card gold">
+            <div class="card-title">🔬 Quality Control</div>
+            <div class="card-body">AI computer vision systems inspect products for defects invisible to the human eye, ensuring only high-quality goods reach the market.</div>
+          </div>
+          <div class="card crimson">
+            <div class="card-title">🤖 Robotics</div>
+            <div class="card-body">AI-enabled robots handle repetitive or dangerous tasks like welding and painting, freeing human workers for more complex, value-added activities.</div>
+          </div>
+          <div class="card green">
+            <div class="card-title">🪞 Digital Twins</div>
+            <div class="card-body">Virtual replicas of physical assets let manufacturers simulate performance and identify potential problems before they occur in the real world.</div>
+          </div>
+        </div>
+      </div>
+      <div class="cite light">Source: Tableau Data Insights. Artificial Intelligence: Industry Examples and Everyday Impacts.</div>
+    </div>
+    <div class="split-img">
+      <img src="resources/ai-in-manufacturing.png" alt="AI in Manufacturing">
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S37 — AI IN EDUCATION (industry context)
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s37" data-bg="light">
+  <div class="split split-40-60" style="height:100%;">
+    <div class="split-img">
+      <img src="resources/ai-in-education.png" alt="AI in Education">
+    </div>
+    <div style="display:flex;flex-direction:column;background:var(--white);height:100%;">
+      <div class="topbar"></div>
+      <div class="crumb a1">Module 2 › <span>AI in Education</span></div>
+      <div style="flex:1;padding:36px 52px;display:flex;flex-direction:column;gap:16px;overflow:hidden;">
+        <div class="slide-title a2">AI in Education</div>
+        <div class="slide-sub a3">Creating more personalized and effective learning experiences for every student.</div>
+        <div style="display:flex;flex-direction:column;gap:13px;flex:1;" class="a4">
+          <div class="card navy">
+            <div class="card-title">🎯 Adaptive Learning</div>
+            <div class="card-body">AI-powered platforms adjust difficulty and content based on each student's individual needs and learning pace — ensuring challenge without overwhelm.</div>
+          </div>
+          <div class="card gold">
+            <div class="card-title">📝 Automated Grading</div>
+            <div class="card-body">AI automates grading of assignments and assessments, freeing teachers to focus on instruction and meaningful student support.</div>
+          </div>
+          <div class="card crimson">
+            <div class="card-title">📚 Smart Content Creation</div>
+            <div class="card-body">AI helps educators generate quizzes, flashcards, and study materials tailored to specific learning objectives and student levels.</div>
+          </div>
+          <div class="card green">
+            <div class="card-title">🌍 Universal Access</div>
+            <div class="card-body">Real-time AI captioning and translation make education more accessible to students with disabilities or language barriers.</div>
+          </div>
+        </div>
+      </div>
+      <div class="cite light">Source: Tableau Data Insights. Artificial Intelligence: Industry Examples and Everyday Impacts.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S38 — AI IN TRANSPORTATION (full bleed)
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s38" data-bg="dark">
+  <img class="img-full" src="resources/ai-in-transportation.png" alt="AI in Transportation">
+  <div class="img-overlay" style="background:linear-gradient(to right, rgba(10,14,36,.95) 0%, rgba(10,14,36,.72) 52%, rgba(10,14,36,.15) 100%);"></div>
+  <div class="img-content" style="padding:0 72px;justify-content:center;">
+    <div style="max-width:580px;">
+      <div class="a1" style="margin-bottom:10px;"><span style="font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5);">Module 2 › <span style="color:rgba(255,255,255,.75);">AI in Transportation</span></span></div>
+      <div class="slide-title white a2" style="margin-bottom:16px;">AI in Transportation</div>
+      <div class="slide-sub white a3" style="margin-bottom:28px;">Making transportation safer, more efficient, and more sustainable.</div>
+      <div style="display:flex;flex-direction:column;gap:14px;" class="a4">
+        <div style="display:flex;align-items:flex-start;gap:16px;padding:18px 22px;background:rgba(255,255,255,.1);border-radius:12px;border-left:4px solid var(--gold);backdrop-filter:blur(6px);">
+          <div style="font-size:28px;flex-shrink:0;">🚗</div>
+          <div><div style="font-size:20px;font-weight:800;color:var(--white);margin-bottom:6px;">Autonomous Vehicles</div><div style="font-size:17px;color:rgba(255,255,255,.78);line-height:1.65;">Self-driving cars and trucks use AI to navigate roads and traffic — with lane-keeping assist and automatic braking already common in many cars.</div></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:16px;padding:18px 22px;background:rgba(255,255,255,.1);border-radius:12px;border-left:4px solid var(--gold-light);backdrop-filter:blur(6px);">
+          <div style="font-size:28px;flex-shrink:0;">🚦</div>
+          <div><div style="font-size:20px;font-weight:800;color:var(--white);margin-bottom:6px;">Traffic Management</div><div style="font-size:17px;color:rgba(255,255,255,.78);line-height:1.65;">AI analyzes data from cameras and sensors to optimize traffic flow, reduce congestion, and improve travel times city-wide.</div></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:16px;padding:18px 22px;background:rgba(255,255,255,.1);border-radius:12px;border-left:4px solid var(--crimson);backdrop-filter:blur(6px);">
+          <div style="font-size:28px;flex-shrink:0;">📱</div>
+          <div><div style="font-size:20px;font-weight:800;color:var(--white);margin-bottom:6px;">Ride-Sharing &amp; Drone Delivery</div><div style="font-size:17px;color:rgba(255,255,255,.78);line-height:1.65;">Apps like Uber and Lyft use AI for matching, pricing, and ETAs; companies are exploring AI-powered drones for last-mile delivery.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="cite">Source: Tableau Data Insights. Artificial Intelligence: Industry Examples and Everyday Impacts.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S39 — BRIDGE: AI YOU DON'T NOTICE
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s39" data-bg="dark">
+  <img class="img-full" src="resources/ai-you-dont-notice.png" alt="AI you don't notice">
+  <div class="img-overlay" style="background:linear-gradient(to bottom, rgba(10,14,36,.75) 0%, rgba(10,14,36,.45) 35%, rgba(10,14,36,.88) 100%);"></div>
+  <div class="img-content" style="align-items:center;justify-content:flex-end;text-align:center;padding:0 100px 80px;">
+    <div style="max-width:720px;">
+      <div style="font-size:12px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;" class="a2">Part 2 — Daily Life</div>
+      <div class="slide-title white a3" style="margin-bottom:18px;">AI You Don't Notice<br>(But Should)</div>
+      <div class="slide-sub white a4">Beyond industries — AI quietly shapes your daily routines, decisions, and experiences in ways most people never realize. Let's explore 10 examples from your own life.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S40 — SMART HOME & ENERGY
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s40" data-bg="light">
+  <div class="split split-40-60" style="height:100%;">
+    <div class="split-img">
+      <img src="resources/smart-home.png" alt="Smart Home AI">
+    </div>
+    <div style="display:flex;flex-direction:column;background:var(--white);height:100%;">
+      <div class="topbar"></div>
+      <div class="crumb a1">Module 2 › Part 2 › <span>Smart Home &amp; Energy</span></div>
+      <div style="flex:1;padding:48px 52px;display:flex;flex-direction:column;justify-content:center;gap:24px;">
+        <div class="a2"><span class="badge badge-gold">① Smart Home</span></div>
+        <div class="slide-title a3">Smart Home Devices &amp; Energy Consumption</div>
+        <div class="body-text a4">Smart thermostats like <strong>Nest</strong> use AI to learn your schedule and temperature preferences. Over time, they automatically adjust heating and cooling to <strong>optimize energy usage</strong> — saving money and reducing your carbon footprint.</div>
+        <div style="background:var(--gold-pale);border-left:5px solid var(--gold);border-radius:0 14px 14px 0;padding:22px 28px;" class="a5">
+          <div style="font-size:20px;font-weight:800;color:var(--navy);margin-bottom:8px;">💡 The Key Insight</div>
+          <div style="font-size:19px;color:var(--grey-dark);line-height:1.7;">AI is acting as an <em>invisible hand</em> — making your home more energy-efficient without you having to lift a finger.</div>
+        </div>
+      </div>
+      <div class="cite light">Source: Balto Blog. How AI Already Impacts Our Lives in Unforeseen Ways.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S41 — NAVIGATION & TRAFFIC PREDICTIONS
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s41" data-bg="light">
+  <div class="split split-60-40" style="height:100%;">
+    <div style="display:flex;flex-direction:column;background:var(--white);height:100%;">
+      <div class="topbar"></div>
+      <div class="crumb a1">Module 2 › Part 2 › <span>Navigation &amp; Traffic</span></div>
+      <div style="flex:1;padding:48px 52px;display:flex;flex-direction:column;justify-content:center;gap:24px;">
+        <div class="a2"><span class="badge badge-gold">② Navigation</span></div>
+        <div class="slide-title a3">Navigation &amp; Traffic Predictions</div>
+        <div class="body-text a4">Apps like <strong>Google Maps</strong> and <strong>Waze</strong> use AI to analyze real-time traffic data and suggest the fastest routes — but they also use <strong>predictive AI</strong> to anticipate traffic patterns based on historical data.</div>
+        <div style="background:var(--off-white);border-radius:14px;padding:24px 28px;border-left:5px solid var(--navy);" class="a5">
+          <div style="font-size:20px;font-weight:800;color:var(--navy);margin-bottom:10px;">AI helps you avoid traffic jams <em>before they even happen.</em></div>
+          <div style="font-size:18px;color:var(--grey-dark);line-height:1.65;">Saving you time, fuel, and frustration on your daily commute — automatically.</div>
+        </div>
+      </div>
+      <div class="cite light">Source: Balto Blog. How AI Already Impacts Our Lives in Unforeseen Ways.</div>
+    </div>
+    <div class="split-img">
+      <img src="resources/navigation-and-traffic.png" alt="Navigation and Traffic AI">
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S42 — EMAIL FILTERING & SPAM DETECTION
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s42" data-bg="light">
+  <div class="split split-40-60" style="height:100%;">
+    <div class="split-img" style="background:#1a4a8a;display:flex;align-items:center;justify-content:center;padding:50px;">
+      <img src="resources/email-filtering.png" alt="Email Filtering" style="max-width:90%;max-height:78%;object-fit:contain;border-radius:12px;">
+    </div>
+    <div style="display:flex;flex-direction:column;background:var(--white);height:100%;">
+      <div class="topbar"></div>
+      <div class="crumb a1">Module 2 › Part 2 › <span>Email Filtering</span></div>
+      <div style="flex:1;padding:48px 52px;display:flex;flex-direction:column;justify-content:center;gap:24px;">
+        <div class="a2"><span class="badge badge-gold">③ Email</span></div>
+        <div class="slide-title a3">Email Filtering &amp; Spam Detection</div>
+        <div class="body-text a4">We often take for granted that our inboxes are relatively clean. This is thanks to <strong>AI algorithms</strong> that analyze incoming emails and filter out spam, phishing attempts, and malicious content automatically.</div>
+        <div style="background:var(--off-white);border-radius:14px;padding:24px 28px;border-left:5px solid var(--crimson);" class="a5">
+          <div style="font-size:19px;color:var(--grey-dark);line-height:1.7;">These algorithms <strong>continuously learn</strong> from new patterns — recognizing emerging threats and protecting you from security risks without any action on your part.</div>
+        </div>
+      </div>
+      <div class="cite light">Source: Balto Blog. How AI Already Impacts Our Lives in Unforeseen Ways.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S43 — CURATED ENTERTAINMENT
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s43" data-bg="light">
+  <div class="split split-60-40" style="height:100%;">
+    <div style="display:flex;flex-direction:column;background:var(--white);height:100%;">
+      <div class="topbar"></div>
+      <div class="crumb a1">Module 2 › Part 2 › <span>Curated Entertainment</span></div>
+      <div style="flex:1;padding:48px 52px;display:flex;flex-direction:column;justify-content:center;gap:24px;">
+        <div class="a2"><span class="badge badge-gold">④ Entertainment</span></div>
+        <div class="slide-title a3">Curated Entertainment &amp; Content</div>
+        <div class="body-text a4">Streaming platforms like <strong>Netflix</strong> and <strong>Spotify</strong> use AI recommendation engines to suggest movies, shows, and music based on your viewing and listening history.</div>
+        <div style="background:var(--off-white);border-radius:14px;padding:24px 28px;border-left:5px solid var(--gold);" class="a5">
+          <div style="font-size:20px;font-weight:800;color:var(--navy);margin-bottom:10px;">What does this mean for culture?</div>
+          <div style="font-size:18px;color:var(--grey-dark);line-height:1.7;">These algorithms subtly shape our cultural consumption — introducing us to content we'd never have found, but also creating <em>personalized echo chambers</em> of taste.</div>
+        </div>
+      </div>
+      <div class="cite light">Source: Balto Blog. How AI Already Impacts Our Lives in Unforeseen Ways.</div>
+    </div>
+    <div class="split-img" style="background:#111;display:flex;align-items:center;justify-content:center;padding:24px;">
+      <img src="resources/curated-entertainment.png" alt="Curated Entertainment" style="max-width:90%;max-height:80%;object-fit:contain;">
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S44 — SOCIAL MEDIA & FILTER BUBBLES
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s44" data-bg="light">
+  <div class="split split-40-60" style="height:100%;">
+    <div class="split-img" style="background:#d6e8ff;display:flex;align-items:center;justify-content:center;padding:40px;">
+      <img src="resources/social-media.png" alt="Social Media" style="max-width:90%;max-height:80%;object-fit:contain;">
+    </div>
+    <div style="display:flex;flex-direction:column;background:var(--white);height:100%;">
+      <div class="topbar"></div>
+      <div class="crumb a1">Module 2 › Part 2 › <span>Social Media</span></div>
+      <div style="flex:1;padding:48px 52px;display:flex;flex-direction:column;justify-content:center;gap:24px;">
+        <div class="a2"><span class="badge badge-gold">⑤ Social Media</span></div>
+        <div class="slide-title a3">Social Media &amp; Filter Bubbles</div>
+        <div class="body-text a4">The content you see on your social media feed is not random — it is <strong>curated by AI algorithms</strong> designed to maximize your time and engagement on the platform.</div>
+        <div style="background:var(--gold-pale);border-left:5px solid var(--gold);border-radius:0 14px 14px 0;padding:22px 26px;" class="a5">
+          <div style="font-size:19px;color:var(--grey-dark);line-height:1.7;">AI analyzes your likes, shares, comments, and view time. While this feels personalized, it creates <strong>"filter bubbles"</strong> that reinforce existing beliefs and limit exposure to diverse perspectives — a critical concern for educators and students alike.</div>
+        </div>
+      </div>
+      <div class="cite light">Source: Balto Blog. How AI Already Impacts Our Lives in Unforeseen Ways.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S45 — CUSTOMER SERVICE & CHATBOTS
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s45" data-bg="light">
+  <div class="split split-60-40" style="height:100%;">
+    <div style="display:flex;flex-direction:column;background:var(--white);height:100%;">
+      <div class="topbar"></div>
+      <div class="crumb a1">Module 2 › Part 2 › <span>Customer Service</span></div>
+      <div style="flex:1;padding:48px 52px;display:flex;flex-direction:column;justify-content:center;gap:24px;">
+        <div class="a2"><span class="badge badge-gold">⑥ Customer Service</span></div>
+        <div class="slide-title a3">Customer Service &amp; Chatbots</div>
+        <div class="body-text a4">More and more companies use <strong>AI-powered chatbots</strong> to handle customer service — answering questions, resolving simple issues, and processing orders — providing instant support <strong>24 hours a day, 7 days a week</strong>.</div>
+        <div style="background:var(--off-white);border-radius:14px;padding:22px 28px;border-left:5px solid var(--navy);" class="a5">
+          <div style="font-size:19px;color:var(--grey-dark);line-height:1.7;">While some interactions are seamless, others reveal the technology's current limitations — especially when a human problem requires nuance, empathy, or judgment that AI cannot yet replicate.</div>
+        </div>
+      </div>
+      <div class="cite light">Source: Balto Blog. How AI Already Impacts Our Lives in Unforeseen Ways.</div>
+    </div>
+    <div class="split-img">
+      <img src="resources/customer-service-and-chatbots.png" alt="Customer Service Chatbot">
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S46 — FRAUD DETECTION & FINANCIAL SECURITY
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s46" data-bg="light">
+  <div class="split split-40-60" style="height:100%;">
+    <div class="split-img">
+      <img src="resources/fraud-detection.png" alt="Fraud Detection">
+    </div>
+    <div style="display:flex;flex-direction:column;background:var(--white);height:100%;">
+      <div class="topbar"></div>
+      <div class="crumb a1">Module 2 › Part 2 › <span>Fraud Detection</span></div>
+      <div style="flex:1;padding:48px 52px;display:flex;flex-direction:column;justify-content:center;gap:24px;">
+        <div class="a2"><span class="badge badge-gold">⑦ Financial Security</span></div>
+        <div class="slide-title a3">Fraud Detection &amp; Financial Security</div>
+        <div class="body-text a4">Banks and credit card companies use AI to monitor every transaction for suspicious activity. If an unusual transaction is detected — like a large purchase in a foreign country — <strong>AI flags and may block it automatically</strong>.</div>
+        <div style="background:var(--off-white);border-radius:14px;padding:22px 28px;border-left:5px solid var(--crimson);" class="a5">
+          <div style="font-size:19px;color:var(--grey-dark);line-height:1.7;">This happens entirely behind the scenes, securing your finances 24/7 without you having to constantly monitor your accounts.</div>
+        </div>
+      </div>
+      <div class="cite light">Source: Balto Blog. How AI Already Impacts Our Lives in Unforeseen Ways.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S47 — PHOTO ORGANIZATION & EDITING
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s47" data-bg="light">
+  <div class="split split-60-40" style="height:100%;">
+    <div style="display:flex;flex-direction:column;background:var(--white);height:100%;">
+      <div class="topbar"></div>
+      <div class="crumb a1">Module 2 › Part 2 › <span>Photo Organization</span></div>
+      <div style="flex:1;padding:48px 52px;display:flex;flex-direction:column;justify-content:center;gap:24px;">
+        <div class="a2"><span class="badge badge-gold">⑧ Photos</span></div>
+        <div class="slide-title a3">Photo Organization &amp; Editing</div>
+        <div class="body-text a4">Your smartphone's photo app uses AI to organize photos by <strong>recognizing faces, objects, and scenes</strong> — so you can easily search for specific people or places without any manual tagging.</div>
+        <div style="background:var(--off-white);border-radius:14px;padding:22px 28px;border-left:5px solid var(--green);" class="a5">
+          <div style="font-size:19px;color:var(--grey-dark);line-height:1.7;">AI also powers automatic photo enhancement — adjusting lighting, sharpness, and color to create a better shot with a single tap. The camera you carry is already AI-powered.</div>
+        </div>
+      </div>
+      <div class="cite light">Source: Balto Blog. How AI Already Impacts Our Lives in Unforeseen Ways.</div>
+    </div>
+    <div class="split-img">
+      <img src="resources/photo-organization-editing.png" alt="Photo Organization and Editing">
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S48 — HEALTHCARE DIAGNOSTICS (daily life angle)
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s48" data-bg="light">
+  <div class="split split-40-60" style="height:100%;">
+    <div class="split-img">
+      <img src="resources/healthcare-diagnostics.png" alt="AI Healthcare Diagnostics">
+    </div>
+    <div style="display:flex;flex-direction:column;background:var(--white);height:100%;">
+      <div class="topbar"></div>
+      <div class="crumb a1">Module 2 › Part 2 › <span>Healthcare Diagnostics</span></div>
+      <div style="flex:1;padding:48px 52px;display:flex;flex-direction:column;justify-content:center;gap:24px;">
+        <div class="a2"><span class="badge badge-gold">⑨ Healthcare</span></div>
+        <div class="slide-title a3">Healthcare Diagnostics &amp; Treatment Planning</div>
+        <div class="body-text a4">AI assists doctors in diagnosing diseases and planning treatments. Algorithms can analyze medical images to detect signs of cancer or other conditions — <strong>sometimes earlier than a human doctor could</strong>.</div>
+        <div style="background:var(--gold-pale);border-left:5px solid var(--gold);border-radius:0 14px 14px 0;padding:22px 28px;" class="a5">
+          <div style="font-size:20px;font-weight:800;color:var(--navy);margin-bottom:10px;">What this means for patients:</div>
+          <div style="font-size:18px;color:var(--grey-dark);line-height:1.7;">Earlier interventions and better outcomes — AI as a partner to, not a replacement of, the physician's judgment and human care.</div>
+        </div>
+      </div>
+      <div class="cite light">Source: Balto Blog. How AI Already Impacts Our Lives in Unforeseen Ways.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S49 — AUTONOMOUS VEHICLES & DRIVER ASSISTANCE
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s49" data-bg="dark">
+  <img class="img-full" src="resources/autonomous-vehicles.png" alt="Autonomous Vehicle Interior">
+  <div class="img-overlay" style="background:linear-gradient(to right, rgba(10,14,36,.95) 0%, rgba(10,14,36,.72) 52%, rgba(10,14,36,.1) 100%);"></div>
+  <div class="img-content" style="padding:0 72px;justify-content:center;">
+    <div style="max-width:560px;">
+      <div class="a1" style="margin-bottom:16px;"><span class="badge badge-gold">⑩ Autonomous Vehicles</span></div>
+      <div class="slide-title white a2" style="margin-bottom:16px;">Autonomous Vehicles &amp; Driver Assistance</div>
+      <div class="slide-sub white a3" style="margin-bottom:28px;">AI making roads safer — one feature at a time.</div>
+      <div style="display:flex;flex-direction:column;gap:14px;" class="a4">
+        <div style="display:flex;align-items:flex-start;gap:16px;padding:20px 22px;background:rgba(255,255,255,.1);border-radius:12px;border-left:4px solid var(--gold);backdrop-filter:blur(6px);">
+          <div style="font-size:28px;flex-shrink:0;">🚗</div>
+          <div><div style="font-size:20px;font-weight:800;color:var(--white);margin-bottom:6px;">Fully Autonomous Vehicles</div><div style="font-size:17px;color:rgba(255,255,255,.78);line-height:1.65;">Self-driving cars and trucks use AI to navigate roads and traffic — still in development but rapidly advancing.</div></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:16px;padding:20px 22px;background:rgba(255,255,255,.1);border-radius:12px;border-left:4px solid var(--gold-light);backdrop-filter:blur(6px);">
+          <div style="font-size:28px;flex-shrink:0;">🛡️</div>
+          <div><div style="font-size:20px;font-weight:800;color:var(--white);margin-bottom:6px;">AI-Assisted Features (Already Here)</div><div style="font-size:17px;color:rgba(255,255,255,.78);line-height:1.65;">Lane-keeping assist, automatic emergency braking, and adaptive cruise control are already standard in many vehicles — AI is already driving alongside you.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="cite">Source: Balto Blog. How AI Already Impacts Our Lives in Unforeseen Ways.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S50 — THE DOUBLE-EDGED SWORD OF AI
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s50" data-bg="dark">
+  <img class="img-full" src="resources/double-edge-sword-of-ai.png" alt="The Double-Edged Sword of AI">
+  <div class="img-overlay" style="background:linear-gradient(to bottom, rgba(10,14,36,.82) 0%, rgba(10,14,36,.55) 35%, rgba(10,14,36,.92) 100%);"></div>
+  <div class="img-content" style="align-items:center;justify-content:center;text-align:center;padding:0 80px;">
+    <div style="max-width:860px;">
+      <div style="font-size:12px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;" class="a2">Discussion</div>
+      <div class="slide-title white a3" style="margin-bottom:18px;">The Double-Edged Sword of AI</div>
+      <div class="slide-sub white a4" style="margin-bottom:36px;">While AI integration brings enormous benefits, it also raises critical questions we must engage with honestly.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;" class="a5">
+        <div style="background:rgba(255,255,255,.1);border-radius:16px;padding:26px 22px;backdrop-filter:blur(10px);border-top:3px solid var(--gold);">
+          <div style="font-size:34px;margin-bottom:12px;">🔒</div>
+          <div style="font-size:19px;font-weight:800;color:var(--white);margin-bottom:10px;">Privacy</div>
+          <div style="font-size:16px;color:rgba(255,255,255,.72);line-height:1.65;">AI systems collect and process vast amounts of personal data — often without users fully understanding the scope.</div>
+        </div>
+        <div style="background:rgba(255,255,255,.1);border-radius:16px;padding:26px 22px;backdrop-filter:blur(10px);border-top:3px solid var(--crimson);">
+          <div style="font-size:34px;margin-bottom:12px;">⚖️</div>
+          <div style="font-size:19px;font-weight:800;color:var(--white);margin-bottom:10px;">Bias</div>
+          <div style="font-size:16px;color:rgba(255,255,255,.72);line-height:1.65;">AI reflects the biases in its training data, which can lead to discriminatory decisions in hiring, lending, and policing.</div>
+        </div>
+        <div style="background:rgba(255,255,255,.1);border-radius:16px;padding:26px 22px;backdrop-filter:blur(10px);border-top:3px solid var(--gold-light);">
+          <div style="font-size:34px;margin-bottom:12px;">🤝</div>
+          <div style="font-size:19px;font-weight:800;color:var(--white);margin-bottom:10px;">Human Agency</div>
+          <div style="font-size:16px;color:rgba(255,255,255,.72);line-height:1.65;">As AI automates more decisions, we must ask: are we gaining convenience at the cost of our own autonomy and judgment?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cite">Source: Balto Blog. How AI Already Impacts Our Lives in Unforeseen Ways.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S51 — MODULE 2 RECAP
+═══════════════════════════════════════════════ -->
+<div class="slide content-slide" id="s51" data-bg="light">
+  <div class="topbar"></div>
+  <div class="crumb a1">Module 2 › <span>Key Takeaways</span></div>
+  <div style="flex:1;padding:36px 60px;display:flex;flex-direction:column;gap:20px;">
+    <div class="slide-title a2">Module 2 — What We Learned</div>
+    <div class="slide-sub a3">AI is already embedded in industries and daily life — often invisibly.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1;" class="a4">
+      <div class="card navy">
+        <div class="card-title">🏥 Industry AI</div>
+        <div class="card-body">AI is actively reshaping healthcare, finance, retail, manufacturing, education, and transportation — improving outcomes, efficiency, and access worldwide.</div>
+      </div>
+      <div class="card gold">
+        <div class="card-title">📱 Daily Life AI</div>
+        <div class="card-body">From your email inbox to your navigation app to your entertainment feed — AI is constantly working behind the scenes, often invisibly.</div>
+      </div>
+      <div class="card crimson">
+        <div class="card-title">⚠️ Critical Awareness</div>
+        <div class="card-body">AI integration raises genuine questions about privacy, algorithmic bias, filter bubbles, and the erosion of human agency that we must engage with seriously.</div>
+      </div>
+      <div class="card green">
+        <div class="card-title">🎓 For Future Educators</div>
+        <div class="card-body">Understanding these real-world AI applications helps you guide students to be informed, critical, and responsible participants in an AI-driven world.</div>
+      </div>
+    </div>
+    <div style="background:var(--navy);border-radius:14px;padding:22px 28px;display:flex;align-items:center;gap:16px;" class="a5">
+      <div style="font-size:28px;flex-shrink:0;">💬</div>
+      <div style="font-size:19px;color:rgba(255,255,255,.9);line-height:1.65;"><strong style="color:var(--gold);">Reflection:</strong> Which AI applications we discussed today surprised you the most? Which ones do you already use daily without thinking of them as "AI"?</div>
+    </div>
+  </div>
+  <div class="cite light">Source: Tableau Data Insights &amp; Balto Blog. AI Industry Examples &amp; Daily Life Impacts.</div>
+</div>
+
+</div><!-- /deck -->
+
+<script>
+let cur = 0;
+const total = 51;
+const slides = document.querySelectorAll('.slide');
+const prog = document.getElementById('progress');
+const ctr = document.getElementById('counter');
+
+// Particles for cover slide
+(function(){
+  const c = document.getElementById('particles');
+  if(!c) return;
+  for(let i=0;i<32;i++){
+    const p=document.createElement('div');
+    p.className='s1-particle';
+    const s=Math.random()*5+2;
+    p.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;top:${Math.random()*100}%;animation-duration:${Math.random()*14+8}s;animation-delay:${Math.random()*-14}s;`;
+    c.appendChild(p);
+  }
+})();
+
+function goTo(idx){
+  if(idx<0||idx>=total) return;
+  slides[cur].classList.remove('active');
+  slides[cur].classList.add('prev');
+  setTimeout(()=>slides[cur].classList.remove('prev'),420);
+  cur=idx;
+  slides[cur].classList.add('active');
+  ui();
+}
+function nav(d){ goTo(cur+d); }
+function ui(){
+  ctr.textContent=`${cur+1} / ${total}`;
+  prog.style.width=`${((cur+1)/total)*100}%`;
+  const bg=slides[cur].dataset.bg;
+  ctr.className=bg==='dark'?'dark-bg':'light-bg';
+  document.getElementById('btn-prev').style.opacity=cur===0?'0.2':'1';
+  document.getElementById('btn-next').style.opacity=cur===total-1?'0.2':'1';
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();nav(1);}
+  else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();nav(-1);}
+});
+document.getElementById('deck').addEventListener('click',e=>{
+  if(e.shiftKey) nav(-1); else nav(1);
+});
+document.getElementById('btn-prev').addEventListener('click',e=>{e.stopPropagation();nav(-1);});
+document.getElementById('btn-next').addEventListener('click',e=>{e.stopPropagation();nav(1);});
+
+// Touch
+let tx=0;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',e=>{const dx=tx-e.changedTouches[0].clientX;if(Math.abs(dx)>50)nav(dx>0?1:-1);});
+
+ui();
+</script>
+</body>
+</html>
