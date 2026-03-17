@@ -98,37 +98,42 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #0a0e24; f
 
 /* content template */
 .content-slide { background: var(--white); display: flex; flex-direction: column; height: 100%; }
-.content-main { flex: 1; padding: 44px 60px; display: flex; flex-direction: column; gap: 28px; }
+.content-main { flex: 1; padding: 48px 68px; display: flex; flex-direction: column; gap: 32px; }
 
 /* Big text */
-.slide-title { font-family: 'Playfair Display', serif; font-size: clamp(36px,5vw,68px); font-weight: 900; color: var(--navy); letter-spacing: -.02em; line-height: 1.05; }
+.slide-title { font-family: 'Playfair Display', serif; font-size: clamp(38px,5vw,70px); font-weight: 900; color: var(--navy); letter-spacing: -.02em; line-height: 1.05; }
 .slide-title.white { color: var(--white); }
-.slide-sub { font-size: clamp(18px,2vw,26px); color: var(--grey-dark); line-height: 1.55; font-weight: 400; }
+.slide-sub { font-size: clamp(20px,2.2vw,28px); color: var(--grey-dark); line-height: 1.6; font-weight: 400; }
 .slide-sub.gold { color: var(--gold); font-weight: 600; }
 .slide-sub.white { color: rgba(255,255,255,.7); }
-.body-text { font-size: clamp(20px,2.2vw,28px); color: var(--grey-dark); line-height: 1.7; }
+.body-text { font-size: clamp(22px,2.4vw,30px); color: var(--grey-dark); line-height: 1.75; }
 .body-text.white { color: rgba(255,255,255,.75); }
-.quote-text { font-family: 'Playfair Display', serif; font-size: clamp(24px,3vw,42px); font-style: italic; line-height: 1.5; color: var(--navy); }
+.quote-text { font-family: 'Playfair Display', serif; font-size: clamp(26px,3vw,44px); font-style: italic; line-height: 1.5; color: var(--navy); }
 .quote-text.white { color: var(--white); }
-.attrib { font-size: 18px; color: var(--grey-mid); font-weight: 600; margin-top: 10px; }
+.attrib { font-size: 20px; color: var(--grey-mid); font-weight: 600; margin-top: 12px; }
 .attrib.gold { color: var(--gold); }
 
 /* discussion slide */
-.disc-slide { background: var(--navy); display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; padding: 60px 100px; }
-.disc-icon { font-size: 72px; margin-bottom: 24px; }
-.disc-label { font-size: 12px; font-weight: 700; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
-.disc-q { font-family: 'Playfair Display', serif; font-size: clamp(30px,4vw,56px); font-weight: 700; color: var(--white); line-height: 1.35; }
-.disc-hint { font-size: 18px; color: rgba(255,255,255,.4); margin-top: 28px; font-style: italic; }
+.disc-slide { background: var(--navy); display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; padding: 72px 120px; }
+.disc-icon { font-size: 80px; margin-bottom: 28px; }
+.disc-label { font-size: 13px; font-weight: 700; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); margin-bottom: 22px; }
+.disc-q { font-family: 'Playfair Display', serif; font-size: clamp(32px,4.2vw,58px); font-weight: 700; color: var(--white); line-height: 1.35; }
+.disc-hint { font-size: 20px; color: rgba(255,255,255,.4); margin-top: 32px; font-style: italic; }
 
 /* card */
-.card { background: var(--off-white); border-radius: 14px; padding: 28px 32px; border-left: 5px solid transparent; transition: transform .2s, box-shadow .2s; cursor: default; }
+.card { background: var(--off-white); border-radius: 16px; padding: 30px 36px; border-left: 5px solid transparent; transition: transform .2s, box-shadow .2s; cursor: default; }
 .card:hover { transform: translateY(-4px); box-shadow: 0 14px 36px rgba(0,0,0,.1); }
 .card.navy { border-left-color: var(--navy); }
 .card.crimson { border-left-color: var(--crimson); }
 .card.gold { border-left-color: var(--gold); }
 .card.green { border-left-color: var(--green); }
-.card-title { font-size: 20px; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
-.card-body { font-size: 18px; color: var(--grey-dark); line-height: 1.65; }
+.card-title { font-size: 22px; font-weight: 800; color: var(--navy); margin-bottom: 10px; }
+.card-body { font-size: 19px; color: var(--grey-dark); line-height: 1.7; }
+
+/* prompt sample box */
+.prompt-box { background: #0b1628; border: 1px solid rgba(240,165,0,.3); border-radius: 14px; padding: 24px 28px; }
+.prompt-label { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.prompt-text { font-family: 'JetBrains Mono', monospace; font-size: 17px; color: rgba(255,255,255,.9); line-height: 1.8; }
 
 /* big quote mark */
 .qmark { font-family: 'Playfair Display', serif; font-size: 96px; color: var(--gold); line-height: .5; display: block; opacity: .6; }
@@ -1735,11 +1740,1261 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #0a0e24; f
   <div class="cite light">Source: Tableau Data Insights &amp; Balto Blog. AI Industry Examples &amp; Daily Life Impacts.</div>
 </div>
 
+
+<!-- ═══════════════════════════════════════════════
+     S52 — MODULE 3 SECTION BREAK
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s52" data-bg="dark">
+  <div class="sec-break">
+    <div class="ghost">03</div>
+    <svg class="grid-deco" viewBox="0 0 420 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="210" cy="300" r="180" stroke="white" stroke-width="1"/>
+      <circle cx="210" cy="300" r="120" stroke="white" stroke-width="1"/>
+      <circle cx="210" cy="300" r="60" stroke="white" stroke-width="1"/>
+      <line x1="30" y1="300" x2="390" y2="300" stroke="white" stroke-width="0.5" stroke-dasharray="4 6"/>
+      <line x1="210" y1="30" x2="210" y2="570" stroke="white" stroke-width="0.5" stroke-dasharray="4 6"/>
+      <line x1="80" y1="120" x2="340" y2="480" stroke="white" stroke-width="0.5" stroke-dasharray="4 6"/>
+      <line x1="340" y1="120" x2="80" y2="480" stroke="white" stroke-width="0.5" stroke-dasharray="4 6"/>
+    </svg>
+    <div class="content">
+      <div class="mod-num a1">● Module 3</div>
+      <div class="mod-title a2">AI in Education<br>&amp; the Philippines</div>
+      <div class="mod-sub a3">Applications, Perceptions &amp; Local Context</div>
+      <div class="mod-desc a4">From global applications reshaping classrooms worldwide to the very specific challenges and opportunities facing Philippine education — this module grounds AI fluency in the context that matters most to you as future educators.</div>
+    </div>
+    <div class="bot-bar"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S53 — 8 AI APPLICATIONS OVERVIEW
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s53" data-bg="dark">
+  <img class="img-full" src="resources/8-ai-applications.png" alt="8 AI Applications in Education">
+  <div class="img-overlay" style="background:linear-gradient(to right,rgba(10,14,36,.97) 0%,rgba(10,14,36,.82) 50%,rgba(10,14,36,.35) 100%);"></div>
+  <div class="img-content" style="padding:0 68px;justify-content:center;">
+    <div style="max-width:640px;">
+      <div class="a1" style="margin-bottom:14px;"><span style="font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5);">Module 3 › <span style="color:rgba(255,255,255,.75);">AI in Education</span></span></div>
+      <div class="slide-title white a2" style="margin-bottom:14px;">8 Ways AI is Transforming Education</div>
+      <div class="slide-sub white a3" style="margin-bottom:28px;">AI is shifting education from memorizing facts to unlocking full potential.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;" class="a4">
+        <div style="padding:13px 16px;background:rgba(255,255,255,.1);border-radius:10px;border-left:3px solid var(--gold);backdrop-filter:blur(6px);font-size:16px;font-weight:700;color:var(--white);">① Learning Personalization</div>
+        <div style="padding:13px 16px;background:rgba(255,255,255,.1);border-radius:10px;border-left:3px solid var(--gold-light);backdrop-filter:blur(6px);font-size:16px;font-weight:700;color:var(--white);">② Outcomes Prediction</div>
+        <div style="padding:13px 16px;background:rgba(255,255,255,.1);border-radius:10px;border-left:3px solid var(--crimson);backdrop-filter:blur(6px);font-size:16px;font-weight:700;color:var(--white);">③ Automating Teacher Tasks</div>
+        <div style="padding:13px 16px;background:rgba(255,255,255,.1);border-radius:10px;border-left:3px solid var(--crimson);backdrop-filter:blur(6px);font-size:16px;font-weight:700;color:var(--white);">④ Administrative Workflows</div>
+        <div style="padding:13px 16px;background:rgba(255,255,255,.1);border-radius:10px;border-left:3px solid var(--green);backdrop-filter:blur(6px);font-size:16px;font-weight:700;color:var(--white);">⑤ Special Needs Assistance</div>
+        <div style="padding:13px 16px;background:rgba(255,255,255,.1);border-radius:10px;border-left:3px solid var(--green);backdrop-filter:blur(6px);font-size:16px;font-weight:700;color:var(--white);">⑥ Resource Planning</div>
+        <div style="padding:13px 16px;background:rgba(255,255,255,.1);border-radius:10px;border-left:3px solid rgba(173,200,255,.6);backdrop-filter:blur(6px);font-size:16px;font-weight:700;color:var(--white);">⑦ Curriculum Design</div>
+        <div style="padding:13px 16px;background:rgba(255,255,255,.1);border-radius:10px;border-left:3px solid rgba(173,200,255,.6);backdrop-filter:blur(6px);font-size:16px;font-weight:700;color:var(--white);">⑧ Ongoing Assistance</div>
+      </div>
+    </div>
+    <div class="cite">Source: Itransition. AI in Education: 8 Use Cases &amp; Real-Life Examples (2024).</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S54 — ① LEARNING PERSONALIZATION & ② OUTCOMES PREDICTION
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s54" data-bg="light">
+  <div class="split split-40-60" style="height:100%;">
+    <div class="split-img" style="background:#deeeff;display:flex;align-items:center;justify-content:center;padding:30px;">
+      <img src="resources/learning-personalization.png" alt="Learning Personalization" style="max-width:100%;max-height:100%;object-fit:contain;">
+    </div>
+    <div style="display:flex;flex-direction:column;background:var(--white);height:100%;">
+      <div class="topbar"></div>
+      <div class="crumb a1">Module 3 › <span>Learning &amp; Prediction</span></div>
+      <div style="flex:1;padding:36px 48px;display:flex;flex-direction:column;gap:18px;overflow:hidden;">
+        <div class="slide-title a2" style="font-size:clamp(28px,3.5vw,48px);">Personalized Learning &amp; Outcome Prediction</div>
+        <div style="display:flex;flex-direction:column;gap:14px;flex:1;" class="a3">
+          <div style="background:var(--navy);border-radius:14px;padding:22px 26px;">
+            <div style="font-size:17px;font-weight:800;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;">① Learning Process Personalization</div>
+            <div style="font-size:18px;color:rgba(255,255,255,.85);line-height:1.7;">AI collects data on student interaction, exercise time, test results, and performance — then designs <strong style="color:var(--white);">personalized training pathways</strong> and adapts in real-time to each learner's pace and style.</div>
+          </div>
+          <div style="background:var(--off-white);border-radius:14px;padding:22px 26px;border-left:5px solid var(--gold);">
+            <div style="font-size:17px;font-weight:800;color:var(--navy);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;">② Learning Outcomes Prediction</div>
+            <div style="font-size:18px;color:var(--grey-dark);line-height:1.7;">AI analyzes academic performance, attitudes, and social conditions to <strong>identify at-risk students</strong> — those likely to drop out, miss deadlines, or struggle — before it's too late to intervene.</div>
+          </div>
+          <div style="background:var(--gold-pale);border-radius:12px;padding:16px 22px;border-left:5px solid var(--gold);">
+            <div style="font-size:18px;color:var(--navy);line-height:1.65;"><strong>Key Benefit:</strong> Enables <em>proactive</em> intervention rather than reactive responses to student struggles.</div>
+          </div>
+        </div>
+      </div>
+      <div class="cite light">Source: Itransition. AI in Education: 8 Use Cases &amp; Real-Life Examples (2024).</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S55 — ③ AUTOMATING TEACHER TASKS
+═══════════════════════════════════════════════ -->
+<div class="slide content-slide" id="s55" data-bg="light">
+  <div class="topbar"></div>
+  <div class="crumb a1">Module 3 › <span>Automating Teacher Tasks</span></div>
+  <div style="flex:1;padding:36px 60px;display:flex;flex-direction:column;gap:20px;">
+    <div class="slide-title a2">③ Automation of Mundane Teacher Tasks</div>
+    <div class="slide-sub a3">Giving teachers back the time they need for what truly matters — their students.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1;" class="a4">
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="card navy">
+          <div class="card-title">✅ Already Possible</div>
+          <div class="card-body">Test evaluation with grading software · Correcting multiple-choice and true-false exercises · Preliminary assessment of short written answers · Essay evaluation (evolving with LLMs)</div>
+        </div>
+        <div class="card gold">
+          <div class="card-title">📊 Administrative Automation</div>
+          <div class="card-body">Processing applications · Enrollment management · Facility scheduling · HR procedures · Digital correspondence — reducing paperwork so educators focus on teaching.</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div style="background:var(--navy);border-radius:14px;padding:28px 28px;flex:1;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:13px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;">McKinsey &amp; Company Data</div>
+          <div style="font-family:'Playfair Display',serif;font-size:clamp(22px,2.8vw,34px);font-weight:900;color:var(--white);line-height:1.2;margin-bottom:14px;">Significant hours can be reallocated via automation among K-12 teachers.</div>
+          <div style="font-size:17px;color:rgba(255,255,255,.65);line-height:1.65;">Research across Canada, Singapore, UK, and the US shows automation of routine tasks can free up major portions of a teacher's working week for student engagement.</div>
+        </div>
+        <div style="background:var(--gold-pale);border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:18px 24px;">
+          <div style="font-size:18px;color:var(--navy);line-height:1.65;"><strong>Key Benefit:</strong> Saves teacher time for more meaningful student interactions — the work only a human can do.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cite light">Source: Itransition (2024) &amp; McKinsey &amp; Company.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S56 — ④ ADMIN WORKFLOWS & ⑤ SPECIAL NEEDS
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s56" data-bg="light">
+  <div class="split split-60-40" style="height:100%;">
+    <div style="display:flex;flex-direction:column;background:var(--white);height:100%;">
+      <div class="topbar"></div>
+      <div class="crumb a1">Module 3 › <span>Admin &amp; Special Needs</span></div>
+      <div style="flex:1;padding:36px 48px;display:flex;flex-direction:column;gap:16px;overflow:hidden;">
+        <div class="slide-title a2" style="font-size:clamp(26px,3.2vw,46px);">Admin Workflows &amp; Inclusive Education</div>
+        <div style="display:flex;flex-direction:column;gap:14px;flex:1;" class="a3">
+          <div style="background:var(--off-white);border-radius:14px;padding:20px 24px;border-left:5px solid var(--navy);">
+            <div style="font-size:16px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;">④ Administrative Workflows</div>
+            <div style="font-size:17px;color:var(--grey-dark);line-height:1.7;">AI automates: student applications, enrollment, facility management, HR, recruiting, and digital correspondence. The UK's Department for Education partnered with Capgemini to speed up email follow-up rates — combining robotic process automation with AI.</div>
+          </div>
+          <div style="background:var(--off-white);border-radius:14px;padding:20px 24px;border-left:5px solid var(--green);">
+            <div style="font-size:16px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;">⑤ Assistance for Special Needs Students</div>
+            <div style="font-size:17px;color:var(--grey-dark);line-height:1.7;">AI provides tailored learning paths, accommodates accessibility requirements, and ensures equal opportunity. Example: AI-enabled text-to-speech reads instructional content aloud for students with visual impairments.</div>
+          </div>
+          <div style="background:var(--gold-pale);border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:16px 22px;">
+            <div style="font-size:18px;color:var(--navy);line-height:1.65;"><strong>Key Principle:</strong> AI democratizes education by addressing individual accessibility needs — no student left behind.</div>
+          </div>
+        </div>
+      </div>
+      <div class="cite light">Source: Itransition. AI in Education: 8 Use Cases &amp; Real-Life Examples (2024).</div>
+    </div>
+    <div class="split-img">
+      <img src="resources/admin-workflows.png" alt="Administrative Workflows">
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S57 — ⑥ ⑦ ⑧ RESOURCE PLANNING, CURRICULUM & ONGOING
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s57" data-bg="light">
+  <div class="split split-40-60" style="height:100%;">
+    <div class="split-img">
+      <img src="resources/resource-planning.png" alt="Resource Planning and Curriculum Design">
+    </div>
+    <div style="display:flex;flex-direction:column;background:var(--white);height:100%;">
+      <div class="topbar"></div>
+      <div class="crumb a1">Module 3 › <span>Planning, Curriculum &amp; Support</span></div>
+      <div style="flex:1;padding:32px 44px;display:flex;flex-direction:column;gap:14px;overflow:hidden;">
+        <div class="slide-title a2" style="font-size:clamp(24px,3vw,42px);">Resource, Curriculum &amp; Ongoing Support</div>
+        <div style="display:flex;flex-direction:column;gap:13px;flex:1;" class="a3">
+          <div class="card gold">
+            <div class="card-title">⑥ Resource Planning</div>
+            <div class="card-body">AI calculates the right amounts of food, learning materials, and supplies — ensuring timely purchase and delivery, quickly adapting to new conditions. Reduces human error in school operations.</div>
+          </div>
+          <div class="card navy">
+            <div class="card-title">⑦ Curriculum Design</div>
+            <div class="card-body">AI processes student progress, interests, and competencies to assess the effectiveness of pedagogical approaches and predict outcomes of different strategies — from individual lesson plans to national curriculum improvements.</div>
+          </div>
+          <div class="card green">
+            <div class="card-title">⑧ Ongoing Assistance During Learning</div>
+            <div class="card-body">ML-driven adaptive learning + NLP + virtual assistants provide <strong>24/7 non-judgmental support</strong>. Students can experiment freely, receive consistent feedback, and keep up with studies without fear of judgment.</div>
+          </div>
+        </div>
+      </div>
+      <div class="cite light">Source: Itransition. AI in Education: 8 Use Cases &amp; Real-Life Examples (2024).</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S58 — BENEFITS BY STAKEHOLDER
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s58" data-bg="light">
+  <div class="split split-40-60" style="height:100%;">
+    <div class="split-img">
+      <img src="resources/benefits-of-stakeholders.png" alt="Benefits for all stakeholders">
+    </div>
+    <div style="display:flex;flex-direction:column;background:var(--white);height:100%;">
+      <div class="topbar"></div>
+      <div class="crumb a1">Module 3 › <span>Benefits by Stakeholder</span></div>
+      <div style="flex:1;padding:32px 44px;display:flex;flex-direction:column;gap:14px;overflow:hidden;">
+        <div class="slide-title a2" style="font-size:clamp(26px,3.2vw,44px);">Who Benefits from AI in Education?</div>
+        <div style="display:flex;flex-direction:column;gap:13px;flex:1;" class="a3">
+          <div class="card navy">
+            <div class="card-title">🎓 Students</div>
+            <div class="card-body">Personalized learning experience · Instant feedback that develops critical thinking, problem-solving, and creativity · Greater control over their educational journey.</div>
+          </div>
+          <div class="card gold">
+            <div class="card-title">👩‍🏫 Educators</div>
+            <div class="card-body">Automated routine tasks → more time for strategic decisions · AI-generated insights on student interests help teachers make students feel valued and take targeted actions.</div>
+          </div>
+          <div class="card crimson">
+            <div class="card-title">👨‍👩‍👧 Parents</div>
+            <div class="card-body">Frequent, real-time insights into student progress allow timely intervention when children fall behind. <em>Students whose parents actively participate are more likely to excel academically.</em></div>
+          </div>
+          <div class="card green">
+            <div class="card-title">🏫 School Management</div>
+            <div class="card-body">Data-backed analyses of performance trends · Optimized resource allocation · Reduced staff turnover as teachers focus on engaging rather than administrative work.</div>
+          </div>
+        </div>
+      </div>
+      <div class="cite light">Source: Itransition. AI in Education: 8 Use Cases &amp; Real-Life Examples (2024).</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S59 — REAL-LIFE AI EDUCATION TOOLS
+═══════════════════════════════════════════════ -->
+<div class="slide content-slide" id="s59" data-bg="light">
+  <div class="topbar"></div>
+  <div class="crumb a1">Module 3 › <span>Real-Life AI Tools</span></div>
+  <div style="flex:1;padding:28px 52px;display:flex;flex-direction:column;gap:16px;">
+    <div class="slide-title a2">AI in Education — Real-Life Examples</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;flex:1;" class="a3">
+      <!-- Duolingo -->
+      <div style="display:flex;gap:18px;align-items:flex-start;background:var(--off-white);border-radius:16px;padding:22px;border-top:4px solid #58CC02;">
+        <img src="resources/duolingo.png" alt="Duolingo" style="width:72px;height:72px;object-fit:cover;border-radius:12px;flex-shrink:0;">
+        <div>
+          <div style="font-size:20px;font-weight:800;color:var(--navy);margin-bottom:6px;">Duolingo</div>
+          <div style="font-size:16px;color:var(--grey-dark);line-height:1.65;">AI-powered language learning that positions initial tests to scan skills, then progressively adjusts difficulty based on previous performance. Points-based rewards maintain engagement while keeping challenge optimal.</div>
+        </div>
+      </div>
+      <!-- Khanmigo (CSS) -->
+      <div style="display:flex;gap:18px;align-items:flex-start;background:var(--off-white);border-radius:16px;padding:22px;border-top:4px solid var(--navy);">
+        <div style="width:72px;height:72px;border-radius:12px;background:var(--navy);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="white"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <div style="font-size:20px;font-weight:800;color:var(--navy);margin-bottom:6px;">Khanmigo <span style="font-size:13px;font-weight:600;color:var(--grey-mid);">(Khan Academy)</span></div>
+          <div style="font-size:16px;color:var(--grey-dark);line-height:1.65;">AI tutor powered by GPT-4. Students get personalized math, writing, and coding help. Teachers generate lesson plans. Parents monitor progress and receive subject explanations. Available 24/7.</div>
+        </div>
+      </div>
+      <!-- Dragon -->
+      <div style="display:flex;gap:18px;align-items:flex-start;background:var(--off-white);border-radius:16px;padding:22px;border-top:4px solid var(--crimson);">
+        <img src="resources/dragon.png" alt="Dragon NaturallySpeaking" style="width:72px;height:72px;object-fit:contain;border-radius:12px;flex-shrink:0;background:white;padding:4px;">
+        <div>
+          <div style="font-size:20px;font-weight:800;color:var(--navy);margin-bottom:6px;">Nuance Dragon</div>
+          <div style="font-size:16px;color:var(--grey-dark);line-height:1.65;">Speech recognition transcribing up to 160 words per minute. Teachers cut time on lesson plans; students improve spelling and word recognition. Critical for learners with accessibility requirements.</div>
+        </div>
+      </div>
+      <!-- StepWise -->
+      <div style="display:flex;gap:18px;align-items:flex-start;background:var(--off-white);border-radius:16px;padding:22px;border-top:4px solid var(--green);">
+        <img src="resources/stepwise.png" alt="StepWise" style="width:72px;height:72px;object-fit:contain;border-radius:12px;flex-shrink:0;background:#e0f7f7;padding:4px;">
+        <div>
+          <div style="font-size:20px;font-weight:800;color:var(--navy);margin-bottom:6px;">StepWise <span style="font-size:13px;font-weight:600;color:var(--grey-mid);">(Querium)</span></div>
+          <div style="font-size:16px;color:var(--grey-dark);line-height:1.65;">AI-powered STEM platform using ML analytics to assess progress, provide personalized instructions, and uncover difficult concepts. Features adaptive quizzes and real-time feedback.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cite light">Source: Itransition. AI in Education: 8 Use Cases &amp; Real-Life Examples (2024).</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S60 — AI IN THE PHILIPPINES — BRIDGE
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s60" data-bg="dark">
+  <img class="img-full" src="resources/ai-in-philippines.png" alt="AI in the Philippines">
+  <div class="img-overlay" style="background:linear-gradient(to bottom, rgba(10,14,36,.8) 0%, rgba(10,14,36,.5) 35%, rgba(10,14,36,.92) 100%);"></div>
+  <div class="img-content" style="align-items:center;justify-content:flex-end;text-align:center;padding:0 100px 80px;">
+    <div style="max-width:780px;">
+      <div style="font-size:12px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;" class="a2">Philippine Context</div>
+      <div class="slide-title white a3" style="margin-bottom:18px;">AI in Philippine Education</div>
+      <div class="slide-sub white a4" style="margin-bottom:28px;">A narrative review of 43 scholarly studies (2018–2025) examining how AI is being adopted — and the unique challenges — in Philippine educational settings.</div>
+      <div style="display:flex;gap:24px;justify-content:center;" class="a5">
+        <div style="background:rgba(240,165,0,.2);border:1px solid rgba(240,165,0,.4);border-radius:12px;padding:16px 28px;backdrop-filter:blur(8px);">
+          <div style="font-family:'Playfair Display',serif;font-size:36px;font-weight:900;color:var(--gold);">43</div>
+          <div style="font-size:14px;color:rgba(255,255,255,.7);margin-top:4px;">Studies Reviewed</div>
+        </div>
+        <div style="background:rgba(192,57,43,.2);border:1px solid rgba(192,57,43,.4);border-radius:12px;padding:16px 28px;backdrop-filter:blur(8px);">
+          <div style="font-family:'Playfair Display',serif;font-size:36px;font-weight:900;color:#ff8a7a;">2018–2025</div>
+          <div style="font-size:14px;color:rgba(255,255,255,.7);margin-top:4px;">Research Period</div>
+        </div>
+        <div style="background:rgba(45,125,50,.2);border:1px solid rgba(45,125,50,.4);border-radius:12px;padding:16px 28px;backdrop-filter:blur(8px);">
+          <div style="font-family:'Playfair Display',serif;font-size:36px;font-weight:900;color:#7fe87f;">69.8%</div>
+          <div style="font-size:14px;color:rgba(255,255,255,.7);margin-top:4px;">Studies from 2023–2025</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cite">Source: Co, S.J. (2025). AI in Philippine Education: A Narrative Review. Far Eastern University.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S61 — CURRENT AI APPLICATIONS IN PH EDUCATION
+═══════════════════════════════════════════════ -->
+<div class="slide content-slide" id="s61" data-bg="light">
+  <div class="topbar" style="background:linear-gradient(90deg,var(--crimson),var(--gold));"></div>
+  <div class="crumb a1" style="border-bottom-color:rgba(192,57,43,.2);">🇵🇭 Philippine Context › <span>Current AI Applications</span></div>
+  <div style="flex:1;padding:32px 60px;display:flex;flex-direction:column;gap:18px;">
+    <div class="slide-title a2">AI Applications in Philippine Education</div>
+    <div class="slide-sub a3">Implementation is growing — but concentrated in urban higher education.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1;" class="a4">
+      <div class="card navy">
+        <div class="card-title">🎓 Higher Education</div>
+        <div class="card-body">Universities have deployed AI-enhanced LMS with personalized pathways. ChatGPT is used for second language writing (Barrot, 2024) and literature reviews in STEM disciplines. Implementation is largely experimental and course-specific.</div>
+      </div>
+      <div class="card gold">
+        <div class="card-title">🏫 K–12 Level</div>
+        <div class="card-body">AI applications are more limited. A pilot of AI-driven personalized learning in science at select urban secondary schools showed improved engagement — but significant challenges in scaling. Elementary schools show minimal implementation (Fontanilla et al., 2023).</div>
+      </div>
+      <div class="card crimson">
+        <div class="card-title">⚙️ Administrative Use</div>
+        <div class="card-body">AI automates scheduling, document processing, and preliminary admission assessments across both K-12 and HEIs. Efficiency gains noted, but data privacy and security remain key concerns (Ramos et al., 2024).</div>
+      </div>
+      <div class="card green">
+        <div class="card-title">🔬 Research Tools</div>
+        <div class="card-body">Widespread adoption of ChatGPT for literature reviews and initial data analysis among library science and STEM students (Bula et al., 2025). Machine learning is increasingly incorporated into research methodologies.</div>
+      </div>
+    </div>
+  </div>
+  <div class="cite light">Source: Co, S.J. (2025). AI in Philippine Education: A Narrative Review.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S62 — TEACHER PERCEPTIONS IN THE PHILIPPINES
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s62" data-bg="light">
+  <div class="split split-40-60" style="height:100%;">
+    <div class="split-img">
+      <img src="resources/teacher-perception.png" alt="Filipino Teacher in Classroom">
+    </div>
+    <div style="display:flex;flex-direction:column;background:var(--white);height:100%;">
+      <div class="topbar" style="background:linear-gradient(90deg,var(--crimson),var(--gold));"></div>
+      <div class="crumb a1" style="border-bottom-color:rgba(192,57,43,.2);">🇵🇭 Philippine Context › <span>Teacher Perceptions</span></div>
+      <div style="flex:1;padding:32px 44px;display:flex;flex-direction:column;gap:14px;overflow:hidden;">
+        <div class="slide-title a2" style="font-size:clamp(26px,3vw,42px);">How Filipino Teachers View AI</div>
+        <div style="font-size:17px;font-weight:700;color:var(--crimson);letter-spacing:.05em;" class="a3">Mixed attitudes — enthusiasm alongside real concerns</div>
+        <div style="display:flex;flex-direction:column;gap:12px;flex:1;" class="a4">
+          <div style="padding:14px 18px;background:var(--off-white);border-radius:12px;border-left:4px solid var(--navy);">
+            <div style="font-size:16px;color:var(--grey-dark);line-height:1.65;"><strong style="color:var(--navy);">Strong confidence despite minimal preparation</strong> — 25 educators at Abueg National High School showed high confidence with little structured training (Sumandal, 2024).</div>
+          </div>
+          <div style="padding:14px 18px;background:var(--off-white);border-radius:12px;border-left:4px solid var(--gold);">
+            <div style="font-size:16px;color:var(--grey-dark);line-height:1.65;"><strong style="color:var(--navy);">Moderate awareness, positive attitudes</strong> — but concerns about overreliance on AI in instruction (Goli-Cruz, 2024).</div>
+          </div>
+          <div style="padding:14px 18px;background:var(--off-white);border-radius:12px;border-left:4px solid var(--crimson);">
+            <div style="font-size:16px;color:var(--grey-dark);line-height:1.65;"><strong style="color:var(--navy);">Significant reservations</strong> about academic integrity and the fear of AI replacing instructional roles — especially among older faculty (Candilas et al., 2025; Suello et al., 2024).</div>
+          </div>
+          <div style="padding:14px 18px;background:var(--gold-pale);border-radius:12px;border-left:4px solid var(--gold);">
+            <div style="font-size:16px;color:var(--grey-dark);line-height:1.65;"><strong style="color:var(--navy);">Critical Gap (TPACK Framework):</strong> Technical knowledge is developing, but <strong>pedagogical integration remains a significant challenge</strong> among pre-service teachers (Bautista et al., 2024).</div>
+          </div>
+        </div>
+      </div>
+      <div class="cite light">Source: Co, S.J. (2025). AI in Philippine Education: A Narrative Review.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S63 — STUDENT PERCEPTIONS IN THE PHILIPPINES
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s63" data-bg="light">
+  <div class="split split-60-40" style="height:100%;">
+    <div style="display:flex;flex-direction:column;background:var(--white);height:100%;">
+      <div class="topbar" style="background:linear-gradient(90deg,var(--crimson),var(--gold));"></div>
+      <div class="crumb a1" style="border-bottom-color:rgba(192,57,43,.2);">🇵🇭 Philippine Context › <span>Student Perceptions</span></div>
+      <div style="flex:1;padding:32px 48px;display:flex;flex-direction:column;gap:14px;overflow:hidden;">
+        <div class="slide-title a2" style="font-size:clamp(26px,3vw,44px);">How Filipino Students View AI</div>
+        <div style="font-size:17px;font-weight:700;color:var(--green);" class="a3">Generally more positive than faculty — but with nuance</div>
+        <div style="display:flex;flex-direction:column;gap:12px;flex:1;" class="a4">
+          <div style="padding:14px 18px;background:var(--off-white);border-radius:12px;border-left:4px solid var(--green);">
+            <div style="font-size:16px;color:var(--grey-dark);line-height:1.65;"><strong style="color:var(--navy);">Reduced cognitive load</strong> — Students using ChatGPT for academic support reported reduced stress and enhanced learning efficiency (Patac &amp; Patac, 2025).</div>
+          </div>
+          <div style="padding:14px 18px;background:var(--off-white);border-radius:12px;border-left:4px solid var(--navy);">
+            <div style="font-size:16px;color:var(--grey-dark);line-height:1.65;"><strong style="color:var(--navy);">STEM vs. Humanities divide</strong> — Secondary students showed greater enthusiasm for AI in STEM; humanities students raised concerns about creativity and critical thinking (Suarez et al., 2025).</div>
+          </div>
+          <div style="padding:14px 18px;background:var(--off-white);border-radius:12px;border-left:4px solid var(--gold);">
+            <div style="font-size:16px;color:var(--grey-dark);line-height:1.65;"><strong style="color:var(--navy);">Awareness varies by program</strong> — Technology-focused majors showed greater AI awareness and positive perceptions (Villarosa, 2024).</div>
+          </div>
+          <div style="padding:14px 18px;background:var(--gold-pale);border-radius:12px;border-left:4px solid var(--crimson);">
+            <div style="font-size:16px;color:var(--grey-dark);line-height:1.65;"><strong style="color:var(--crimson);">Caution:</strong> Moderate AI integration yielded positive outcomes, but <strong>overreliance raises concerns about skill development</strong> (Bancoro, 2024).</div>
+          </div>
+        </div>
+      </div>
+      <div class="cite light">Source: Co, S.J. (2025). AI in Philippine Education: A Narrative Review.</div>
+    </div>
+    <div class="split-img">
+      <img src="resources/students-perception.png" alt="Filipino Students">
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S64 — PH CHALLENGE: INFRASTRUCTURE & DIGITAL DIVIDE
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s64" data-bg="light">
+  <div class="split split-40-60" style="height:100%;">
+    <div class="split-img">
+      <img src="resources/ph-challenge-infrastructure.png" alt="Philippines Infrastructure Challenge">
+    </div>
+    <div style="display:flex;flex-direction:column;background:var(--white);height:100%;">
+      <div class="topbar" style="background:linear-gradient(90deg,var(--crimson),var(--gold));"></div>
+      <div class="crumb a1" style="border-bottom-color:rgba(192,57,43,.2);">🇵🇭 Philippine Context › <span>Challenge: Infrastructure</span></div>
+      <div style="flex:1;padding:32px 44px;display:flex;flex-direction:column;gap:14px;overflow:hidden;">
+        <div class="slide-title a2" style="font-size:clamp(24px,2.8vw,40px);">Challenge 1: Infrastructure &amp; Digital Divide</div>
+        <div style="display:flex;flex-direction:column;gap:12px;flex:1;" class="a3">
+          <div style="padding:16px 20px;background:var(--off-white);border-radius:12px;border-left:4px solid var(--crimson);">
+            <div style="font-size:17px;font-weight:700;color:var(--navy);margin-bottom:6px;">🌐 Connectivity &amp; Hardware</div>
+            <div style="font-size:16px;color:var(--grey-dark);line-height:1.65;">Significant infrastructure limitations in remote regions with restricted network access (Melchor et al., 2023). Rural HEIs face substantial challenges due to connectivity issues and outdated hardware (Villarino, 2025).</div>
+          </div>
+          <div style="padding:16px 20px;background:var(--off-white);border-radius:12px;border-left:4px solid var(--gold);">
+            <div style="font-size:17px;font-weight:700;color:var(--navy);margin-bottom:6px;">💰 Funding Constraints</div>
+            <div style="font-size:16px;color:var(--grey-dark);line-height:1.65;">High costs of AI acquisition, deployment, and maintenance are significant challenges for public institutions — resulting in piecemeal rather than systematic implementation (Digo et al., 2024).</div>
+          </div>
+          <div style="padding:16px 20px;background:var(--gold-pale);border-radius:12px;border-left:4px solid var(--crimson);">
+            <div style="font-size:17px;font-weight:700;color:var(--crimson);margin-bottom:6px;">🗺️ Urban-Rural Digital Divide</div>
+            <div style="font-size:16px;color:var(--grey-dark);line-height:1.65;">Urban schools in Zamboanga Peninsula demonstrate far greater AI adoption rates than rural counterparts (Balasa et al., 2025; Diaz, 2025). This pattern is consistent across multiple regions — a critical equity concern.</div>
+          </div>
+        </div>
+      </div>
+      <div class="cite light">Source: Co, S.J. (2025). AI in Philippine Education: A Narrative Review.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S65 — PH CHALLENGE: KNOWLEDGE, ETHICS & POLICY
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s65" data-bg="light">
+  <div class="split split-60-40" style="height:100%;">
+    <div style="display:flex;flex-direction:column;background:var(--white);height:100%;">
+      <div class="topbar" style="background:linear-gradient(90deg,var(--crimson),var(--gold));"></div>
+      <div class="crumb a1" style="border-bottom-color:rgba(192,57,43,.2);">🇵🇭 Philippine Context › <span>Challenge: Knowledge &amp; Policy</span></div>
+      <div style="flex:1;padding:32px 44px;display:flex;flex-direction:column;gap:13px;overflow:hidden;">
+        <div class="slide-title a2" style="font-size:clamp(22px,2.6vw,38px);">Challenge 2 &amp; 3: Knowledge Gaps, Ethics &amp; Policy</div>
+        <div style="display:flex;flex-direction:column;gap:11px;flex:1;" class="a3">
+          <div style="padding:14px 18px;background:var(--off-white);border-radius:12px;border-left:4px solid var(--navy);">
+            <div style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:5px;">📚 Knowledge &amp; Skills Gaps</div>
+            <div style="font-size:15px;color:var(--grey-dark);line-height:1.65;">Pre-service teachers' AI adoption restricted by perceived difficulty and lack of training (Alejandro et al., 2024). Teachers with specific ChatGPT training showed significantly greater integration and effectiveness (De Jesus, 2024).</div>
+          </div>
+          <div style="padding:14px 18px;background:var(--off-white);border-radius:12px;border-left:4px solid var(--crimson);">
+            <div style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:5px;">⚖️ Academic Integrity &amp; Data Privacy</div>
+            <div style="font-size:15px;color:var(--grey-dark);line-height:1.65;">Significant ethical concerns around plagiarism in AI-assisted academic writing (Gustilo et al., 2023). Students expressed data privacy concerns despite positive perceptions. Language barriers also impede use of primarily English-designed AI tools (Candilas, 2025).</div>
+          </div>
+          <div style="padding:14px 18px;background:var(--off-white);border-radius:12px;border-left:4px solid var(--gold);">
+            <div style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:5px;">📋 Policy &amp; Governance Gaps</div>
+            <div style="font-size:15px;color:var(--grey-dark);line-height:1.65;">Clear absence of institutional AI regulations (Bongcac &amp; Pabalan, 2024). Inconsistent approaches across institutions and lack of national guidance — creating uncertainty for educators seeking to implement AI responsibly (Piedad et al., 2025).</div>
+          </div>
+          <div style="padding:14px 18px;background:var(--gold-pale);border-radius:12px;border-left:4px solid var(--gold);">
+            <div style="font-size:15px;color:var(--grey-dark);line-height:1.65;"><strong style="color:var(--navy);">Cultural gap:</strong> Many AI systems were not designed with Filipino cultural contexts in mind, potentially limiting effectiveness (Calizo &amp; Bauyot, 2025).</div>
+          </div>
+        </div>
+      </div>
+      <div class="cite light">Source: Co, S.J. (2025). AI in Philippine Education: A Narrative Review.</div>
+    </div>
+    <div class="split-img">
+      <img src="resources/ph-challege-knowledge-gaps.png" alt="Philippines Knowledge Gaps Challenge">
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S66 — 3 KEY RECOMMENDATIONS FOR PHILIPPINE AI EDUCATION
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s66" data-bg="dark" style="background:var(--navy-dark);display:flex;flex-direction:column;height:100%;">
+  <div style="height:5px;background:linear-gradient(90deg,var(--crimson),var(--gold),var(--green));flex-shrink:0;"></div>
+  <div style="flex:1;padding:44px 72px;display:flex;flex-direction:column;gap:24px;">
+    <div style="font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);" class="a1">🇵🇭 Philippine Context — Key Recommendations</div>
+    <div style="font-family:'Playfair Display',serif;font-size:clamp(32px,4vw,54px);font-weight:900;color:var(--white);line-height:1.05;" class="a2">3 Urgent Priorities for<br>Philippine AI Education</div>
+    <div style="display:flex;flex-direction:column;gap:18px;flex:1;" class="a3">
+      <div style="display:flex;gap:20px;align-items:flex-start;padding:24px 28px;background:rgba(192,57,43,.15);border:1px solid rgba(192,57,43,.3);border-radius:16px;backdrop-filter:blur(8px);">
+        <div style="font-family:'Playfair Display',serif;font-size:52px;font-weight:900;color:var(--crimson);line-height:1;flex-shrink:0;">1</div>
+        <div>
+          <div style="font-size:20px;font-weight:800;color:var(--white);margin-bottom:8px;">Develop a National AI Education Policy</div>
+          <div style="font-size:17px;color:rgba(255,255,255,.75);line-height:1.7;">Address current regulatory gaps · Reduce uncertainty impeding systematic implementation · Provide clear guidance for institutions on responsible AI use and academic integrity.</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:20px;align-items:flex-start;padding:24px 28px;background:rgba(240,165,0,.12);border:1px solid rgba(240,165,0,.25);border-radius:16px;backdrop-filter:blur(8px);">
+        <div style="font-family:'Playfair Display',serif;font-size:52px;font-weight:900;color:var(--gold);line-height:1;flex-shrink:0;">2</div>
+        <div>
+          <div style="font-size:20px;font-weight:800;color:var(--white);margin-bottom:8px;">Invest in Rural Digital Infrastructure</div>
+          <div style="font-size:17px;color:rgba(255,255,255,.75);line-height:1.7;">Address the persistent urban-rural digital divide · Prevent deepening of existing educational inequalities · Ensure equitable access to AI-enhanced learning for all Filipino students.</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:20px;align-items:flex-start;padding:24px 28px;background:rgba(45,125,50,.15);border:1px solid rgba(45,125,50,.3);border-radius:16px;backdrop-filter:blur(8px);">
+        <div style="font-family:'Playfair Display',serif;font-size:52px;font-weight:900;color:#7fe87f;line-height:1;flex-shrink:0;">3</div>
+        <div>
+          <div style="font-size:20px;font-weight:800;color:var(--white);margin-bottom:8px;">Comprehensive Professional Development</div>
+          <div style="font-size:17px;color:rgba(255,255,255,.75);line-height:1.7;">Bridge critical knowledge gaps among educators · Move beyond technical training · Incorporate pedagogical frameworks for effective, responsible AI integration in the classroom.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cite">Source: Co, S.J. (2025). AI in Philippine Education: A Narrative Review.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S67 — AI ADVANTAGES — PRACTICAL BENEFITS
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s67" data-bg="light">
+  <div class="split split-40-60" style="height:100%;">
+    <div class="split-img">
+      <img src="resources/ai-advantages.png" alt="AI Advantages">
+    </div>
+    <div style="display:flex;flex-direction:column;background:var(--white);height:100%;">
+      <div class="topbar"></div>
+      <div class="crumb a1">Module 3 › <span>AI Advantages</span></div>
+      <div style="flex:1;padding:32px 44px;display:flex;flex-direction:column;gap:14px;overflow:hidden;">
+        <div class="slide-title a2" style="font-size:clamp(26px,3vw,44px);">The Advantages of AI</div>
+        <div style="font-size:17px;color:var(--grey-mid);font-weight:600;" class="a3">Practical benefits — where AI clearly delivers value</div>
+        <div style="display:flex;flex-direction:column;gap:12px;flex:1;" class="a4">
+          <div style="padding:14px 18px;background:var(--off-white);border-radius:12px;border-left:4px solid var(--navy);">
+            <div style="font-size:17px;font-weight:800;color:var(--navy);margin-bottom:5px;">⚡ Increased Efficiency</div>
+            <div style="font-size:15px;color:var(--grey-dark);line-height:1.65;">AI handles mundane, high-volume tasks — categorizing support tickets, extracting data from documents, composing simple responses — while humans focus on judgment-intensive work.</div>
+          </div>
+          <div style="padding:14px 18px;background:var(--off-white);border-radius:12px;border-left:4px solid var(--gold);">
+            <div style="font-size:17px;font-weight:800;color:var(--navy);margin-bottom:5px;">🕐 24/7 Availability</div>
+            <div style="font-size:15px;color:var(--grey-dark);line-height:1.65;">AI monitors systems continuously, responds to queries, and provides basic support outside working hours — filling gaps when humans are unavailable, not replacing them.</div>
+          </div>
+          <div style="padding:14px 18px;background:var(--off-white);border-radius:12px;border-left:4px solid var(--green);">
+            <div style="font-size:17px;font-weight:800;color:var(--navy);margin-bottom:5px;">✅ Reduced Human Error</div>
+            <div style="font-size:15px;color:var(--grey-dark);line-height:1.65;">AI catches routine errors in data entry, record matching, and consistency checks — especially when humans are tired or working with inconsistent data. Humans handle exceptions and approvals.</div>
+          </div>
+          <div style="padding:14px 18px;background:var(--off-white);border-radius:12px;border-left:4px solid var(--crimson);">
+            <div style="font-size:17px;font-weight:800;color:var(--navy);margin-bottom:5px;">📊 Better Decision-Making</div>
+            <div style="font-size:15px;color:var(--grey-dark);line-height:1.65;">AI scans large amounts of data and spots patterns humans might miss — especially when signals are spread across time or involve many variables. AI provides insights; humans make strategic decisions.</div>
+          </div>
+        </div>
+      </div>
+      <div class="cite light">Source: Simplilearn. Advantages and Disadvantages of AI (Updated March 2026).</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S68 — AI ADVANTAGES — EXPERT VOICES (VIRGINIA TECH)
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s68" data-bg="light">
+  <div class="split split-60-40" style="height:100%;">
+    <div style="display:flex;flex-direction:column;background:var(--white);height:100%;">
+      <div class="topbar"></div>
+      <div class="crumb a1">Module 3 › <span>AI Advantages — Expert Voices</span></div>
+      <div style="flex:1;padding:32px 48px;display:flex;flex-direction:column;gap:14px;overflow:hidden;">
+        <div class="slide-title a2" style="font-size:clamp(24px,2.8vw,40px);">What Experts Say About AI's Benefits</div>
+        <div style="display:flex;flex-direction:column;gap:13px;flex:1;" class="a3">
+          <div style="padding:16px 20px;background:var(--off-white);border-radius:12px;border-left:4px solid var(--navy);">
+            <div style="font-size:15px;font-weight:700;color:var(--gold);margin-bottom:6px;">Dylan Losey — Mechanical Engineering, Virginia Tech</div>
+            <div style="font-size:16px;font-style:italic;color:var(--grey-dark);line-height:1.65;">"AI and robotics can open doors for people living with physical disabilities — assistive robot arms, mobile wheelchairs, autonomous vehicles, and rehabilitation robots all promise a higher quality of life."</div>
+          </div>
+          <div style="padding:16px 20px;background:var(--off-white);border-radius:12px;border-left:4px solid var(--gold);">
+            <div style="font-size:15px;font-weight:700;color:var(--gold);margin-bottom:6px;">Eugenia Rho — Computer Science, Virginia Tech</div>
+            <div style="font-size:16px;font-style:italic;color:var(--grey-dark);line-height:1.65;">"LLMs are transforming our interactions with technologies. Imagine having a resource — not quite a friend but a helpful tool — ready to assist when you need insights or a different perspective. They are still tools, not replacements."</div>
+          </div>
+          <div style="padding:16px 20px;background:var(--off-white);border-radius:12px;border-left:4px solid var(--green);">
+            <div style="font-size:15px;font-weight:700;color:var(--gold);margin-bottom:6px;">Walid Saad — Electrical &amp; Computer Engineering, Virginia Tech</div>
+            <div style="font-size:16px;font-style:italic;color:var(--grey-dark);line-height:1.65;">"AI-endowed devices can parse through billions of data points in milliseconds — a task that would otherwise require decades for a human operator. Technologies we take for granted — home assistants, recommendation systems, robotics — could not exist without AI."</div>
+          </div>
+        </div>
+      </div>
+      <div class="cite light">Source: Virginia Tech Engineering Magazine. AI — The Good, The Bad, and The Scary (Fall 2023).</div>
+    </div>
+    <div class="split-img">
+      <img src="resources/ai-advantages-2.png" alt="AI Advantages Expert">
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S69 — AI DISADVANTAGES
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s69" data-bg="light">
+  <div class="split split-40-60" style="height:100%;">
+    <div class="split-img">
+      <img src="resources/ai-disadvantages.png" alt="AI Disadvantages">
+    </div>
+    <div style="display:flex;flex-direction:column;background:var(--white);height:100%;">
+      <div class="topbar" style="background:linear-gradient(90deg,var(--crimson),#8b1a0e);"></div>
+      <div class="crumb a1">Module 3 › <span>AI Disadvantages</span></div>
+      <div style="flex:1;padding:32px 44px;display:flex;flex-direction:column;gap:14px;overflow:hidden;">
+        <div class="slide-title a2" style="font-size:clamp(26px,3vw,44px);">The Disadvantages of AI</div>
+        <div style="font-size:17px;color:var(--crimson);font-weight:600;" class="a3">Real risks that require honest awareness</div>
+        <div style="display:flex;flex-direction:column;gap:12px;flex:1;" class="a4">
+          <div style="padding:14px 18px;background:var(--off-white);border-radius:12px;border-left:4px solid var(--crimson);">
+            <div style="font-size:17px;font-weight:800;color:var(--navy);margin-bottom:5px;">💼 Job Displacement</div>
+            <div style="font-size:15px;color:var(--grey-dark);line-height:1.65;">AI automates entry-level, mundane roles — jobs may not be eliminated but significantly reduced. Remaining employees are required to handle more complex tasks, risking burnout if the nature of work doesn't evolve.</div>
+          </div>
+          <div style="padding:14px 18px;background:var(--off-white);border-radius:12px;border-left:4px solid var(--gold);">
+            <div style="font-size:17px;font-weight:800;color:var(--navy);margin-bottom:5px;">💸 High Cost of Implementation</div>
+            <div style="font-size:15px;color:var(--grey-dark);line-height:1.65;">AI is not just a product to purchase. Hidden costs include: data cleansing, integration, security analysis, model assessment, continuous monitoring, change management, and maintenance.</div>
+          </div>
+          <div style="padding:14px 18px;background:var(--off-white);border-radius:12px;border-left:4px solid var(--navy);">
+            <div style="font-size:17px;font-weight:800;color:var(--navy);margin-bottom:5px;">⚖️ Bias in Algorithms</div>
+            <div style="font-size:15px;color:var(--grey-dark);line-height:1.65;">Bias in training data is replicated — or amplified — by AI. Overall accuracy may look high while specific groups experience discriminatory outcomes in hiring, lending, or access to services.</div>
+          </div>
+          <div style="padding:14px 18px;background:var(--off-white);border-radius:12px;border-left:4px solid var(--grey-mid);">
+            <div style="font-size:17px;font-weight:800;color:var(--navy);margin-bottom:5px;">🔁 Over-Reliance on Technology</div>
+            <div style="font-size:15px;color:var(--grey-dark);line-height:1.65;">When teams over-rely on AI, critical thinking erodes, subject matter expertise fades, and small errors compound rapidly. Models also become outdated after system changes.</div>
+          </div>
+        </div>
+      </div>
+      <div class="cite light">Source: Simplilearn. Advantages and Disadvantages of AI (March 2026).</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S70 — THE SCARY SIDE — EXPERT WARNINGS
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s70" data-bg="dark">
+  <img class="img-full" src="resources/ai-scary-side.png" alt="The Scary Side of AI">
+  <div class="img-overlay" style="background:linear-gradient(to bottom, rgba(10,14,36,.85) 0%, rgba(10,14,36,.5) 35%, rgba(10,14,36,.92) 100%);"></div>
+  <div class="img-content" style="align-items:center;justify-content:center;padding:0 80px;text-align:center;">
+    <div style="max-width:860px;">
+      <div style="font-size:12px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--crimson);margin-bottom:14px;" class="a1">The "Scary" — Expert Warnings</div>
+      <div class="slide-title white a2" style="margin-bottom:24px;">AI's Darker Concerns</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;text-align:left;" class="a3">
+        <div style="background:rgba(192,57,43,.15);border:1px solid rgba(192,57,43,.3);border-radius:14px;padding:20px 22px;backdrop-filter:blur(8px);">
+          <div style="font-size:15px;font-weight:700;color:#ff8a7a;margin-bottom:8px;">Dylan Losey — Virginia Tech</div>
+          <div style="font-size:15px;font-style:italic;color:rgba(255,255,255,.8);line-height:1.65;">"We are already facing the negative outcomes of AI. Recommendation algorithms influence our viewing habits, purchasing decisions, political opinions, and social values. The consequences of AI are not a problem for future generations — they are the reality in front of us now."</div>
+        </div>
+        <div style="background:rgba(240,165,0,.12);border:1px solid rgba(240,165,0,.25);border-radius:14px;padding:20px 22px;backdrop-filter:blur(8px);">
+          <div style="font-size:15px;font-weight:700;color:var(--gold);margin-bottom:8px;">Eugenia Rho — Virginia Tech</div>
+          <div style="font-size:15px;font-style:italic;color:rgba(255,255,255,.8);line-height:1.65;">"One of the deeper concerns surrounding LLMs is the potential erosion of genuine human connection. Will we prefer consistent AI responses over unpredictable but genuine human conversation? Can AI be used to manipulate given its ability to generate convincing narratives?"</div>
+        </div>
+        <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:20px 22px;backdrop-filter:blur(8px);">
+          <div style="font-size:15px;font-weight:700;color:rgba(255,255,255,.7);margin-bottom:8px;">Ella Atkins — Virginia Tech</div>
+          <div style="font-size:15px;font-style:italic;color:rgba(255,255,255,.8);line-height:1.65;">"Perhaps the scariest of all is the very real potential for AI joining web data mining to mislead and misinform the next generation. How do we, as a species, distinguish fact from fiction when both are presented so similarly?"</div>
+        </div>
+        <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:20px 22px;backdrop-filter:blur(8px);">
+          <div style="font-size:15px;font-weight:700;color:rgba(255,255,255,.7);margin-bottom:8px;">Ali Shojaei — Virginia Tech</div>
+          <div style="font-size:15px;font-style:italic;color:rgba(255,255,255,.8);line-height:1.65;">"It's not a question of <em>if</em> people will lose jobs, but how to train the workforce for the new roles created by AI. Ethics and inclusion in AI development and deployment are crucial."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cite">Source: Virginia Tech Engineering Magazine. AI — The Good, The Bad, and The Scary (Fall 2023).</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S71 — SAFE AI CHECKLIST
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s71" data-bg="light">
+  <div class="split split-40-60" style="height:100%;">
+    <div class="split-img">
+      <img src="resources/ai-checklist.png" alt="AI Checklist">
+    </div>
+    <div style="display:flex;flex-direction:column;background:var(--white);height:100%;">
+      <div class="topbar"></div>
+      <div class="crumb a1">Module 3 › <span>The SAFE AI Checklist</span></div>
+      <div style="flex:1;padding:32px 44px;display:flex;flex-direction:column;gap:18px;justify-content:center;">
+        <div class="slide-title a2" style="font-size:clamp(26px,3vw,44px);">The SAFE AI Framework</div>
+        <div class="slide-sub a3">A practical checklist for navigating AI implementation responsibly.</div>
+        <div style="display:flex;flex-direction:column;gap:14px;flex:1;justify-content:center;" class="a4">
+          <div style="display:flex;align-items:center;gap:18px;padding:18px 22px;background:var(--navy);border-radius:14px;">
+            <div style="font-family:'Playfair Display',serif;font-size:48px;font-weight:900;color:var(--gold);flex-shrink:0;width:52px;text-align:center;">S</div>
+            <div><div style="font-size:18px;font-weight:800;color:var(--white);margin-bottom:4px;">Safeguards</div><div style="font-size:15px;color:rgba(255,255,255,.75);">Put governance, testing, and red-teaming in place before deployment.</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:18px;padding:18px 22px;background:var(--crimson);border-radius:14px;">
+            <div style="font-family:'Playfair Display',serif;font-size:48px;font-weight:900;color:var(--white);flex-shrink:0;width:52px;text-align:center;">A</div>
+            <div><div style="font-size:18px;font-weight:800;color:var(--white);margin-bottom:4px;">Accountability</div><div style="font-size:15px;color:rgba(255,255,255,.8);">Make humans clearly responsible for AI outcomes — especially in critical decisions.</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:18px;padding:18px 22px;background:var(--gold);border-radius:14px;">
+            <div style="font-family:'Playfair Display',serif;font-size:48px;font-weight:900;color:var(--navy);flex-shrink:0;width:52px;text-align:center;">F</div>
+            <div><div style="font-size:18px;font-weight:800;color:var(--navy);margin-bottom:4px;">Fairness</div><div style="font-size:15px;color:rgba(27,36,100,.8);">Continuously test for bias and performance gaps across all user groups.</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:18px;padding:18px 22px;background:var(--green);border-radius:14px;">
+            <div style="font-family:'Playfair Display',serif;font-size:48px;font-weight:900;color:var(--white);flex-shrink:0;width:52px;text-align:center;">E</div>
+            <div><div style="font-size:18px;font-weight:800;color:var(--white);margin-bottom:4px;">Education</div><div style="font-size:15px;color:rgba(255,255,255,.85);">Invest in AI literacy and upskilling so people know how to use — and question — AI systems.</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="cite light">Source: Simplilearn. Advantages and Disadvantages of AI (March 2026).</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S72 — MODULE 3 RECAP
+═══════════════════════════════════════════════ -->
+<div class="slide content-slide" id="s72" data-bg="light">
+  <div class="topbar"></div>
+  <div class="crumb a1">Module 3 › <span>Key Takeaways</span></div>
+  <div style="flex:1;padding:32px 60px;display:flex;flex-direction:column;gap:18px;">
+    <div class="slide-title a2">Module 3 — What We Learned</div>
+    <div class="slide-sub a3">AI in education is real, local, and full of both opportunity and responsibility.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;flex:1;" class="a4">
+      <div class="card navy">
+        <div class="card-title">📚 8 Applications</div>
+        <div class="card-body">AI transforms education through personalization, prediction, automation, accessibility, planning, curriculum design, and ongoing student support.</div>
+      </div>
+      <div class="card gold">
+        <div class="card-title">🇵🇭 Philippine Reality</div>
+        <div class="card-body">AI adoption in the Philippines is real but concentrated in urban HEIs. Digital divide, knowledge gaps, and policy absence are the most critical barriers to equitable implementation.</div>
+      </div>
+      <div class="card green">
+        <div class="card-title">✅ Real Benefits</div>
+        <div class="card-body">Efficiency, 24/7 availability, reduced error, and better decision-making — AI genuinely augments what educators and students can accomplish.</div>
+      </div>
+      <div class="card crimson">
+        <div class="card-title">⚠️ Real Risks</div>
+        <div class="card-body">Bias, job displacement, over-reliance, misinformation, and erosion of human connection are not hypothetical — they are already happening.</div>
+      </div>
+    </div>
+    <div style="background:var(--navy);border-radius:14px;padding:20px 28px;display:flex;align-items:center;gap:16px;" class="a5">
+      <div style="font-size:28px;flex-shrink:0;">💬</div>
+      <div style="font-size:18px;color:rgba(255,255,255,.9);line-height:1.65;"><strong style="color:var(--gold);">For You as Future Educators:</strong> Apply the SAFE framework — Safeguards, Accountability, Fairness, Education — every time you use or introduce AI in your classroom.</div>
+    </div>
+  </div>
+  <div class="cite light">Sources: Itransition (2024) · Co, S.J. (2025) · Simplilearn (2026) · Virginia Tech Engineering Magazine (2023).</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     S73 — MODULE 4 SECTION BREAK
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s73" data-bg="dark">
+  <div class="sec-break">
+    <div class="ghost">04</div>
+    <svg class="grid-deco" viewBox="0 0 420 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="60" y="60" width="300" height="480" rx="20" stroke="white" stroke-width="1"/>
+      <rect x="110" y="110" width="200" height="380" rx="12" stroke="white" stroke-width="0.5" stroke-dasharray="5 7"/>
+      <circle cx="210" cy="180" r="40" stroke="white" stroke-width="1"/>
+      <circle cx="210" cy="300" r="40" stroke="white" stroke-width="1"/>
+      <circle cx="210" cy="420" r="40" stroke="white" stroke-width="1"/>
+      <line x1="210" y1="220" x2="210" y2="260" stroke="white" stroke-width="1"/>
+      <line x1="210" y1="340" x2="210" y2="380" stroke="white" stroke-width="1"/>
+      <line x1="170" y1="180" x2="110" y2="180" stroke="white" stroke-width="0.5" stroke-dasharray="3 5"/>
+      <line x1="170" y1="300" x2="110" y2="300" stroke="white" stroke-width="0.5" stroke-dasharray="3 5"/>
+      <line x1="170" y1="420" x2="110" y2="420" stroke="white" stroke-width="0.5" stroke-dasharray="3 5"/>
+    </svg>
+    <div class="content">
+      <div class="mod-num a1">● Module 4</div>
+      <div class="mod-title a2">AI Fluency</div>
+      <div class="mod-sub a3">What It Means &amp; Why It Matters</div>
+      <div class="mod-desc a4">Being able to use AI tools is not the same as being fluent in AI. This module introduces a rigorous framework — and explores what it truly means to work with AI effectively, efficiently, ethically, and safely.</div>
+    </div>
+    <div class="bot-bar"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S74 — WHAT IS AI FLUENCY?
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s74" data-bg="dark">
+  <img class="img-full" src="04-ai-fluency/image.png" alt="AI changes how we communicate, create, learn, solve problems">
+  <div class="img-overlay" style="background:linear-gradient(to right,rgba(10,14,36,.96) 0%,rgba(10,14,36,.75) 50%,rgba(10,14,36,.2) 100%);"></div>
+  <div class="img-content" style="padding:0 80px;justify-content:center;">
+    <div style="max-width:620px;">
+      <div style="font-size:13px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:22px;" class="a1">Module 4 — AI Fluency</div>
+      <div style="font-family:'Playfair Display',serif;font-size:clamp(42px,5.5vw,76px);font-weight:900;color:var(--white);line-height:1.0;margin-bottom:24px;" class="a2">AI changes<br>how we…</div>
+      <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:32px;" class="a3">
+        <div style="display:flex;align-items:center;gap:16px;padding:16px 22px;background:rgba(255,255,255,.1);border-radius:12px;border-left:4px solid var(--gold);backdrop-filter:blur(6px);">
+          <span style="font-size:26px;">💬</span><span style="font-size:21px;font-weight:700;color:var(--white);">Communicate</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;padding:16px 22px;background:rgba(255,255,255,.1);border-radius:12px;border-left:4px solid var(--gold-light);backdrop-filter:blur(6px);">
+          <span style="font-size:26px;">✨</span><span style="font-size:21px;font-weight:700;color:var(--white);">Create</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;padding:16px 22px;background:rgba(255,255,255,.1);border-radius:12px;border-left:4px solid var(--crimson);backdrop-filter:blur(6px);">
+          <span style="font-size:26px;">📖</span><span style="font-size:21px;font-weight:700;color:var(--white);">Learn</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;padding:16px 22px;background:rgba(255,255,255,.1);border-radius:12px;border-left:4px solid var(--green);backdrop-filter:blur(6px);">
+          <span style="font-size:26px;">🧠</span><span style="font-size:21px;font-weight:700;color:var(--white);">Solve Problems</span>
+        </div>
+      </div>
+      <div style="font-size:20px;color:rgba(255,255,255,.55);font-style:italic;" class="a4">The question is no longer whether to use AI — but <em style="color:rgba(255,255,255,.85);">how fluently.</em></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S75 — FLUENT AI USE IS... (EFFECTIVE, EFFICIENT, ETHICAL, SAFE)
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s75" data-bg="light">
+  <div class="split split-50-50" style="height:100%;">
+    <div style="display:flex;flex-direction:column;background:var(--white);height:100%;">
+      <div class="topbar"></div>
+      <div class="crumb a1">Module 4 › <span>What is AI Fluency?</span></div>
+      <div style="flex:1;padding:48px 52px;display:flex;flex-direction:column;justify-content:center;gap:28px;">
+        <div>
+          <div style="font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;" class="a2">Definition</div>
+          <div style="font-family:'Playfair Display',serif;font-size:clamp(26px,3vw,42px);font-weight:700;font-style:italic;color:var(--navy);line-height:1.35;" class="a3">"AI Fluency is the ability to work <strong>effectively, efficiently, ethically, and safely</strong> within emerging modalities of Human-AI interaction."</div>
+          <div style="font-size:17px;color:var(--grey-mid);margin-top:16px;font-weight:600;" class="a4">— Dakan &amp; Feller, Framework for AI Fluency (2025)</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;" class="a5">
+          <div style="padding:20px 24px;background:var(--navy);border-radius:14px;text-align:center;">
+            <div style="font-size:32px;margin-bottom:8px;">🎯</div>
+            <div style="font-size:20px;font-weight:800;color:var(--white);">Effective</div>
+            <div style="font-size:15px;color:rgba(255,255,255,.65);margin-top:6px;">Gets real results</div>
+          </div>
+          <div style="padding:20px 24px;background:var(--gold);border-radius:14px;text-align:center;">
+            <div style="font-size:32px;margin-bottom:8px;">⚡</div>
+            <div style="font-size:20px;font-weight:800;color:var(--navy);">Efficient</div>
+            <div style="font-size:15px;color:rgba(27,36,100,.7);margin-top:6px;">Saves time &amp; effort</div>
+          </div>
+          <div style="padding:20px 24px;background:var(--green);border-radius:14px;text-align:center;">
+            <div style="font-size:32px;margin-bottom:8px;">⚖️</div>
+            <div style="font-size:20px;font-weight:800;color:var(--white);">Ethical</div>
+            <div style="font-size:15px;color:rgba(255,255,255,.75);margin-top:6px;">Responsible use</div>
+          </div>
+          <div style="padding:20px 24px;background:var(--crimson);border-radius:14px;text-align:center;">
+            <div style="font-size:32px;margin-bottom:8px;">🛡️</div>
+            <div style="font-size:20px;font-weight:800;color:var(--white);">Safe</div>
+            <div style="font-size:15px;color:rgba(255,255,255,.75);margin-top:6px;">Protects people</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="split-img">
+      <img src="04-ai-fluency/image-1.png" alt="Fluent AI Use is Effective, Efficient, Ethical, Safe">
+    </div>
+  </div>
+  <div class="cite light">Source: Dakan &amp; Feller (2025). Framework for AI Fluency v1.1. Ringling College / UCC.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S76 — THREE MODALITIES OVERVIEW
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s76" data-bg="light">
+  <div class="split split-50-50" style="height:100%;">
+    <div class="split-img">
+      <img src="04-ai-fluency/image-2.png" alt="Three ways to interact with AI">
+    </div>
+    <div style="display:flex;flex-direction:column;background:var(--white);height:100%;">
+      <div class="topbar"></div>
+      <div class="crumb a1">Module 4 › <span>Three Modalities of Human-AI Interaction</span></div>
+      <div style="flex:1;padding:44px 48px;display:flex;flex-direction:column;justify-content:center;gap:22px;">
+        <div class="slide-title a2" style="font-size:clamp(28px,3.2vw,46px);">Three Ways to Interact with AI</div>
+        <div style="display:flex;flex-direction:column;gap:16px;" class="a3">
+          <div style="padding:22px 26px;background:var(--navy);border-radius:16px;display:flex;gap:18px;align-items:flex-start;">
+            <div style="font-size:30px;flex-shrink:0;">🤖</div>
+            <div>
+              <div style="font-size:20px;font-weight:800;color:var(--gold);margin-bottom:6px;">Automation</div>
+              <div style="font-size:18px;color:rgba(255,255,255,.85);line-height:1.65;">AI does work for you following explicit instructions. Best for repetitive, time-consuming, or data-intensive tasks.</div>
+            </div>
+          </div>
+          <div style="padding:22px 26px;background:var(--off-white);border:2px solid var(--gold);border-radius:16px;display:flex;gap:18px;align-items:flex-start;">
+            <div style="font-size:30px;flex-shrink:0;">🤝</div>
+            <div>
+              <div style="font-size:20px;font-weight:800;color:var(--navy);margin-bottom:6px;">Augmentation</div>
+              <div style="font-size:18px;color:var(--grey-dark);line-height:1.65;">You and AI collaboratively co-define and co-execute tasks. Best for enhancing creativity and complex thinking.</div>
+            </div>
+          </div>
+          <div style="padding:22px 26px;background:var(--off-white);border:2px solid var(--crimson);border-radius:16px;display:flex;gap:18px;align-items:flex-start;">
+            <div style="font-size:30px;flex-shrink:0;">⚙️</div>
+            <div>
+              <div style="font-size:20px;font-weight:800;color:var(--navy);margin-bottom:6px;">Agency</div>
+              <div style="font-size:18px;color:var(--grey-dark);line-height:1.65;">You configure AI to work independently on future tasks — for yourself or others. Requires deep understanding of AI capabilities.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cite light">Source: Dakan &amp; Feller (2025). Framework for AI Fluency v1.1.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S77 — MODALITY 1: AUTOMATION + PROMPT EXAMPLE
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s77" data-bg="dark" style="background:var(--navy-dark);display:flex;flex-direction:column;height:100%;">
+  <div style="height:5px;background:linear-gradient(90deg,var(--navy),var(--gold));flex-shrink:0;"></div>
+  <div style="flex:1;padding:44px 72px;display:flex;flex-direction:column;gap:24px;">
+    <div class="a1"><span class="badge badge-gold">Modality 1 — Automation</span></div>
+    <div style="font-family:'Playfair Display',serif;font-size:clamp(36px,4.5vw,62px);font-weight:900;color:var(--white);line-height:1.05;" class="a2">🤖 AI Performs the Task</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;flex:1;" class="a3">
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div style="padding:24px 28px;background:rgba(255,255,255,.08);border-radius:16px;border-left:4px solid var(--gold);">
+          <div style="font-size:18px;font-weight:800;color:var(--gold);margin-bottom:10px;">Best For</div>
+          <div style="font-size:18px;color:rgba(255,255,255,.85);line-height:1.7;">Repetitive, time-consuming, or data-intensive tasks — anything with a clear, definable output where efficiency matters most.</div>
+        </div>
+        <div style="padding:24px 28px;background:rgba(255,255,255,.08);border-radius:16px;border-left:4px solid var(--crimson);">
+          <div style="font-size:18px;font-weight:800;color:var(--white);margin-bottom:10px;">Requirements</div>
+          <div style="font-size:18px;color:rgba(255,255,255,.85);line-height:1.7;">Clear task definition + quality control. You still review and verify the AI's output before using it.</div>
+        </div>
+        <div style="padding:24px 28px;background:rgba(255,255,255,.08);border-radius:16px;border-left:4px solid var(--green);">
+          <div style="font-size:18px;font-weight:800;color:var(--white);margin-bottom:10px;">Examples</div>
+          <div style="font-size:18px;color:rgba(255,255,255,.85);line-height:1.7;">Writing emails · Generating summaries · Creating basic quizzes · Drafting lesson objectives · Formatting documents</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div class="prompt-box" style="flex:1;">
+          <div class="prompt-label">💬 Prompt Example — Automation</div>
+          <div class="prompt-text">"Write a 5-item multiple-choice quiz about the causes of World War II for Grade 9 students. For each item, include: the question, four answer choices (A–D), the correct answer, and a one-sentence explanation."</div>
+        </div>
+        <div class="prompt-box" style="flex:1;">
+          <div class="prompt-label">💬 Prompt Example — Automation</div>
+          <div class="prompt-text">"Generate a sample parent letter announcing a science fair next Friday. Include the event purpose, student instructions, judging criteria, and a reminder to wear school uniform. Tone: warm and professional."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cite">Source: Dakan &amp; Feller (2025). Framework for AI Fluency v1.1.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S78 — MODALITY 2: AUGMENTATION + PROMPT EXAMPLE
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s78" data-bg="dark" style="background:#0f1f0f;display:flex;flex-direction:column;height:100%;">
+  <div style="height:5px;background:linear-gradient(90deg,var(--green),var(--gold));flex-shrink:0;"></div>
+  <div style="flex:1;padding:44px 72px;display:flex;flex-direction:column;gap:24px;">
+    <div class="a1"><span class="badge badge-gold">Modality 2 — Augmentation</span></div>
+    <div style="font-family:'Playfair Display',serif;font-size:clamp(36px,4.5vw,62px);font-weight:900;color:var(--white);line-height:1.05;" class="a2">🤝 AI Collaborates With You</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;flex:1;" class="a3">
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div style="padding:24px 28px;background:rgba(45,125,50,.2);border-radius:16px;border-left:4px solid var(--green);">
+          <div style="font-size:18px;font-weight:800;color:#7fe87f;margin-bottom:10px;">Best For</div>
+          <div style="font-size:18px;color:rgba(255,255,255,.85);line-height:1.7;">Enhancing creativity — AI acts as a <strong style="color:var(--white);">thinking partner</strong>. You bring vision and judgment; AI brings breadth, speed, and alternative perspectives.</div>
+        </div>
+        <div style="padding:24px 28px;background:rgba(255,255,255,.08);border-radius:16px;border-left:4px solid var(--gold);">
+          <div style="font-size:18px;font-weight:800;color:var(--white);margin-bottom:10px;">How It Works</div>
+          <div style="font-size:18px;color:rgba(255,255,255,.85);line-height:1.7;">Dynamic back-and-forth dialogue. You share your work, AI responds, you refine, AI improves — iteration is the key to great results.</div>
+        </div>
+        <div style="padding:24px 28px;background:rgba(255,255,255,.08);border-radius:16px;border-left:4px solid rgba(173,200,255,.5);">
+          <div style="font-size:18px;font-weight:800;color:var(--white);margin-bottom:10px;">Examples for Teachers</div>
+          <div style="font-size:18px;color:rgba(255,255,255,.85);line-height:1.7;">Developing lesson plans together · Refining instructional materials · Co-writing differentiated activities · Improving rubrics</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div class="prompt-box" style="flex:1;">
+          <div class="prompt-label">💬 Prompt Example — Augmentation</div>
+          <div class="prompt-text">"I'm developing a lesson on the Philippine Revolution for Grade 8 Social Studies. Here's my draft outline: [paste outline]. What important events or perspectives am I missing? Suggest two inquiry-based activities suited for a Filipino public school classroom."</div>
+        </div>
+        <div class="prompt-box" style="flex:1;">
+          <div class="prompt-label">💬 Iteration Follow-Up Prompt</div>
+          <div class="prompt-text">"Good, but the second activity you suggested requires internet access which my students don't have. Revise it into an offline, materials-free alternative. Keep the same learning objective."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cite">Source: Dakan &amp; Feller (2025). Framework for AI Fluency v1.1.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S79 — MODALITY 3: AGENCY + PROMPT EXAMPLE
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s79" data-bg="dark" style="background:#1a0a0a;display:flex;flex-direction:column;height:100%;">
+  <div style="height:5px;background:linear-gradient(90deg,var(--crimson),var(--gold));flex-shrink:0;"></div>
+  <div style="flex:1;padding:44px 72px;display:flex;flex-direction:column;gap:24px;">
+    <div class="a1"><span class="badge badge-gold">Modality 3 — Agency</span></div>
+    <div style="font-family:'Playfair Display',serif;font-size:clamp(36px,4.5vw,62px);font-weight:900;color:var(--white);line-height:1.05;" class="a2">⚙️ AI Acts Independently</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;flex:1;" class="a3">
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div style="padding:24px 28px;background:rgba(192,57,43,.18);border-radius:16px;border-left:4px solid var(--crimson);">
+          <div style="font-size:18px;font-weight:800;color:#ff8a7a;margin-bottom:10px;">What It Means</div>
+          <div style="font-size:18px;color:rgba(255,255,255,.85);line-height:1.7;">You configure AI to independently perform future tasks — for yourself or for others who will interact with the AI you set up. Think: building a tool, not just using one.</div>
+        </div>
+        <div style="padding:24px 28px;background:rgba(255,255,255,.08);border-radius:16px;border-left:4px solid var(--gold);">
+          <div style="font-size:18px;font-weight:800;color:var(--white);margin-bottom:10px;">Requirements</div>
+          <div style="font-size:18px;color:rgba(255,255,255,.85);line-height:1.7;">Sophisticated understanding of AI capabilities and limitations. You are responsible for how the AI behaves with others.</div>
+        </div>
+        <div style="padding:24px 28px;background:rgba(255,255,255,.08);border-radius:16px;border-left:4px solid rgba(173,200,255,.5);">
+          <div style="font-size:18px;font-weight:800;color:var(--white);margin-bottom:10px;">Examples for Teachers</div>
+          <div style="font-size:18px;color:rgba(255,255,255,.85);line-height:1.7;">Building a study chatbot for students · Creating an AI quiz generator for your department · Setting up an automated feedback tool</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div class="prompt-box" style="flex:1;">
+          <div class="prompt-label">💬 Prompt Example — Agency (System Prompt)</div>
+          <div class="prompt-text">"You are an AI study assistant for Grade 8 students studying Philippine history. When a student asks a question, guide them using Socratic questioning — never give direct answers. Keep responses friendly, age-appropriate, and in simple English. If a student asks about something outside Philippine history, politely redirect them."</div>
+        </div>
+        <div style="padding:22px 26px;background:rgba(255,255,255,.08);border-radius:14px;border:1px solid rgba(192,57,43,.3);">
+          <div style="font-size:16px;font-weight:700;color:var(--crimson);margin-bottom:10px;">⚠️ Important Responsibility</div>
+          <div style="font-size:17px;color:rgba(255,255,255,.8);line-height:1.7;">In Agency modality, <strong style="color:var(--white);">you are accountable</strong> for how the AI behaves with every student who uses it. This requires the highest level of diligence and testing.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cite">Source: Dakan &amp; Feller (2025). Framework for AI Fluency v1.1.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S80 — THE 4 Ds: OVERVIEW
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s80" data-bg="dark" style="background:var(--navy-dark);display:flex;flex-direction:column;height:100%;">
+  <div style="height:5px;background:linear-gradient(90deg,var(--navy),var(--crimson),var(--gold),var(--green));flex-shrink:0;"></div>
+  <div style="flex:1;padding:44px 72px;display:flex;flex-direction:column;gap:24px;">
+    <div style="font-size:13px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);" class="a1">The Four Core Competencies</div>
+    <div style="font-family:'Playfair Display',serif;font-size:clamp(38px,5vw,68px);font-weight:900;color:var(--white);line-height:1.0;" class="a2">The 4 Ds of AI Fluency</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;flex:1;" class="a3">
+      <div style="padding:28px 32px;background:rgba(27,36,100,.6);border:1px solid rgba(27,36,100,.8);border-radius:18px;display:flex;flex-direction:column;gap:12px;border-top:4px solid var(--navy-mid);">
+        <div style="font-family:'Playfair Display',serif;font-size:56px;font-weight:900;color:rgba(173,200,255,.25);line-height:1;">D</div>
+        <div style="font-size:26px;font-weight:900;color:var(--white);margin-top:-20px;">Delegation</div>
+        <div style="font-size:18px;color:rgba(255,255,255,.7);line-height:1.65;"><strong style="color:rgba(173,200,255,.9);">Should I use AI, and which tool?</strong> Identifying when and how to deploy AI effectively in your work.</div>
+      </div>
+      <div style="padding:28px 32px;background:rgba(240,165,0,.12);border:1px solid rgba(240,165,0,.2);border-radius:18px;display:flex;flex-direction:column;gap:12px;border-top:4px solid var(--gold);">
+        <div style="font-family:'Playfair Display',serif;font-size:56px;font-weight:900;color:rgba(240,165,0,.2);line-height:1;">D</div>
+        <div style="font-size:26px;font-weight:900;color:var(--white);margin-top:-20px;">Description</div>
+        <div style="font-size:18px;color:rgba(255,255,255,.7);line-height:1.65;"><strong style="color:var(--gold);">How do I communicate my vision to AI?</strong> Crafting clear, specific prompts that get useful results.</div>
+      </div>
+      <div style="padding:28px 32px;background:rgba(192,57,43,.12);border:1px solid rgba(192,57,43,.2);border-radius:18px;display:flex;flex-direction:column;gap:12px;border-top:4px solid var(--crimson);">
+        <div style="font-family:'Playfair Display',serif;font-size:56px;font-weight:900;color:rgba(192,57,43,.2);line-height:1;">D</div>
+        <div style="font-size:26px;font-weight:900;color:var(--white);margin-top:-20px;">Discernment</div>
+        <div style="font-size:18px;color:rgba(255,255,255,.7);line-height:1.65;"><strong style="color:#ff8a7a;">Is this output good enough?</strong> Critically evaluating AI-generated content for quality, bias, and accuracy.</div>
+      </div>
+      <div style="padding:28px 32px;background:rgba(45,125,50,.15);border:1px solid rgba(45,125,50,.25);border-radius:18px;display:flex;flex-direction:column;gap:12px;border-top:4px solid var(--green);">
+        <div style="font-family:'Playfair Display',serif;font-size:56px;font-weight:900;color:rgba(45,125,50,.2);line-height:1;">D</div>
+        <div style="font-size:26px;font-weight:900;color:var(--white);margin-top:-20px;">Diligence</div>
+        <div style="font-size:18px;color:rgba(255,255,255,.7);line-height:1.65;"><strong style="color:#7fe87f;">Am I using AI responsibly?</strong> Ethics, transparency, and accountability in every AI interaction.</div>
+      </div>
+    </div>
+  </div>
+  <div class="cite">Source: Dakan &amp; Feller (2025). Framework for AI Fluency v1.1.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S81 — DELEGATION
+═══════════════════════════════════════════════ -->
+<div class="slide content-slide" id="s81" data-bg="light">
+  <div class="topbar"></div>
+  <div class="crumb a1">Module 4 › The 4 Ds › <span>Delegation</span></div>
+  <div style="flex:1;padding:40px 68px;display:flex;flex-direction:column;gap:22px;">
+    <div style="display:flex;align-items:center;gap:20px;" class="a2">
+      <div style="width:6px;height:64px;background:var(--navy);border-radius:3px;flex-shrink:0;"></div>
+      <div>
+        <div style="font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">D1 — Delegation</div>
+        <div class="slide-title" style="font-size:clamp(32px,4vw,56px);">Should I use AI, and which tool?</div>
+      </div>
+    </div>
+    <div class="slide-sub a3">Creative vision and strategic selection of the right AI tools and modalities to realize that vision.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;flex:1;" class="a4">
+      <div class="card navy" style="display:flex;flex-direction:column;">
+        <div class="card-title">🎯 Goal &amp; Task Awareness</div>
+        <div class="card-body">Envision effective goals. Analyze and deconstruct tasks into what AI can do, what humans should do, and what benefits from collaboration.</div>
+      </div>
+      <div class="card gold" style="display:flex;flex-direction:column;">
+        <div class="card-title">🔧 Platform Awareness</div>
+        <div class="card-body">Know different AI platforms' strengths and limitations. Evaluate tools based on project requirements, budget, and any legal or regulatory considerations.</div>
+      </div>
+      <div class="card green" style="display:flex;flex-direction:column;">
+        <div class="card-title">⚖️ Task Delegation</div>
+        <div class="card-body">Optimally assign work between AI and human. Understand which modality — Automation, Augmentation, or Agency — fits the task at hand.</div>
+      </div>
+    </div>
+    <div style="background:var(--navy);border-radius:14px;padding:20px 28px;display:flex;align-items:center;gap:16px;" class="a5">
+      <span style="font-size:26px;flex-shrink:0;">💭</span>
+      <div style="font-size:20px;color:rgba(255,255,255,.9);line-height:1.6;"><strong style="color:var(--gold);">Ask yourself first:</strong> Is this task actually suitable for AI? Would it produce better results than I could achieve without AI in the same time? What could go wrong?</div>
+    </div>
+  </div>
+  <div class="cite light">Source: Dakan &amp; Feller (2025). Framework for AI Fluency v1.1.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S82 — DESCRIPTION + PROMPT SAMPLES
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s82" data-bg="dark" style="background:#0b1628;display:flex;flex-direction:column;height:100%;">
+  <div style="height:5px;background:linear-gradient(90deg,var(--gold),var(--gold-light));flex-shrink:0;"></div>
+  <div style="flex:1;padding:40px 68px;display:flex;flex-direction:column;gap:20px;">
+    <div style="display:flex;align-items:center;gap:20px;" class="a1">
+      <div style="width:6px;height:64px;background:var(--gold);border-radius:3px;flex-shrink:0;"></div>
+      <div>
+        <div style="font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">D2 — Description</div>
+        <div style="font-family:'Playfair Display',serif;font-size:clamp(30px,3.8vw,52px);font-weight:900;color:var(--white);line-height:1.05;">How do I communicate my vision to AI?</div>
+      </div>
+    </div>
+    <div style="font-size:20px;color:rgba(255,255,255,.65);" class="a2">The art and science of crafting prompts that produce useful AI outputs.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;flex:1;" class="a3">
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div style="padding:22px 26px;background:rgba(255,255,255,.07);border-radius:14px;border-left:4px solid var(--gold);">
+          <div style="font-size:19px;font-weight:800;color:var(--gold);margin-bottom:8px;">Product Description</div>
+          <div style="font-size:17px;color:rgba(255,255,255,.8);line-height:1.7;">Clearly articulate desired characteristics and qualities. Translate your vision into terms AI can act on.</div>
+        </div>
+        <div style="padding:22px 26px;background:rgba(255,255,255,.07);border-radius:14px;border-left:4px solid var(--gold-light);">
+          <div style="font-size:19px;font-weight:800;color:var(--gold-light);margin-bottom:8px;">Process Description</div>
+          <div style="font-size:17px;color:rgba(255,255,255,.8);line-height:1.7;">Guide iterative collaboration. Break complex tasks into smaller prompts. Engage in dynamic back-and-forth dialogue.</div>
+        </div>
+        <div style="padding:22px 26px;background:rgba(255,255,255,.07);border-radius:14px;border-left:4px solid rgba(173,200,255,.5);">
+          <div style="font-size:19px;font-weight:800;color:rgba(173,200,255,.9);margin-bottom:8px;">Performance Description</div>
+          <div style="font-size:17px;color:rgba(255,255,255,.8);line-height:1.7;">Specify how AI should behave or interact — anticipating user needs and translating them into behavioral guidelines.</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="prompt-box" style="flex:1;">
+          <div class="prompt-label">💬 Weak Prompt vs. Strong Prompt</div>
+          <div style="font-size:15px;font-weight:700;color:var(--crimson);margin-bottom:6px;font-family:'Plus Jakarta Sans',sans-serif;">❌ Weak:</div>
+          <div class="prompt-text" style="font-size:16px;color:rgba(255,100,100,.85);margin-bottom:14px;">"Make me a lesson plan."</div>
+          <div style="font-size:15px;font-weight:700;color:var(--green);margin-bottom:6px;font-family:'Plus Jakarta Sans',sans-serif;">✅ Strong:</div>
+          <div class="prompt-text" style="font-size:16px;">"Create a 60-minute lesson plan on the causes of World War I for Grade 9 students in a Philippine public school. Include: learning objectives (SMART format), a hook activity (5 mins), direct instruction (15 mins), a group activity students can do without internet access, and an assessment. Use MELC-aligned learning outcomes."</div>
+        </div>
+        <div style="padding:18px 22px;background:rgba(240,165,0,.12);border:1px solid rgba(240,165,0,.3);border-radius:12px;">
+          <div style="font-size:18px;color:var(--white);line-height:1.7;"><strong style="color:var(--gold);">Key Principle:</strong> The more specific your prompt — context, format, audience, constraints — the more useful the AI's output will be.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cite">Source: Dakan &amp; Feller (2025). Framework for AI Fluency v1.1.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S83 — DISCERNMENT
+═══════════════════════════════════════════════ -->
+<div class="slide content-slide" id="s83" data-bg="light">
+  <div class="topbar" style="background:linear-gradient(90deg,var(--crimson),#8b1a0e);"></div>
+  <div class="crumb a1">Module 4 › The 4 Ds › <span>Discernment</span></div>
+  <div style="flex:1;padding:40px 68px;display:flex;flex-direction:column;gap:22px;">
+    <div style="display:flex;align-items:center;gap:20px;" class="a2">
+      <div style="width:6px;height:64px;background:var(--crimson);border-radius:3px;flex-shrink:0;"></div>
+      <div>
+        <div style="font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--crimson);margin-bottom:8px;">D3 — Discernment</div>
+        <div class="slide-title" style="font-size:clamp(30px,3.8vw,54px);">Is this output good enough?</div>
+      </div>
+    </div>
+    <div class="slide-sub a3">Critical evaluation of AI-generated outputs — understanding quality, relevance, bias, and accuracy.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1;" class="a4">
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="card crimson" style="flex:1;">
+          <div class="card-title">🔍 Product Discernment</div>
+          <div class="card-body">Critically assess quality, relevance, and effectiveness of AI output. Identify strengths and weaknesses. Never assume accuracy — always verify facts, citations, and claims.</div>
+        </div>
+        <div class="card navy" style="flex:1;">
+          <div class="card-title">🔄 Process Discernment</div>
+          <div class="card-body">Evaluate the collaboration itself — is the back-and-forth producing better results than either human or AI alone? Know when to adjust your approach or abandon AI for this task.</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="card gold" style="flex:1;">
+          <div class="card-title">🎭 Performance Discernment</div>
+          <div class="card-body">Assess whether AI configured for Agency is behaving as intended — across different users and scenarios. Gather feedback and refine the AI-driven experience continuously.</div>
+        </div>
+        <div style="background:var(--off-white);border-radius:16px;padding:26px 30px;border-left:5px solid var(--crimson);">
+          <div style="font-size:20px;font-weight:800;color:var(--navy);margin-bottom:12px;">🚨 Critical Questions to Ask</div>
+          <ul style="font-size:18px;color:var(--grey-dark);line-height:1.75;list-style:none;display:flex;flex-direction:column;gap:6px;">
+            <li>→ Is this factually accurate? Can I verify it?</li>
+            <li>→ Is there hidden bias in this output?</li>
+            <li>→ Is this appropriate for my students?</li>
+            <li>→ Would I be comfortable putting my name on this?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cite light">Source: Dakan &amp; Feller (2025). Framework for AI Fluency v1.1.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S84 — DILIGENCE
+═══════════════════════════════════════════════ -->
+<div class="slide content-slide" id="s84" data-bg="light">
+  <div class="topbar" style="background:linear-gradient(90deg,var(--green),#1a5c1a);"></div>
+  <div class="crumb a1">Module 4 › The 4 Ds › <span>Diligence</span></div>
+  <div style="flex:1;padding:40px 68px;display:flex;flex-direction:column;gap:22px;">
+    <div style="display:flex;align-items:center;gap:20px;" class="a2">
+      <div style="width:6px;height:64px;background:var(--green);border-radius:3px;flex-shrink:0;"></div>
+      <div>
+        <div style="font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--green);margin-bottom:8px;">D4 — Diligence</div>
+        <div class="slide-title" style="font-size:clamp(30px,3.8vw,54px);">Am I using AI responsibly?</div>
+      </div>
+    </div>
+    <div class="slide-sub a3">Taking responsibility and vouching for final products created using AI assistance.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;flex:1;" class="a4">
+      <div class="card green" style="display:flex;flex-direction:column;">
+        <div class="card-title">🛡️ Creation Diligence</div>
+        <div class="card-body">Apply ethical principles throughout the creative process. Actively identify and mitigate biases and ethical risks in AI-assisted content before it reaches students.</div>
+      </div>
+      <div class="card gold" style="display:flex;flex-direction:column;">
+        <div class="card-title">👁️ Transparency Diligence</div>
+        <div class="card-body">Understand audience and legal expectations. Clearly communicate AI involvement in your work — to students, colleagues, and institutions.</div>
+      </div>
+      <div class="card navy" style="display:flex;flex-direction:column;">
+        <div class="card-title">✅ Deployment Diligence</div>
+        <div class="card-body">Thoroughly fact-check and test AI outputs before deployment. Manage and assume full responsibility for potential risks, impacts, and consequences.</div>
+      </div>
+    </div>
+    <div style="background:var(--navy);border-radius:14px;padding:22px 28px;display:flex;align-items:center;gap:16px;" class="a5">
+      <span style="font-size:28px;flex-shrink:0;">⚖️</span>
+      <div style="font-size:20px;color:rgba(255,255,255,.9);line-height:1.65;"><strong style="color:var(--gold);">The Bottom Line:</strong> Using AI does not transfer responsibility. If you submit, publish, or share AI-assisted work — you are responsible for every word in it.</div>
+    </div>
+  </div>
+  <div class="cite light">Source: Dakan &amp; Feller (2025). Framework for AI Fluency v1.1.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S85 — APPLYING THE 4 Ds: QUICK REFERENCE
+═══════════════════════════════════════════════ -->
+<div class="slide" id="s85" data-bg="dark" style="background:var(--navy-dark);display:flex;flex-direction:column;height:100%;">
+  <div style="height:5px;background:linear-gradient(90deg,var(--navy-mid),var(--crimson),var(--gold),var(--green));flex-shrink:0;"></div>
+  <div style="flex:1;padding:36px 64px;display:flex;flex-direction:column;gap:18px;">
+    <div style="font-size:13px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);" class="a1">Quick Reference</div>
+    <div style="font-family:'Playfair Display',serif;font-size:clamp(30px,3.5vw,48px);font-weight:900;color:var(--white);" class="a2">Applying the 4 Ds to Each Modality</div>
+    <div style="display:grid;grid-template-columns:auto 1fr 1fr 1fr;gap:0;flex:1;border-radius:16px;overflow:hidden;" class="a3">
+      <!-- Header row -->
+      <div style="background:rgba(255,255,255,.05);padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.1);border-right:1px solid rgba(255,255,255,.1);"></div>
+      <div style="background:rgba(27,36,100,.6);padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.1);border-right:1px solid rgba(255,255,255,.1);text-align:center;"><div style="font-size:18px;font-weight:800;color:rgba(173,200,255,.9);">🤖 Automation</div></div>
+      <div style="background:rgba(45,125,50,.3);padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.1);border-right:1px solid rgba(255,255,255,.1);text-align:center;"><div style="font-size:18px;font-weight:800;color:#7fe87f;">🤝 Augmentation</div></div>
+      <div style="background:rgba(192,57,43,.3);padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.1);text-align:center;"><div style="font-size:18px;font-weight:800;color:#ff8a7a;">⚙️ Agency</div></div>
+      <!-- Delegation -->
+      <div style="background:rgba(255,255,255,.05);padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.08);border-right:1px solid rgba(255,255,255,.1);font-size:17px;font-weight:800;color:rgba(173,200,255,.9);display:flex;align-items:center;">Delegation</div>
+      <div style="background:rgba(255,255,255,.03);padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.08);border-right:1px solid rgba(255,255,255,.08);font-size:16px;color:rgba(255,255,255,.75);line-height:1.6;">Is this task suitable for full AI execution?</div>
+      <div style="background:rgba(255,255,255,.03);padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.08);border-right:1px solid rgba(255,255,255,.08);font-size:16px;color:rgba(255,255,255,.75);line-height:1.6;">How should human &amp; AI contributions be balanced?</div>
+      <div style="background:rgba(255,255,255,.03);padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.08);font-size:16px;color:rgba(255,255,255,.75);line-height:1.6;">Have I properly configured the AI's boundaries?</div>
+      <!-- Description -->
+      <div style="background:rgba(255,255,255,.05);padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.08);border-right:1px solid rgba(255,255,255,.1);font-size:17px;font-weight:800;color:var(--gold);display:flex;align-items:center;">Description</div>
+      <div style="background:rgba(255,255,255,.03);padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.08);border-right:1px solid rgba(255,255,255,.08);font-size:16px;color:rgba(255,255,255,.75);line-height:1.6;">Have I clearly defined the expected output?</div>
+      <div style="background:rgba(255,255,255,.03);padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.08);border-right:1px solid rgba(255,255,255,.08);font-size:16px;color:rgba(255,255,255,.75);line-height:1.6;">Am I engaging in effective back-and-forth dialogue?</div>
+      <div style="background:rgba(255,255,255,.03);padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.08);font-size:16px;color:rgba(255,255,255,.75);line-height:1.6;">Have I clearly defined how the AI interacts with users?</div>
+      <!-- Discernment -->
+      <div style="background:rgba(255,255,255,.05);padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.08);border-right:1px solid rgba(255,255,255,.1);font-size:17px;font-weight:800;color:#ff8a7a;display:flex;align-items:center;">Discernment</div>
+      <div style="background:rgba(255,255,255,.03);padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.08);border-right:1px solid rgba(255,255,255,.08);font-size:16px;color:rgba(255,255,255,.75);line-height:1.6;">Does the output meet quality standards?</div>
+      <div style="background:rgba(255,255,255,.03);padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.08);border-right:1px solid rgba(255,255,255,.08);font-size:16px;color:rgba(255,255,255,.75);line-height:1.6;">Is this collaboration producing better results than either alone?</div>
+      <div style="background:rgba(255,255,255,.03);padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.08);font-size:16px;color:rgba(255,255,255,.75);line-height:1.6;">Is the AI behaving as intended across different scenarios?</div>
+      <!-- Diligence -->
+      <div style="background:rgba(255,255,255,.05);padding:16px 20px;border-right:1px solid rgba(255,255,255,.1);font-size:17px;font-weight:800;color:#7fe87f;display:flex;align-items:center;">Diligence</div>
+      <div style="background:rgba(255,255,255,.03);padding:16px 20px;border-right:1px solid rgba(255,255,255,.08);font-size:16px;color:rgba(255,255,255,.75);line-height:1.6;">Have I verified accuracy and disclosed AI use?</div>
+      <div style="background:rgba(255,255,255,.03);padding:16px 20px;border-right:1px solid rgba(255,255,255,.08);font-size:16px;color:rgba(255,255,255,.75);line-height:1.6;">Am I maintaining creative ownership and ethical standards?</div>
+      <div style="background:rgba(255,255,255,.03);padding:16px 20px;font-size:16px;color:rgba(255,255,255,.75);line-height:1.6;">Am I taking full responsibility for the AI's actions and impacts?</div>
+    </div>
+  </div>
+  <div class="cite">Source: Dakan &amp; Feller (2025). Framework for AI Fluency v1.1.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S86 — MODULE 4 RECAP
+═══════════════════════════════════════════════ -->
+<div class="slide content-slide" id="s86" data-bg="light">
+  <div class="topbar"></div>
+  <div class="crumb a1">Module 4 › <span>Key Takeaways</span></div>
+  <div style="flex:1;padding:36px 68px;display:flex;flex-direction:column;gap:22px;">
+    <div class="slide-title a2">Module 4 — What We Learned</div>
+    <div class="slide-sub a3">AI Fluency is a skill set — one that every educator can and should develop.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;flex:1;" class="a4">
+      <div class="card navy">
+        <div class="card-title">📖 What AI Fluency Is</div>
+        <div class="card-body">The ability to work effectively, efficiently, ethically, and safely with AI — not just clicking buttons, but making intentional, informed decisions about when, why, and how to use AI tools.</div>
+      </div>
+      <div class="card gold">
+        <div class="card-title">🔄 Three Modalities</div>
+        <div class="card-body"><strong>Automation</strong> — AI does the task. <strong>Augmentation</strong> — you collaborate with AI. <strong>Agency</strong> — you configure AI to work independently. Most real work moves between all three.</div>
+      </div>
+      <div class="card crimson">
+        <div class="card-title">4️⃣ The 4 Ds</div>
+        <div class="card-body"><strong>Delegation</strong> (Should I use AI?) · <strong>Description</strong> (How do I prompt?) · <strong>Discernment</strong> (Is this good?) · <strong>Diligence</strong> (Am I being responsible?)</div>
+      </div>
+      <div class="card green">
+        <div class="card-title">✍️ Prompting Matters</div>
+        <div class="card-body">The quality of your prompt determines the quality of AI's output. Specific context, clear format, audience awareness, and defined constraints transform weak prompts into powerful ones.</div>
+      </div>
+    </div>
+    <div style="background:var(--navy);border-radius:14px;padding:22px 28px;display:flex;align-items:center;gap:16px;" class="a5">
+      <span style="font-size:28px;flex-shrink:0;">🎓</span>
+      <div style="font-size:20px;color:rgba(255,255,255,.9);line-height:1.65;"><strong style="color:var(--gold);">For Future Educators:</strong> AI fluency is not just about using tools — it's about modeling thoughtful, ethical AI use for the next generation of Filipino learners.</div>
+    </div>
+  </div>
+  <div class="cite light">Source: Dakan &amp; Feller (2025). Framework for AI Fluency v1.1. Ringling College / University College Cork.</div>
+</div>
+
 </div><!-- /deck -->
 
 <script>
 let cur = 0;
-const total = 51;
+const total = 86;
 const slides = document.querySelectorAll('.slide');
 const prog = document.getElementById('progress');
 const ctr = document.getElementById('counter');
